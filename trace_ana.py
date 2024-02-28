@@ -77,3 +77,8 @@ for span_level in span_levels:
     for span in span_level:
         indentation = span["level"] * 4 * ' '
         print(f'{indentation}{span["level"]:<5}{span["spanID"]:<16} {span["spanInfo"]["operationName"]:<50} {span["spanInfo"]["startTime"]:<60}')
+        for tag in span["spanInfo"]["tags"]:
+            print(f'{indentation}{tag["key"]:<20} {tag["value"]:<20}')
+
+get_span_info("dd444b30837a619c", trace_data)
+        
