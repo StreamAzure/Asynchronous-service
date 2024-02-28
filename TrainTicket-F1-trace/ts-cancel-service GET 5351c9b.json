@@ -1,0 +1,206 @@
+{
+    "data": [
+        {
+            "traceID": "5351c9bfa2e06eda",
+            "spans": [
+                {
+                    "traceID": "5351c9bfa2e06eda",
+                    "spanID": "9470204dce1d2bf8",
+                    "flags": 1,
+                    "operationName": "drawBack",
+                    "references": [
+                        {
+                            "refType": "CHILD_OF",
+                            "traceID": "5351c9bfa2e06eda",
+                            "spanID": "5351c9bfa2e06eda"
+                        }
+                    ],
+                    "startTime": 1709113622570719,
+                    "duration": 48615,
+                    "tags": [
+                        {
+                            "key": "http.status_code",
+                            "type": "int64",
+                            "value": 200
+                        },
+                        {
+                            "key": "http.url",
+                            "type": "string",
+                            "value": "http://ts-inside-payment-service:18673/api/v1/inside_pay_service/inside_payment/drawback/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f/0.00"
+                        },
+                        {
+                            "key": "component",
+                            "type": "string",
+                            "value": "java-web-servlet"
+                        },
+                        {
+                            "key": "span.kind",
+                            "type": "string",
+                            "value": "server"
+                        },
+                        {
+                            "key": "http.method",
+                            "type": "string",
+                            "value": "GET"
+                        },
+                        {
+                            "key": "internal.span.format",
+                            "type": "string",
+                            "value": "proto"
+                        }
+                    ],
+                    "logs": [
+                        {
+                            "timestamp": 1709113622582719,
+                            "fields": [
+                                {
+                                    "key": "event",
+                                    "type": "string",
+                                    "value": "preHandle"
+                                },
+                                {
+                                    "key": "handler",
+                                    "type": "string",
+                                    "value": "public org.springframework.http.HttpEntity inside_payment.controller.InsidePaymentController.drawBack(java.lang.String,java.lang.String,org.springframework.http.HttpHeaders)"
+                                },
+                                {
+                                    "key": "handler.class_simple_name",
+                                    "type": "string",
+                                    "value": "InsidePaymentController"
+                                },
+                                {
+                                    "key": "handler.method_name",
+                                    "type": "string",
+                                    "value": "drawBack"
+                                }
+                            ]
+                        },
+                        {
+                            "timestamp": 1709113622614719,
+                            "fields": [
+                                {
+                                    "key": "event",
+                                    "type": "string",
+                                    "value": "afterCompletion"
+                                },
+                                {
+                                    "key": "handler",
+                                    "type": "string",
+                                    "value": "public org.springframework.http.HttpEntity inside_payment.controller.InsidePaymentController.drawBack(java.lang.String,java.lang.String,org.springframework.http.HttpHeaders)"
+                                }
+                            ]
+                        }
+                    ],
+                    "processID": "p1",
+                    "warnings": null
+                },
+                {
+                    "traceID": "5351c9bfa2e06eda",
+                    "spanID": "5351c9bfa2e06eda",
+                    "flags": 1,
+                    "operationName": "GET",
+                    "references": [],
+                    "startTime": 1709113622567000,
+                    "duration": 56054,
+                    "tags": [
+                        {
+                            "key": "http.status_code",
+                            "type": "int64",
+                            "value": 200
+                        },
+                        {
+                            "key": "component",
+                            "type": "string",
+                            "value": "java-spring-rest-template"
+                        },
+                        {
+                            "key": "span.kind",
+                            "type": "string",
+                            "value": "client"
+                        },
+                        {
+                            "key": "sampler.type",
+                            "type": "string",
+                            "value": "const"
+                        },
+                        {
+                            "key": "sampler.param",
+                            "type": "bool",
+                            "value": true
+                        },
+                        {
+                            "key": "http.url",
+                            "type": "string",
+                            "value": "http://ts-inside-payment-service:18673/api/v1/inside_pay_service/inside_payment/drawback/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f/0.00"
+                        },
+                        {
+                            "key": "peer.port",
+                            "type": "int64",
+                            "value": 18673
+                        },
+                        {
+                            "key": "http.method",
+                            "type": "string",
+                            "value": "GET"
+                        },
+                        {
+                            "key": "internal.span.format",
+                            "type": "string",
+                            "value": "proto"
+                        }
+                    ],
+                    "logs": [],
+                    "processID": "p2",
+                    "warnings": null
+                }
+            ],
+            "processes": {
+                "p1": {
+                    "serviceName": "ts-inside-payment-service",
+                    "tags": [
+                        {
+                            "key": "hostname",
+                            "type": "string",
+                            "value": "ef5a4515b8ea"
+                        },
+                        {
+                            "key": "ip",
+                            "type": "string",
+                            "value": "172.21.0.36"
+                        },
+                        {
+                            "key": "jaeger.version",
+                            "type": "string",
+                            "value": "Java-0.30.6"
+                        }
+                    ]
+                },
+                "p2": {
+                    "serviceName": "ts-cancel-service",
+                    "tags": [
+                        {
+                            "key": "hostname",
+                            "type": "string",
+                            "value": "4322dc071194"
+                        },
+                        {
+                            "key": "ip",
+                            "type": "string",
+                            "value": "172.21.0.17"
+                        },
+                        {
+                            "key": "jaeger.version",
+                            "type": "string",
+                            "value": "Java-0.30.6"
+                        }
+                    ]
+                }
+            },
+            "warnings": null
+        }
+    ],
+    "total": 0,
+    "limit": 0,
+    "offset": 0,
+    "errors": null
+}
