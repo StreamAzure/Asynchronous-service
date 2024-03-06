@@ -32,7 +32,7 @@ class HTTPPacket:
         self.url = request_line.split(b' ')[1].decode()
 
     def __str__(self):
-        return f'Type: {self.type}\nData: {json.dumps(self.data, indent=4, ensure_ascii=False)}\nTime: {self.time}\nData Keys: {self.data_keys}\nURL: {self.url}'
+        return f'Type: {self.type}\nTime: {self.time}\nData Keys: {self.data_keys}\nURL: {self.url}\nBody: {json.dumps(self.data, indent=4, ensure_ascii=False)}\n'
 
     def __repr__(self):
         return f'HTTPPacket(packet={self.packet}, header={self.header}, type={self.type}, data={self.data}, request_line={self.request_line})'
