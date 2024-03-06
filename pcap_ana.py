@@ -27,7 +27,7 @@ class HTTPPacket:
         self.ack = packet[TCP].ack  # 序列号
         self.seq = packet[TCP].seq  # 确认号
         self.time = int(packet.time * 1000000)
-        self.data_keys = set(data.keys())
+        self.data_keys = get_packet_data_keys(data)
         self.request_line = request_line
         self.url = request_line.split(b' ')[1].decode()
 
@@ -36,6 +36,17 @@ class HTTPPacket:
 
     def __repr__(self):
         return f'HTTPPacket(packet={self.packet}, header={self.header}, type={self.type}, data={self.data}, request_line={self.request_line})'
+
+def get_packet_data_keys(data) -> set:
+    """
+    获取报文中所有的数据字段名称。若字段中还有字段，一并加入
+    """
+    keys = set()
+    for key, value in data.items():
+        keys.add(key)
+        if isinstance(value, dict):
+            keys |= get_packet_data_keys(value)
+    return keys
 
 # 遍历指定目录
 def traverse_directory(path):
