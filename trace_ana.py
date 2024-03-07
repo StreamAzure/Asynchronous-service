@@ -99,8 +99,26 @@ class Span:
         self.references = span["references"]
         self.tags = span["tags"]
         self.logs = span["logs"]
-        self.service = service # 字典，包含service_name和ip
+        self.startTime = span["startTime"]
+        self.logTimestamp = self.logs[0]["timestamp"] if len(self.logs) > 0 else None
+        self.service = service # 字典，包含service_name和ip 
         self.http_info = self.get_http_info()
+
+    def __str__(self):
+        """
+        返回 span 对象的字符串表示形式
+        """
+        span_info = {
+            "traceID": self.traceID,
+            "spanID": self.spanID,
+            "operationName": self.operationName,
+            "references": self.references,
+            "startTime": self.startTime,
+            "logTimestamp": self.logTimestamp,
+            "service": self.service,
+            "http_info": self.http_info
+        }
+        return json.dumps(span_info, indent=2)
 
     
     def get_tag_keys(self) -> list:
@@ -125,14 +143,21 @@ class Span:
         """
         res = {}
         for tag in self.tags:
+            if tag['key'] == "component":
+                res['component'] = tag['value']
             if tag['key'] == "http.url":
                 res['url'] = tag['value']
             if tag['key'] == "http.status_code":
                 res['status_code'] = tag['value']
             if tag['key'] == "http.method":
                 res["method"] = tag['value']
+        res = {
+            "component": res.get("component"),
+            "url": res.get("url"),
+            "method": res.get("method"),
+            "status_code": res.get("status_code")
+        }
         return res
-        
         
 
 def load_spans_from_file(file_path):
@@ -194,9 +219,13 @@ if __name__ == '__main__':
     # ---------------------------------------------
     
 
-    for span in spans:
-        print(span.get_http_info())
-        print()
+    spans.sort(key=lambda span: span.logTimestamp if span.logTimestamp else span.startTime)
+    cnt = 0   
+    with open('trace_output.txt', 'w') as f:
+        for span in spans:
+            cnt += 1
+            f.write(f"==== span {cnt} ====\n")
+            f.write(str(span) + '\n\n')
 
     # parse_trace_file('TrainTicket-F1-trace/ts-cancel-service cancelTicket 963b968.json')
     

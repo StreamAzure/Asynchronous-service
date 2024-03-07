@@ -1,0 +1,862 @@
+==== packet 1 ====
+Type: request
+Req_Type: GET
+URL: /api/v1/orderOtherService/orderOther/security/Wed%20Feb%2028%2017:46:55%20CST%202024/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f
+Time: 1709113615919120
+Body: {}
+
+==== packet 2 ====
+Type: response
+Req_Type: None
+URL: 200
+Time: 1709113615941549
+Body: {
+    "status": 1,
+    "msg": "Success",
+    "data": {
+        "orderNumInLastOneHour": 0,
+        "orderNumOfValidOrder": 1
+    }
+}
+
+==== packet 3 ====
+Type: request
+Req_Type: POST
+URL: /api/v1/orderOtherService/orderOther/refresh
+Time: 1709113617382137
+Body: {
+    "loginId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f"
+}
+
+==== packet 4 ====
+Type: request
+Req_Type: POST
+URL: /api/v1/stationservice/stations/namelist
+Time: 1709113617394088
+Body: {
+    "data": [
+        "shanghai",
+        "taiyuan",
+        "shanghai",
+        "nanjing",
+        "shanghai",
+        "nanjing",
+        "shanghai",
+        "nanjing",
+        "shanghai",
+        "nanjing",
+        "shanghai",
+        "nanjing",
+        "shanghai",
+        "nanjing",
+        "shanghai",
+        "nanjing",
+        "shanghai",
+        "nanjing",
+        "shanghai",
+        "nanjing",
+        "shanghai",
+        "nanjing",
+        "shanghai",
+        "nanjing",
+        "shanghai",
+        "nanjing",
+        "shanghai",
+        "nanjing"
+    ]
+}
+
+==== packet 5 ====
+Type: response
+Req_Type: None
+URL: 200
+Time: 1709113617419534
+Body: {
+    "status": 1,
+    "msg": "Success",
+    "data": [
+        "Shang Hai",
+        "Tai Yuan",
+        "Shang Hai",
+        "Nan Jing",
+        "Shang Hai",
+        "Nan Jing",
+        "Shang Hai",
+        "Nan Jing",
+        "Shang Hai",
+        "Nan Jing",
+        "Shang Hai",
+        "Nan Jing",
+        "Shang Hai",
+        "Nan Jing",
+        "Shang Hai",
+        "Nan Jing",
+        "Shang Hai",
+        "Nan Jing",
+        "Shang Hai",
+        "Nan Jing",
+        "Shang Hai",
+        "Nan Jing",
+        "Shang Hai",
+        "Nan Jing",
+        "Shang Hai",
+        "Nan Jing",
+        "Shang Hai",
+        "Nan Jing"
+    ]
+}
+
+==== packet 6 ====
+Type: response
+Req_Type: None
+URL: 200
+Time: 1709113617422255
+Body: {
+    "status": 1,
+    "msg": "Success",
+    "data": [
+        {
+            "id": "168ad41f-0658-42e6-8201-d9b6d6b96a4d",
+            "boughtDate": 1709112906829,
+            "travelDate": 123456799,
+            "travelTime": 123456799,
+            "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+            "contactsName": "Test",
+            "documentType": 1,
+            "contactsDocumentNumber": "Test",
+            "trainNumber": "K1235",
+            "coachNumber": 5,
+            "seatClass": 2,
+            "seatNumber": "6A",
+            "from": "Shang Hai",
+            "to": "Tai Yuan",
+            "status": 7,
+            "price": "100"
+        },
+        {
+            "id": "90351eb4-df70-44d4-aae4-9090361f7aa0",
+            "boughtDate": 1709112963978,
+            "travelDate": 1709078400000,
+            "travelTime": 1367632312000,
+            "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+            "contactsName": "Contacts_Two",
+            "documentType": 1,
+            "contactsDocumentNumber": "DocumentNumber_Two",
+            "trainNumber": "Z1234",
+            "coachNumber": 5,
+            "seatClass": 2,
+            "seatNumber": "970409023",
+            "from": "Shang Hai",
+            "to": "Nan Jing",
+            "status": 7,
+            "price": "350.0"
+        },
+        {
+            "id": "aafed0b0-3bca-4da7-a0a9-29464e37c6ec",
+            "boughtDate": 1709113001839,
+            "travelDate": 1709078400000,
+            "travelTime": 1367632312000,
+            "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+            "contactsName": "Contacts_One",
+            "documentType": 1,
+            "contactsDocumentNumber": "DocumentNumber_One",
+            "trainNumber": "Z1234",
+            "coachNumber": 5,
+            "seatClass": 3,
+            "seatNumber": "1417785894",
+            "from": "Shang Hai",
+            "to": "Nan Jing",
+            "status": 7,
+            "price": "122.49999999999999"
+        },
+        {
+            "id": "2e0c514b-894d-499f-a614-40164d27471a",
+            "boughtDate": 1709113014351,
+            "travelDate": 1709078400000,
+            "travelTime": 1367632312000,
+            "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+            "contactsName": "Contacts_Two",
+            "documentType": 1,
+            "contactsDocumentNumber": "DocumentNumber_Two",
+            "trainNumber": "Z1234",
+            "coachNumber": 5,
+            "seatClass": 2,
+            "seatNumber": "833958184",
+            "from": "Shang Hai",
+            "to": "Nan Jing",
+            "status": 7,
+            "price": "350.0"
+        },
+        {
+            "id": "49361d7a-2894-4875-96a7-fd8c65c0700a",
+            "boughtDate": 1709113117001,
+            "travelDate": 1709078400000,
+            "travelTime": 1367632312000,
+            "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+            "contactsName": "Contacts_Two",
+            "documentType": 1,
+            "contactsDocumentNumber": "DocumentNumber_Two",
+            "trainNumber": "Z1234",
+            "coachNumber": 5,
+            "seatClass": 3,
+            "seatNumber": "2004570587",
+            "from": "Shang Hai",
+            "to": "Nan Jing",
+            "status": 7,
+            "price": "122.49999999999999"
+        },
+        {
+            "id": "c2fa539b-ef77-4609-96d0-50557daec2a8",
+            "boughtDate": 1709113185948,
+            "travelDate": 1709078400000,
+            "travelTime": 1367632312000,
+            "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+            "contactsName": "Contacts_Two",
+            "documentType": 1,
+            "contactsDocumentNumber": "DocumentNumber_Two",
+            "trainNumber": "Z1234",
+            "coachNumber": 5,
+            "seatClass": 2,
+            "seatNumber": "1792380926",
+            "from": "Shang Hai",
+            "to": "Nan Jing",
+            "status": 7,
+            "price": "350.0"
+        },
+        {
+            "id": "9a56bd2c-3b5c-4ac7-949d-61fd1740d34d",
+            "boughtDate": 1709113241794,
+            "travelDate": 1709078400000,
+            "travelTime": 1367632312000,
+            "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+            "contactsName": "Contacts_One",
+            "documentType": 1,
+            "contactsDocumentNumber": "DocumentNumber_One",
+            "trainNumber": "Z1234",
+            "coachNumber": 5,
+            "seatClass": 3,
+            "seatNumber": "1188242080",
+            "from": "Shang Hai",
+            "to": "Nan Jing",
+            "status": 7,
+            "price": "122.49999999999999"
+        },
+        {
+            "id": "2faa6bc1-ee15-4e3b-9d50-0c12745a278f",
+            "boughtDate": 1709113255182,
+            "travelDate": 1709078400000,
+            "travelTime": 1367632312000,
+            "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+            "contactsName": "Contacts_One",
+            "documentType": 1,
+            "contactsDocumentNumber": "DocumentNumber_One",
+            "trainNumber": "Z1234",
+            "coachNumber": 5,
+            "seatClass": 3,
+            "seatNumber": "476543468",
+            "from": "Shang Hai",
+            "to": "Nan Jing",
+            "status": 7,
+            "price": "122.49999999999999"
+        },
+        {
+            "id": "834119c4-7d37-4742-baa4-fdb96c636dbb",
+            "boughtDate": 1709113267574,
+            "travelDate": 1709078400000,
+            "travelTime": 1367632312000,
+            "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+            "contactsName": "Contacts_One",
+            "documentType": 1,
+            "contactsDocumentNumber": "DocumentNumber_One",
+            "trainNumber": "Z1234",
+            "coachNumber": 5,
+            "seatClass": 3,
+            "seatNumber": "1308341579",
+            "from": "Shang Hai",
+            "to": "Nan Jing",
+            "status": 7,
+            "price": "122.49999999999999"
+        },
+        {
+            "id": "6a920603-4717-49c9-a140-5fd8206f37f6",
+            "boughtDate": 1709113295801,
+            "travelDate": 1709078400000,
+            "travelTime": 1367632312000,
+            "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+            "contactsName": "Contacts_One",
+            "documentType": 1,
+            "contactsDocumentNumber": "DocumentNumber_One",
+            "trainNumber": "Z1234",
+            "coachNumber": 5,
+            "seatClass": 3,
+            "seatNumber": "1405692738",
+            "from": "Shang Hai",
+            "to": "Nan Jing",
+            "status": 7,
+            "price": "122.49999999999999"
+        },
+        {
+            "id": "1f8d6a31-0cb9-4b11-820e-b82c719bf38f",
+            "boughtDate": 1709113337159,
+            "travelDate": 1709078400000,
+            "travelTime": 1367632312000,
+            "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+            "contactsName": "Contacts_One",
+            "documentType": 1,
+            "contactsDocumentNumber": "DocumentNumber_One",
+            "trainNumber": "Z1234",
+            "coachNumber": 5,
+            "seatClass": 2,
+            "seatNumber": "509383652",
+            "from": "Shang Hai",
+            "to": "Nan Jing",
+            "status": 7,
+            "price": "350.0"
+        },
+        {
+            "id": "fbd9783c-fb8b-4770-946c-e5eb0fe55218",
+            "boughtDate": 1709113349590,
+            "travelDate": 1709078400000,
+            "travelTime": 1367632312000,
+            "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+            "contactsName": "Contacts_One",
+            "documentType": 1,
+            "contactsDocumentNumber": "DocumentNumber_One",
+            "trainNumber": "Z1234",
+            "coachNumber": 5,
+            "seatClass": 3,
+            "seatNumber": "1721264928",
+            "from": "Shang Hai",
+            "to": "Nan Jing",
+            "status": 7,
+            "price": "122.49999999999999"
+        },
+        {
+            "id": "ae53c239-c3d5-41b1-a82e-7ffae3bc1585",
+            "boughtDate": 1709113389341,
+            "travelDate": 1709078400000,
+            "travelTime": 1367632312000,
+            "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+            "contactsName": "Contacts_One",
+            "documentType": 1,
+            "contactsDocumentNumber": "DocumentNumber_One",
+            "trainNumber": "Z1234",
+            "coachNumber": 5,
+            "seatClass": 3,
+            "seatNumber": "1058180904",
+            "from": "Shang Hai",
+            "to": "Nan Jing",
+            "status": 7,
+            "price": "122.49999999999999"
+        },
+        {
+            "id": "4b40d47c-7b14-491c-9cdd-1783c0ef0401",
+            "boughtDate": 1709113401870,
+            "travelDate": 1709078400000,
+            "travelTime": 1367632312000,
+            "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+            "contactsName": "Contacts_Two",
+            "documentType": 1,
+            "contactsDocumentNumber": "DocumentNumber_Two",
+            "trainNumber": "Z1234",
+            "coachNumber": 5,
+            "seatClass": 2,
+            "seatNumber": "434152560",
+            "from": "Shang Hai",
+            "to": "Nan Jing",
+            "status": 0,
+            "price": "350.0"
+        }
+    ]
+}
+
+==== packet 7 ====
+Type: request
+Req_Type: GET
+URL: /api/v1/cancelservice/cancel/4b40d47c-7b14-491c-9cdd-1783c0ef0401/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f
+Time: 1709113617435234
+Body: {}
+
+==== packet 8 ====
+Type: request
+Req_Type: GET
+URL: /api/v1/orderservice/order/4b40d47c-7b14-491c-9cdd-1783c0ef0401
+Time: 1709113617457552
+Body: {}
+
+==== packet 9 ====
+Type: response
+Req_Type: None
+URL: 200
+Time: 1709113617469534
+Body: {
+    "status": 0,
+    "msg": "Order Not Found",
+    "data": null
+}
+
+==== packet 10 ====
+Type: request
+Req_Type: GET
+URL: /api/v1/orderOtherService/orderOther/4b40d47c-7b14-491c-9cdd-1783c0ef0401
+Time: 1709113617492504
+Body: {}
+
+==== packet 11 ====
+Type: request
+Req_Type: GET
+URL: /api/v1/orderOtherService/orderOther/4b40d47c-7b14-491c-9cdd-1783c0ef0401
+Time: 1709113617492515
+Body: {}
+
+==== packet 12 ====
+Type: response
+Req_Type: None
+URL: 200
+Time: 1709113617506675
+Body: {
+    "status": 1,
+    "msg": "Success",
+    "data": {
+        "id": "4b40d47c-7b14-491c-9cdd-1783c0ef0401",
+        "boughtDate": 1709113401870,
+        "travelDate": 1709078400000,
+        "travelTime": 1367632312000,
+        "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+        "contactsName": "Contacts_Two",
+        "documentType": 1,
+        "contactsDocumentNumber": "DocumentNumber_Two",
+        "trainNumber": "Z1234",
+        "coachNumber": 5,
+        "seatClass": 2,
+        "seatNumber": "434152560",
+        "from": "shanghai",
+        "to": "nanjing",
+        "status": 0,
+        "price": "350.0"
+    }
+}
+
+==== packet 13 ====
+Type: response
+Req_Type: None
+URL: 200
+Time: 1709113617506756
+Body: {
+    "status": 1,
+    "msg": "Success",
+    "data": {
+        "id": "4b40d47c-7b14-491c-9cdd-1783c0ef0401",
+        "boughtDate": 1709113401870,
+        "travelDate": 1709078400000,
+        "travelTime": 1367632312000,
+        "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+        "contactsName": "Contacts_Two",
+        "documentType": 1,
+        "contactsDocumentNumber": "DocumentNumber_Two",
+        "trainNumber": "Z1234",
+        "coachNumber": 5,
+        "seatClass": 2,
+        "seatNumber": "434152560",
+        "from": "shanghai",
+        "to": "nanjing",
+        "status": 0,
+        "price": "350.0"
+    }
+}
+
+==== packet 14 ====
+Type: request
+Req_Type: PUT
+URL: /api/v1/orderOtherService/orderOther
+Time: 1709113617516412
+Body: {
+    "id": "4b40d47c-7b14-491c-9cdd-1783c0ef0401",
+    "boughtDate": 1709113401870,
+    "travelDate": 1709078400000,
+    "travelTime": 1367632312000,
+    "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+    "contactsName": "Contacts_Two",
+    "documentType": 1,
+    "contactsDocumentNumber": "DocumentNumber_Two",
+    "trainNumber": "Z1234",
+    "coachNumber": 5,
+    "seatClass": 2,
+    "seatNumber": "434152560",
+    "from": "shanghai",
+    "to": "nanjing",
+    "status": 4,
+    "price": "350.0"
+}
+
+==== packet 15 ====
+Type: request
+Req_Type: PUT
+URL: /api/v1/orderOtherService/orderOther
+Time: 1709113617516452
+Body: {
+    "id": "4b40d47c-7b14-491c-9cdd-1783c0ef0401",
+    "boughtDate": 1709113401870,
+    "travelDate": 1709078400000,
+    "travelTime": 1367632312000,
+    "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+    "contactsName": "Contacts_Two",
+    "documentType": 1,
+    "contactsDocumentNumber": "DocumentNumber_Two",
+    "trainNumber": "Z1234",
+    "coachNumber": 5,
+    "seatClass": 2,
+    "seatNumber": "434152560",
+    "from": "shanghai",
+    "to": "nanjing",
+    "status": 4,
+    "price": "350.0"
+}
+
+==== packet 16 ====
+Type: response
+Req_Type: None
+URL: 200
+Time: 1709113617538670
+Body: {
+    "status": 1,
+    "msg": "Success",
+    "data": {
+        "id": "4b40d47c-7b14-491c-9cdd-1783c0ef0401",
+        "boughtDate": 1709113401870,
+        "travelDate": 1709078400000,
+        "travelTime": 1367632312000,
+        "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+        "contactsName": "Contacts_Two",
+        "documentType": 1,
+        "contactsDocumentNumber": "DocumentNumber_Two",
+        "trainNumber": "Z1234",
+        "coachNumber": 5,
+        "seatClass": 2,
+        "seatNumber": "434152560",
+        "from": "shanghai",
+        "to": "nanjing",
+        "status": 4,
+        "price": "350.0"
+    }
+}
+
+==== packet 17 ====
+Type: response
+Req_Type: None
+URL: 200
+Time: 1709113617538698
+Body: {
+    "status": 1,
+    "msg": "Success",
+    "data": {
+        "id": "4b40d47c-7b14-491c-9cdd-1783c0ef0401",
+        "boughtDate": 1709113401870,
+        "travelDate": 1709078400000,
+        "travelTime": 1367632312000,
+        "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+        "contactsName": "Contacts_Two",
+        "documentType": 1,
+        "contactsDocumentNumber": "DocumentNumber_Two",
+        "trainNumber": "Z1234",
+        "coachNumber": 5,
+        "seatClass": 2,
+        "seatNumber": "434152560",
+        "from": "shanghai",
+        "to": "nanjing",
+        "status": 4,
+        "price": "350.0"
+    }
+}
+
+==== packet 18 ====
+Type: request
+Req_Type: GET
+URL: /api/v1/orderOtherService/orderOther/4b40d47c-7b14-491c-9cdd-1783c0ef0401
+Time: 1709113622515179
+Body: {}
+
+==== packet 19 ====
+Type: request
+Req_Type: GET
+URL: /api/v1/orderOtherService/orderOther/4b40d47c-7b14-491c-9cdd-1783c0ef0401
+Time: 1709113622515199
+Body: {}
+
+==== packet 20 ====
+Type: response
+Req_Type: None
+URL: 200
+Time: 1709113622525294
+Body: {
+    "status": 1,
+    "msg": "Success",
+    "data": {
+        "id": "4b40d47c-7b14-491c-9cdd-1783c0ef0401",
+        "boughtDate": 1709113401870,
+        "travelDate": 1709078400000,
+        "travelTime": 1367632312000,
+        "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+        "contactsName": "Contacts_Two",
+        "documentType": 1,
+        "contactsDocumentNumber": "DocumentNumber_Two",
+        "trainNumber": "Z1234",
+        "coachNumber": 5,
+        "seatClass": 2,
+        "seatNumber": "434152560",
+        "from": "shanghai",
+        "to": "nanjing",
+        "status": 4,
+        "price": "350.0"
+    }
+}
+
+==== packet 21 ====
+Type: response
+Req_Type: None
+URL: 200
+Time: 1709113622525320
+Body: {
+    "status": 1,
+    "msg": "Success",
+    "data": {
+        "id": "4b40d47c-7b14-491c-9cdd-1783c0ef0401",
+        "boughtDate": 1709113401870,
+        "travelDate": 1709078400000,
+        "travelTime": 1367632312000,
+        "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+        "contactsName": "Contacts_Two",
+        "documentType": 1,
+        "contactsDocumentNumber": "DocumentNumber_Two",
+        "trainNumber": "Z1234",
+        "coachNumber": 5,
+        "seatClass": 2,
+        "seatNumber": "434152560",
+        "from": "shanghai",
+        "to": "nanjing",
+        "status": 4,
+        "price": "350.0"
+    }
+}
+
+==== packet 22 ====
+Type: request
+Req_Type: PUT
+URL: /api/v1/orderOtherService/orderOther
+Time: 1709113622532615
+Body: {
+    "id": "4b40d47c-7b14-491c-9cdd-1783c0ef0401",
+    "boughtDate": 1709113401870,
+    "travelDate": 1709078400000,
+    "travelTime": 1367632312000,
+    "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+    "contactsName": "Contacts_Two",
+    "documentType": 1,
+    "contactsDocumentNumber": "DocumentNumber_Two",
+    "trainNumber": "Z1234",
+    "coachNumber": 5,
+    "seatClass": 2,
+    "seatNumber": "434152560",
+    "from": "shanghai",
+    "to": "nanjing",
+    "status": 7,
+    "price": "350.0"
+}
+
+==== packet 23 ====
+Type: request
+Req_Type: PUT
+URL: /api/v1/orderOtherService/orderOther
+Time: 1709113622532641
+Body: {
+    "id": "4b40d47c-7b14-491c-9cdd-1783c0ef0401",
+    "boughtDate": 1709113401870,
+    "travelDate": 1709078400000,
+    "travelTime": 1367632312000,
+    "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+    "contactsName": "Contacts_Two",
+    "documentType": 1,
+    "contactsDocumentNumber": "DocumentNumber_Two",
+    "trainNumber": "Z1234",
+    "coachNumber": 5,
+    "seatClass": 2,
+    "seatNumber": "434152560",
+    "from": "shanghai",
+    "to": "nanjing",
+    "status": 7,
+    "price": "350.0"
+}
+
+==== packet 24 ====
+Type: response
+Req_Type: None
+URL: 200
+Time: 1709113622550838
+Body: {
+    "status": 1,
+    "msg": "Success",
+    "data": {
+        "id": "4b40d47c-7b14-491c-9cdd-1783c0ef0401",
+        "boughtDate": 1709113401870,
+        "travelDate": 1709078400000,
+        "travelTime": 1367632312000,
+        "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+        "contactsName": "Contacts_Two",
+        "documentType": 1,
+        "contactsDocumentNumber": "DocumentNumber_Two",
+        "trainNumber": "Z1234",
+        "coachNumber": 5,
+        "seatClass": 2,
+        "seatNumber": "434152560",
+        "from": "shanghai",
+        "to": "nanjing",
+        "status": 7,
+        "price": "350.0"
+    }
+}
+
+==== packet 25 ====
+Type: response
+Req_Type: None
+URL: 200
+Time: 1709113622550880
+Body: {
+    "status": 1,
+    "msg": "Success",
+    "data": {
+        "id": "4b40d47c-7b14-491c-9cdd-1783c0ef0401",
+        "boughtDate": 1709113401870,
+        "travelDate": 1709078400000,
+        "travelTime": 1367632312000,
+        "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+        "contactsName": "Contacts_Two",
+        "documentType": 1,
+        "contactsDocumentNumber": "DocumentNumber_Two",
+        "trainNumber": "Z1234",
+        "coachNumber": 5,
+        "seatClass": 2,
+        "seatNumber": "434152560",
+        "from": "shanghai",
+        "to": "nanjing",
+        "status": 7,
+        "price": "350.0"
+    }
+}
+
+==== packet 26 ====
+Type: request
+Req_Type: GET
+URL: /api/v1/inside_pay_service/inside_payment/drawback/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f/0.00
+Time: 1709113622571115
+Body: {}
+
+==== packet 27 ====
+Type: request
+Req_Type: GET
+URL: /api/v1/inside_pay_service/inside_payment/drawback/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f/0.00
+Time: 1709113622571133
+Body: {}
+
+==== packet 28 ====
+Type: response
+Req_Type: None
+URL: 200
+Time: 1709113622621223
+Body: {
+    "status": 1,
+    "msg": "Draw Back Money Success",
+    "data": null
+}
+
+==== packet 29 ====
+Type: response
+Req_Type: None
+URL: 200
+Time: 1709113622621467
+Body: {
+    "status": 1,
+    "msg": "Draw Back Money Success",
+    "data": null
+}
+
+==== packet 30 ====
+Type: request
+Req_Type: GET
+URL: /api/v1/orderOtherService/orderOther/4b40d47c-7b14-491c-9cdd-1783c0ef0401
+Time: 1709113622632209
+Body: {}
+
+==== packet 31 ====
+Type: request
+Req_Type: GET
+URL: /api/v1/orderOtherService/orderOther/4b40d47c-7b14-491c-9cdd-1783c0ef0401
+Time: 1709113622632298
+Body: {}
+
+==== packet 32 ====
+Type: response
+Req_Type: None
+URL: 200
+Time: 1709113622643774
+Body: {
+    "status": 1,
+    "msg": "Success",
+    "data": {
+        "id": "4b40d47c-7b14-491c-9cdd-1783c0ef0401",
+        "boughtDate": 1709113401870,
+        "travelDate": 1709078400000,
+        "travelTime": 1367632312000,
+        "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+        "contactsName": "Contacts_Two",
+        "documentType": 1,
+        "contactsDocumentNumber": "DocumentNumber_Two",
+        "trainNumber": "Z1234",
+        "coachNumber": 5,
+        "seatClass": 2,
+        "seatNumber": "434152560",
+        "from": "shanghai",
+        "to": "nanjing",
+        "status": 7,
+        "price": "350.0"
+    }
+}
+
+==== packet 33 ====
+Type: response
+Req_Type: None
+URL: 200
+Time: 1709113622643800
+Body: {
+    "status": 1,
+    "msg": "Success",
+    "data": {
+        "id": "4b40d47c-7b14-491c-9cdd-1783c0ef0401",
+        "boughtDate": 1709113401870,
+        "travelDate": 1709078400000,
+        "travelTime": 1367632312000,
+        "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+        "contactsName": "Contacts_Two",
+        "documentType": 1,
+        "contactsDocumentNumber": "DocumentNumber_Two",
+        "trainNumber": "Z1234",
+        "coachNumber": 5,
+        "seatClass": 2,
+        "seatNumber": "434152560",
+        "from": "shanghai",
+        "to": "nanjing",
+        "status": 7,
+        "price": "350.0"
+    }
+}
+
+==== packet 34 ====
+Type: response
+Req_Type: None
+URL: 200
+Time: 1709113622648702
+Body: {
+    "status": 0,
+    "msg": "Fail.Reason:Success",
+    "data": null
+}
+

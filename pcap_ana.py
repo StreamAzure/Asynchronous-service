@@ -15,12 +15,11 @@ class HTTPPacket:
         self.ack = packet[TCP].ack  # 序列号
         self.seq = packet[TCP].seq  # 确认号
         self.time = int(packet.time * 1000000)
-        self.data_keys = self.get_packet_data_keys()
         self.request_line = request_line
         self.url = request_line.split(b' ')[1].decode()
 
     def __str__(self):
-        return f'Type: {self.type}\nReq_Type: {self.req_type}\nURL: {self.url}\nTime: {self.time}\nData Keys: {self.data_keys}\nBody: {json.dumps(self.data, indent=4, ensure_ascii=False)}\n'
+        return f'Type: {self.type}\nReq_Type: {self.req_type}\nURL: {self.url}\nTime: {self.time}\nBody: {json.dumps(self.data, indent=4, ensure_ascii=False)}'
 
     def __repr__(self):
         return f'HTTPPacket(packet={self.packet}, header={self.header}, type={self.type}, data={self.data}, request_line={self.request_line})'
@@ -171,6 +170,12 @@ if __name__ == '__main__':
         print(f"正在加载 {file}……")
         HTTPPackets += load_HTTPpackets_from_pcap(file)
 
-    for http_packet in HTTPPackets:
-        # 打印全部信息
-        print(http_packet)
+
+    HTTPPackets.sort(key=lambda packet: packet.time)
+    cnt = 0
+    with open('pcap_output.txt', 'w') as f:
+        for http_packet in HTTPPackets:
+            # 打印全部信息
+            cnt += 1
+            f.write(f"==== packet {cnt} ====\n")
+            f.write(str(http_packet)+"\n\n")
