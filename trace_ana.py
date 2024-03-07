@@ -92,13 +92,16 @@ def parse_trace_file(file_path):
 
 
 class Span:
-    def __init__(self, span, service_name):
+    def __init__(self, span, service):
         self.traceID = span["traceID"]
         self.spanID = span["spanID"]
         self.operationName = span["operationName"]
+        self.references = span["references"]
         self.tags = span["tags"]
         self.logs = span["logs"]
-        self.service = service_name
+        self.service = service # 字典，包含service_name和ip
+        self.http_info = self.get_http_info()
+
     
     def get_tag_keys(self) -> list:
         """
@@ -116,10 +119,19 @@ class Span:
                 keys.append(field['key'])
         return keys
 
-    def get_http_info(self):
+    def get_http_info(self) -> dict:
         """
         获取 http 请求url、状态码、method
         """
+        res = {}
+        for tag in self.tags:
+            if tag['key'] == "http.url":
+                res['url'] = tag['value']
+            if tag['key'] == "http.status_code":
+                res['status_code'] = tag['value']
+            if tag['key'] == "http.method":
+                res["method"] = tag['value']
+        return res
         
         
 
@@ -130,24 +142,32 @@ def load_spans_from_file(file_path):
     """
     with open(file_path, 'r') as file:
         trace_data = json.load(file)
+
+    service_infos = load_service_info_from_file(file_path)
+
     data = trace_data["data"]
     spans = []
     for span in data[0]["spans"]:
-        spans.append(Span(span))
+        service = service_infos[span["processID"]]
+        spans.append(Span(span, service))
     return spans
 
 def load_service_info_from_file(file_path):
     """
     从 trace 文件中加载 service 信息
     每个 service 都由唯一的 process ID 对应
-    返回列表：[{processID: {serviceName, ip}}{}{}]
+    返回字典：{
+        processID1: {serviceName, ip},
+        processID2: {serviceName, ip},
+        ...
+        }
     """
     with open(file_path, 'r') as file:
         trace_data = json.load(file)
     processes = trace_data["data"][0]["processes"]
     p_names = processes.keys()
 
-    service_infos = []
+    service_infos = {}
     for p in p_names:
         service_info = {}
         service_info['serviceName'] = processes[p]["serviceName"]
@@ -155,7 +175,7 @@ def load_service_info_from_file(file_path):
             if tag['key'] == 'ip':
                 service_info['ip'] = tag['value']
                 break
-        service_infos.append({p: service_info})
+        service_infos[p] = service_info
 
     return service_infos
 
@@ -165,19 +185,18 @@ if __name__ == '__main__':
     for i in range(len(all_trace_files)):
         all_trace_files[i] = os.path.join('TrainTicket-F1-trace', all_trace_files[i])
 
-    # spans = []
-    # for file in all_trace_files:
-    #     # 只处理.json结尾的文件
-    #     if file.endswith('.json'):
-    #         spans += load_spans_from_file(file)
+    spans = []
+    for file in all_trace_files:
+        # 只处理.json结尾的文件
+        if file.endswith('.json'):
+            spans += load_spans_from_file(file)
 
     # ---------------------------------------------
     
 
-    # for span in spans:
-    #     print(span.get_tag_keys())
-    #     print(span.get_log_keys())
-    #     print()
+    for span in spans:
+        print(span.get_http_info())
+        print()
 
     # parse_trace_file('TrainTicket-F1-trace/ts-cancel-service cancelTicket 963b968.json')
     
