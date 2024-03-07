@@ -1,23 +1,6 @@
 from itertools import groupby
 import json
-import os
-
-class Span:
-    def __init__(self, spanID, operationName, tags, startTIme=None, duration=None):
-        self.spanID = spanID
-        self.operationName = operationName
-        self.startTime = startTIme
-        self.duration = duration
-        self.tags = tags
-
-def get_all_files(directory):
-    """
-    递归遍历指定目录，并返回所有文件名
-    使用：all_files = list(get_all_files(dir))
-    """
-    for root, dirs, files in os.walk(directory):
-        for file in files:
-            yield os.path.relpath(os.path.join(root, file), directory)
+from file_helper import *
 
 def dfs_traversal(span, visited_spans, level, span_levels):
     span_id = span["spanID"]
@@ -107,34 +90,74 @@ def parse_trace_file(file_path):
             for tag in span["spanInfo"]["tags"]:
                 print(f'{indentation}{tag["key"]:<20} {tag["value"]:<20}')
 
-# 遍历 trace 文件中所有的 span，并打印每个 span 的 tag 信息
-def print_span_tags(file_path):
-    # 读取trae数据
-    with open(file_path, 'r') as file:
-        trace_data = json.load(file)
-    for item in trace_data["data"]:
-        for span in item["spans"]:
-            print("==================================================")
-            print(f'spanID:{span["spanID"]:<16} operationName:{span["operationName"]:<50}')
-            for tag in span["tags"]:
-                print(f'    {tag["key"]:<20} {tag["value"]:<20}')
 
-def get_span_tags(file_path):
+class Span:
+    def __init__(self, span, service_name):
+        self.traceID = span["traceID"]
+        self.spanID = span["spanID"]
+        self.operationName = span["operationName"]
+        self.tags = span["tags"]
+        self.logs = span["logs"]
+        self.service = service_name
+    
+    def get_tag_keys(self) -> list:
+        """
+        获取 tag 字段中所有 key 的列表
+        """ 
+        return [tag["key"] for tag in self.tags]
+    
+    def get_log_keys(self) -> list:
+        """
+        获取 log 字段中所有 key 的列表
+        """
+        keys = []
+        for log in self.logs:
+            for field in log['fields']:
+                keys.append(field['key'])
+        return keys
+
+    def get_http_info(self):
+        """
+        获取 http 请求url、状态码、method
+        """
+        
+        
+
+def load_spans_from_file(file_path):
     """
-    遍历 trace 文件中所有的 span，并保存每个 span 的 tag 信息，写入为 Span 对象
+    从 trace 文件中加载所有span
     return : span 对象列表
     """
     with open(file_path, 'r') as file:
         trace_data = json.load(file)
+    data = trace_data["data"]
     spans = []
-    for item in trace_data["data"]:
-        for span in item["spans"]:
-            spanID = span["spanID"]
-            operationName = span["operationName"]
-            tags = span["tags"]
-            new_span = Span(spanID, operationName, tags)
-            spans.append(new_span)
+    for span in data[0]["spans"]:
+        spans.append(Span(span))
     return spans
+
+def load_service_info_from_file(file_path):
+    """
+    从 trace 文件中加载 service 信息
+    每个 service 都由唯一的 process ID 对应
+    返回列表：[{processID: {serviceName, ip}}{}{}]
+    """
+    with open(file_path, 'r') as file:
+        trace_data = json.load(file)
+    processes = trace_data["data"][0]["processes"]
+    p_names = processes.keys()
+
+    service_infos = []
+    for p in p_names:
+        service_info = {}
+        service_info['serviceName'] = processes[p]["serviceName"]
+        for tag in processes[p]["tags"]:
+            if tag['key'] == 'ip':
+                service_info['ip'] = tag['value']
+                break
+        service_infos.append({p: service_info})
+
+    return service_infos
 
 if __name__ == '__main__':
     file_path = 'TrainTicket-F1-trace/ts-cancel-service cancelTicket 963b968.json'
@@ -142,13 +165,20 @@ if __name__ == '__main__':
     for i in range(len(all_trace_files)):
         all_trace_files[i] = os.path.join('TrainTicket-F1-trace', all_trace_files[i])
 
-    spans = []
-    for file in all_trace_files:
-        # 只处理.json结尾的文件
-        if file.endswith('.json'):
-            print_span_tags(file)
-            spans += get_span_tags(file)
-    print(len(spans))
+    # spans = []
+    # for file in all_trace_files:
+    #     # 只处理.json结尾的文件
+    #     if file.endswith('.json'):
+    #         spans += load_spans_from_file(file)
+
+    # ---------------------------------------------
+    
+
+    # for span in spans:
+    #     print(span.get_tag_keys())
+    #     print(span.get_log_keys())
+    #     print()
+
     # parse_trace_file('TrainTicket-F1-trace/ts-cancel-service cancelTicket 963b968.json')
     
         

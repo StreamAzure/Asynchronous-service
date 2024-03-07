@@ -1,11 +1,9 @@
-import os
 from scapy.all import *
-from scapy.layers.http import HTTPRequest
-from scapy.layers.http import HTTP
 from scapy.packet import Raw
-from scapy.layers.inet import IP, TCP
+from scapy.layers.inet import TCP
 import http.client
 import json
+from file_helper import *
 
 class HTTPPair:
     def __init__(self, request, response):
@@ -22,39 +20,33 @@ class HTTPPacket:
     def __init__(self, packet, header, type, data=None, request_line=None):
         self.packet = packet  # 原始报文
         self.type = type  # 报文类型，请求或响应
+        self.req_type = request_line.split(b' ')[0].decode() if self.type == 'request' else None # 请求方法
         self.data = data  # Body携带的请求数据，json对象
         self.header = header  # 首部
         self.ack = packet[TCP].ack  # 序列号
         self.seq = packet[TCP].seq  # 确认号
         self.time = int(packet.time * 1000000)
-        self.data_keys = get_packet_data_keys(data)
+        self.data_keys = self.get_packet_data_keys()
         self.request_line = request_line
         self.url = request_line.split(b' ')[1].decode()
 
     def __str__(self):
-        return f'Type: {self.type}\nTime: {self.time}\nData Keys: {self.data_keys}\nURL: {self.url}\nBody: {json.dumps(self.data, indent=4, ensure_ascii=False)}\n'
+        return f'Type: {self.type}\nReq_Type: {self.req_type}\nURL: {self.url}\nTime: {self.time}\nData Keys: {self.data_keys}\nBody: {json.dumps(self.data, indent=4, ensure_ascii=False)}\n'
 
     def __repr__(self):
         return f'HTTPPacket(packet={self.packet}, header={self.header}, type={self.type}, data={self.data}, request_line={self.request_line})'
 
-def get_packet_data_keys(data) -> set:
-    """
-    获取报文中所有的数据字段名称。若字段中还有字段，一并加入
-    """
-    keys = set()
-    for key, value in data.items():
-        keys.add(key)
-        if isinstance(value, dict):
-            keys |= get_packet_data_keys(value)
-    return keys
-
-# 遍历指定目录
-def traverse_directory(path):
-    for root, dirs, files in os.walk(path):
-        for name in files:
-            print(os.path.join(root, name))
-        for name in dirs:
-            print(os.path.join(root, name))
+    def get_packet_data_keys(self) -> set:
+        """
+        获取报文中所有的数据字段名称。若字段中还有字段，一并加入
+        """
+        data = self.data
+        keys = set()
+        for key, value in data.items():
+            keys.add(key)
+            if isinstance(value, dict):
+                keys |= self.get_packet_data_keys()
+        return keys
 
 def pair_http_packets(pcap_file):
     """
@@ -202,9 +194,9 @@ def calculate_overlap_rate(packet1, packet2):
     json2 = packet2.data
     keys1 = set(json1.keys())
     keys2 = set(json2.keys())
-    if(len(keys1 | keys2) == 0):
+    if(len(keys1) == 0 or len(keys2) == 0 or len(keys1 | keys2) == 0):
         return 0
-    overlap_rate = len(keys1 & keys2) / len(keys1 | keys2)
+    overlap_rate = len(keys1 & keys2) / len(keys1) if len(keys1) > len(keys2) else len(keys1 & keys2) / len(keys2)
     return overlap_rate
 
 def main(file_path):
@@ -228,7 +220,10 @@ def main(file_path):
     overlap_rates.sort(key=lambda x: x[2], reverse=True)
 
     for item in overlap_rates:
-        print(item)
+        print(f'Packet 1 Data Keys: {item[0]}')
+        print(f'Packet 2 Data Keys: {item[1]}')
+        print(f'Overlap Rate: {item[2]}')
+        print('\n')
 
     # print(f'最大重合率：{max_overlap}')
     # print(f'最大重合率对应的请求报文：')

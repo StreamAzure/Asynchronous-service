@@ -1,9 +1,8 @@
 from pcap_ana import *
 from trace_ana import *
 
-def parse_pcap():
+def parse_pcap(pcap_file_path:string):
     # 读取并解析 pcap 文件
-    pcap_file_path = './TrainTicket-F1-pcap/cancel.pcap'
     packets = get_HTTPpackets_from_pcap(pcap_file_path) # 获取所有的报文，已经被封装为自定义的HTTPPacket对象
 
     for http_packet in packets:
@@ -34,8 +33,9 @@ def parse_trace():
             if tag["key"] == "http.url":
                 # print(tag["value"])
                 pass
-            print(f'    {tag["key"]:<20} {tag["value"]:<20}')
+            # print(f'    {tag["key"]:<20} {tag["value"]:<20}')
 
 if __name__ == '__main__':
     parse_pcap()
-    # parse_trace()
+    # pcap_file_path = './TrainTicket-F1-pcap/cancel.pcap'
+    # main(pcap_file_path)
