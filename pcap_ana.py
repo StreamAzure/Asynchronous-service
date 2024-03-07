@@ -1,6 +1,6 @@
 from scapy.all import *
 from scapy.packet import Raw
-from scapy.layers.inet import TCP
+from scapy.layers.inet import TCP, IP
 import http.client
 import json
 from file_helper import *
@@ -160,6 +160,24 @@ def calculate_overlap_rate(packet1, packet2):
     overlap_rate = len(keys1 & keys2) / len(keys1) if len(keys1) > len(keys2) else len(keys1 & keys2) / len(keys2)
     return overlap_rate
 
+def deduplicate_packets(packets):
+    unique_packets = []
+    for packet in packets:
+        if packet.type == 'request':
+            # Check if the packet already exists in unique_packets
+            if any(p.type == 'request' 
+                   and p.req_type == packet.req_type 
+                   and p.url == packet.url 
+                   and abs(p.time - packet.time) <= 100 for p in unique_packets):
+                continue
+        elif packet.type == 'response':
+            # Check if the corresponding request packet already exists in unique_packets
+            request_packet = get_request_packet(unique_packets, packet)
+            if request_packet and abs(request_packet.time - packet.time) <= 100:
+                continue
+        unique_packets.append(packet)
+    return unique_packets
+
 if __name__ == '__main__':
     pcap_files = list(get_all_files('TrainTicket-F1-pcap'))
     for i in range(len(pcap_files)):
@@ -172,10 +190,20 @@ if __name__ == '__main__':
 
 
     HTTPPackets.sort(key=lambda packet: packet.time)
+    print(len(HTTPPackets))
+    unique_packets = deduplicate_packets(HTTPPackets)
+    print(len(unique_packets))
+    # cnt = 0
+    # with open('pcap_output.txt', 'w') as f:
+    #     for http_packet in HTTPPackets:
+    #         # 打印全部信息
+    #         cnt += 1
+    #         f.write(f"==== packet {cnt} ====\n")
+    #         f.write(str(http_packet)+"\n\n")
+
     cnt = 0
-    with open('pcap_output.txt', 'w') as f:
-        for http_packet in HTTPPackets:
-            # 打印全部信息
+    with open('pcap_unique_output.txt', 'w') as f:
+        for unique_packet in unique_packets:
             cnt += 1
             f.write(f"==== packet {cnt} ====\n")
-            f.write(str(http_packet)+"\n\n")
+            f.write(str(unique_packet)+"\n\n")
