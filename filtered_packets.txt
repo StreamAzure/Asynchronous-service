@@ -1,0 +1,96 @@
+Type: request
+Req_Type: GET
+URL: /api/v1/inside_pay_service/inside_payment/drawback/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f/0.00
+Time: 1709113622571133
+Body: {}
+
+Type: request
+Req_Type: GET
+URL: /api/v1/cancelservice/cancel/4b40d47c-7b14-491c-9cdd-1783c0ef0401/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f
+Time: 1709113617435234
+Body: {}
+
+Type: request
+Req_Type: GET
+URL: /api/v1/orderservice/order/4b40d47c-7b14-491c-9cdd-1783c0ef0401
+Time: 1709113617457552
+Body: {}
+
+Type: request
+Req_Type: GET
+URL: /api/v1/orderOtherService/orderOther/4b40d47c-7b14-491c-9cdd-1783c0ef0401
+Time: 1709113617492504
+Body: {}
+
+Type: request
+Req_Type: PUT
+URL: /api/v1/orderOtherService/orderOther
+Time: 1709113617516412
+Body: {
+    "id": "4b40d47c-7b14-491c-9cdd-1783c0ef0401",
+    "boughtDate": 1709113401870,
+    "travelDate": 1709078400000,
+    "travelTime": 1367632312000,
+    "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+    "contactsName": "Contacts_Two",
+    "documentType": 1,
+    "contactsDocumentNumber": "DocumentNumber_Two",
+    "trainNumber": "Z1234",
+    "coachNumber": 5,
+    "seatClass": 2,
+    "seatNumber": "434152560",
+    "from": "shanghai",
+    "to": "nanjing",
+    "status": 4,
+    "price": "350.0"
+}
+
+Type: request
+Req_Type: GET
+URL: /api/v1/orderOtherService/orderOther/4b40d47c-7b14-491c-9cdd-1783c0ef0401
+Time: 1709113622515179
+Body: {}
+
+Type: request
+Req_Type: PUT
+URL: /api/v1/orderOtherService/orderOther
+Time: 1709113622532615
+Body: {
+    "id": "4b40d47c-7b14-491c-9cdd-1783c0ef0401",
+    "boughtDate": 1709113401870,
+    "travelDate": 1709078400000,
+    "travelTime": 1367632312000,
+    "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+    "contactsName": "Contacts_Two",
+    "documentType": 1,
+    "contactsDocumentNumber": "DocumentNumber_Two",
+    "trainNumber": "Z1234",
+    "coachNumber": 5,
+    "seatClass": 2,
+    "seatNumber": "434152560",
+    "from": "shanghai",
+    "to": "nanjing",
+    "status": 7,
+    "price": "350.0"
+}
+
+Type: request
+Req_Type: GET
+URL: /api/v1/orderOtherService/orderOther/4b40d47c-7b14-491c-9cdd-1783c0ef0401
+Time: 1709113622632209
+Body: {}
+
+Type: request
+Req_Type: GET
+URL: /api/v1/orderOtherService/orderOther/security/Wed%20Feb%2028%2017:46:55%20CST%202024/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f
+Time: 1709113615919120
+Body: {}
+
+Type: request
+Req_Type: POST
+URL: /api/v1/orderOtherService/orderOther/refresh
+Time: 1709113617382137
+Body: {
+    "loginId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f"
+}
+
