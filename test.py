@@ -15,6 +15,8 @@ if __name__ == '__main__':
     # 报文去重
     http_packets = deduplicate_packets(http_packets)
 
+    print(f"http_packets 共有 {len(http_packets)} 个报文\n")
+
     # 2. 解析 trace
     all_trace_files = list(get_all_files('TrainTicket-F1-trace'))
     for i in range(len(all_trace_files)):
@@ -89,3 +91,24 @@ if __name__ == '__main__':
     with open('filtered_packets.txt', 'w') as f:
         for packet in packets_contain_id:
             f.write(str(packet) + '\n\n')
+
+    # 6. 找出这些请求报文对应的span（要求URL能够部分匹配，且时间戳相近（差值小于500））
+    matched_span_packet = {}
+    for packet in packets_contain_id:
+        found = False
+        for span in spans:
+            timestamp = span.logTimestamp if span.logTimestamp else span.startTime
+            if packet.url in str(span) and abs(packet.time - timestamp) < 10000:
+                matched_span_packet[packet] = span
+                found = True
+                break
+        if not found:
+            print(f"未找到与报文{packet}对应的span\n")
+        
+    print(f"共 {len(matched_span_packet)} 个匹配对\n")
+
+    # 输出到文件
+    with open('matched_span_packet.txt', 'w') as f:
+        for packet in matched_span_packet:
+            f.write(f"报文：{packet}\n对应的span：{matched_span_packet[packet]}\n\n")
+

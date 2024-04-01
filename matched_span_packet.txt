@@ -1,0 +1,220 @@
+报文：Type: request
+Req_Type: GET
+URL: /api/v1/inside_pay_service/inside_payment/drawback/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f/0.00
+Time: 1709113622571133
+Body: {}
+对应的span：{
+  "traceID": "5351c9bfa2e06eda",
+  "spanID": "5351c9bfa2e06eda",
+  "operationName": "GET",
+  "references": [],
+  "startTime": 1709113622567000,
+  "logTimestamp": null,
+  "service": {
+    "serviceName": "ts-cancel-service",
+    "ip": "172.21.0.17"
+  },
+  "http_info": {
+    "component": "java-spring-rest-template",
+    "url": "http://ts-inside-payment-service:18673/api/v1/inside_pay_service/inside_payment/drawback/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f/0.00",
+    "method": "GET",
+    "status_code": 200
+  }
+}
+
+报文：Type: request
+Req_Type: GET
+URL: /api/v1/orderservice/order/4b40d47c-7b14-491c-9cdd-1783c0ef0401
+Time: 1709113617457552
+Body: {}
+对应的span：{
+  "traceID": "963b9680c8425c68",
+  "spanID": "af9e51a9f2a2ec4d",
+  "operationName": "GET",
+  "references": [
+    {
+      "refType": "CHILD_OF",
+      "traceID": "963b9680c8425c68",
+      "spanID": "963b9680c8425c68"
+    }
+  ],
+  "startTime": 1709113617454000,
+  "logTimestamp": null,
+  "service": {
+    "serviceName": "ts-cancel-service",
+    "ip": "172.21.0.17"
+  },
+  "http_info": {
+    "component": "java-spring-rest-template",
+    "url": "http://ts-order-service:12031/api/v1/orderservice/order/4b40d47c-7b14-491c-9cdd-1783c0ef0401",
+    "method": "GET",
+    "status_code": 200
+  }
+}
+
+报文：Type: request
+Req_Type: GET
+URL: /api/v1/orderOtherService/orderOther/4b40d47c-7b14-491c-9cdd-1783c0ef0401
+Time: 1709113617492504
+Body: {}
+对应的span：{
+  "traceID": "963b9680c8425c68",
+  "spanID": "a1bb50094d5fe3b8",
+  "operationName": "getOrderById",
+  "references": [
+    {
+      "refType": "CHILD_OF",
+      "traceID": "963b9680c8425c68",
+      "spanID": "83590860fa258c35"
+    }
+  ],
+  "startTime": 1709113617485558,
+  "logTimestamp": 1709113617492558,
+  "service": {
+    "serviceName": "ts-order-other-service",
+    "ip": "172.21.0.62"
+  },
+  "http_info": {
+    "component": "java-web-servlet",
+    "url": "http://ts-order-other-service:12032/api/v1/orderOtherService/orderOther/4b40d47c-7b14-491c-9cdd-1783c0ef0401",
+    "method": "GET",
+    "status_code": 200
+  }
+}
+
+报文：Type: request
+Req_Type: PUT
+URL: /api/v1/orderOtherService/orderOther
+Time: 1709113617516412
+Body: {
+    "id": "4b40d47c-7b14-491c-9cdd-1783c0ef0401",
+    "boughtDate": 1709113401870,
+    "travelDate": 1709078400000,
+    "travelTime": 1367632312000,
+    "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+    "contactsName": "Contacts_Two",
+    "documentType": 1,
+    "contactsDocumentNumber": "DocumentNumber_Two",
+    "trainNumber": "Z1234",
+    "coachNumber": 5,
+    "seatClass": 2,
+    "seatNumber": "434152560",
+    "from": "shanghai",
+    "to": "nanjing",
+    "status": 4,
+    "price": "350.0"
+}
+对应的span：{
+  "traceID": "2922c7726cedf57",
+  "spanID": "2922c7726cedf57",
+  "operationName": "PUT",
+  "references": [],
+  "startTime": 1709113617513000,
+  "logTimestamp": null,
+  "service": {
+    "serviceName": "ts-cancel-service",
+    "ip": "172.21.0.17"
+  },
+  "http_info": {
+    "component": "java-spring-rest-template",
+    "url": "http://ts-order-other-service:12032/api/v1/orderOtherService/orderOther",
+    "method": "PUT",
+    "status_code": 200
+  }
+}
+
+报文：Type: request
+Req_Type: GET
+URL: /api/v1/orderOtherService/orderOther/4b40d47c-7b14-491c-9cdd-1783c0ef0401
+Time: 1709113622515179
+Body: {}
+对应的span：{
+  "traceID": "44c5eae305245ccc",
+  "spanID": "44c5eae305245ccc",
+  "operationName": "GET",
+  "references": [],
+  "startTime": 1709113622513000,
+  "logTimestamp": null,
+  "service": {
+    "serviceName": "ts-cancel-service",
+    "ip": "172.21.0.17"
+  },
+  "http_info": {
+    "component": "java-spring-rest-template",
+    "url": "http://ts-order-other-service:12032/api/v1/orderOtherService/orderOther/4b40d47c-7b14-491c-9cdd-1783c0ef0401",
+    "method": "GET",
+    "status_code": 200
+  }
+}
+
+报文：Type: request
+Req_Type: PUT
+URL: /api/v1/orderOtherService/orderOther
+Time: 1709113622532615
+Body: {
+    "id": "4b40d47c-7b14-491c-9cdd-1783c0ef0401",
+    "boughtDate": 1709113401870,
+    "travelDate": 1709078400000,
+    "travelTime": 1367632312000,
+    "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+    "contactsName": "Contacts_Two",
+    "documentType": 1,
+    "contactsDocumentNumber": "DocumentNumber_Two",
+    "trainNumber": "Z1234",
+    "coachNumber": 5,
+    "seatClass": 2,
+    "seatNumber": "434152560",
+    "from": "shanghai",
+    "to": "nanjing",
+    "status": 7,
+    "price": "350.0"
+}
+对应的span：{
+  "traceID": "7ed09a8067405ee",
+  "spanID": "7ed09a8067405ee",
+  "operationName": "PUT",
+  "references": [],
+  "startTime": 1709113622531000,
+  "logTimestamp": null,
+  "service": {
+    "serviceName": "ts-cancel-service",
+    "ip": "172.21.0.17"
+  },
+  "http_info": {
+    "component": "java-spring-rest-template",
+    "url": "http://ts-order-other-service:12032/api/v1/orderOtherService/orderOther",
+    "method": "PUT",
+    "status_code": 200
+  }
+}
+
+报文：Type: request
+Req_Type: GET
+URL: /api/v1/orderOtherService/orderOther/4b40d47c-7b14-491c-9cdd-1783c0ef0401
+Time: 1709113622632209
+Body: {}
+对应的span：{
+  "traceID": "963b9680c8425c68",
+  "spanID": "a387a38482210234",
+  "operationName": "getOrderById",
+  "references": [
+    {
+      "refType": "CHILD_OF",
+      "traceID": "963b9680c8425c68",
+      "spanID": "fcc44f572996f2e2"
+    }
+  ],
+  "startTime": 1709113622631129,
+  "logTimestamp": 1709113622634129,
+  "service": {
+    "serviceName": "ts-order-other-service",
+    "ip": "172.21.0.62"
+  },
+  "http_info": {
+    "component": "java-web-servlet",
+    "url": "http://ts-order-other-service:12032/api/v1/orderOtherService/orderOther/4b40d47c-7b14-491c-9cdd-1783c0ef0401",
+    "method": "GET",
+    "status_code": 200
+  }
+}
+
