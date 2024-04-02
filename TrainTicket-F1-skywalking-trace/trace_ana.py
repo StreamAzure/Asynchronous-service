@@ -1,6 +1,7 @@
 import json
 import re
-from file_helper import *
+from utils.file_helper import *
+from utils.sql_parse import *
 
 class Span:
     def __init__(self, span):
@@ -54,7 +55,17 @@ class Span:
         获取 tag 字段中所有 key 的列表
         """ 
         return self.tags.keys()
-        
+
+class Pair:
+    def __init__(self, span, stmt, values, fields=None, other_fields=None):
+        self.span = span # 所属的span
+        self.stmt = stmt
+        self.values = values
+        self.fields = fields
+        self.other_fields = other_fields # 不含问号的token，一般是表名
+    
+    def __str__(self) -> str:
+        return f"stmt: {self.stmt}\nvalues: {self.values}\nfields: {self.fields}"
 
 def load_spans_from_file(file_path):
     """
@@ -70,8 +81,9 @@ def load_spans_from_file(file_path):
         spans.append(Span(span))
     return spans
 
-def get_all_db_statement(spans):
+def get_all_db_statement(spans, params=True):
     """
+    params: 是否获取参数并嵌入到语句, 默认为True
     获取所有数据库操作语句
     """
     db_statements = []
@@ -80,22 +92,38 @@ def get_all_db_statement(spans):
         pattern = r"Mysql/JDBC/PreparedStatement/(.*)"
         match = re.match(pattern, span.endpointName)
         if match:
-            exec_tpye = match.group(1)
             stat = span.tags["db.statement"]
-            params = span.tags["db.sql.parameters"].strip("[]").split(",")
-            print(len(params))
             completed_stat = stat
-            if exec_tpye == "executeQuery":
-                where_clause = stat.split("where ")[1]
-                if len(params) > 0:
-                    for param in params:
-                        completed_stat = completed_stat.replace("?", param, 1)
-            elif exec_tpye == "executeUpdate":
-                if len(params) > 0:
-                    for param in params:
-                        completed_stat = completed_stat.replace("?", param, 1)
+            if params:
+                exec_tpye = match.group(1)
+                params = span.tags["db.sql.parameters"].strip("[]").split(",")
+                if exec_tpye == "executeQuery":
+                    where_clause = stat.split("where ")[1]
+                    if len(params) > 0:
+                        for param in params:
+                            completed_stat = completed_stat.replace("?", param, 1)
+                elif exec_tpye == "executeUpdate":
+                    if len(params) > 0:
+                        for param in params:
+                            completed_stat = completed_stat.replace("?", param, 1)
             db_statements.append(completed_stat)
     return db_statements
+
+def get_stmt_param_pair(span) -> Pair:
+    """
+    获取 span 中的数据库操作语句，及对应的值列表
+    以 Pair 对象进行捆绑，pair.stmt 和 pair.values
+    """
+    # 正则表达式匹配 Mysql/JDBC/PreparedStatement/*
+    pattern = r"Mysql/JDBC/PreparedStatement/(.*)"
+    match = re.match(pattern, span.endpointName)
+    if match:
+        stmt = span.tags["db.statement"]
+        params = span.tags["db.sql.parameters"].strip("[]").split(",")
+        fields, other_fileds = get_sql_keys(stmt)
+        return Pair(span, stmt, params, fields, other_fileds)
+    else:
+        return None
 
 # 定义一个递归函数来打印树
 def print_tree(intergrate_span, tree_dict, parent_id, level=0):
@@ -159,23 +187,46 @@ if __name__ == "__main__":
     file_path = 'span.json'
     spans = []
     spans = load_spans_from_file(file_path)
-    # with open('span.txt', 'w') as file:
-    #     for span in spans:
-    #         # 输出到文件
-    #         file.write(str(span) + '\n')
+    
+    # analyze_segment_level(spans)
 
-    # with open("db_statements.txt", 'w') as file:
-    #     db_statements = get_all_db_statement(spans)
-    #     for stat in db_statements:
-    #         file.write(stat + '\n')
+    keywords = ["id", "ID", "Id"]
 
-    analyze_segment_level(spans)
+    # 创建一个字典，键是字段值，值是包含这个字段值的所有 Pair 对象的列表
+    value_to_pairs = {}
 
+    for span in spans:
+        pair = get_stmt_param_pair(span)
+        if pair == None:
+            continue
+        data_dict = {}
+        if get_operation(pair.stmt) == 'insert':
+            data_dict = dict(zip(fields, pair.values))
+        else:
+            # 含有 ? 的字段
+            fields = [field for field in pair.fields if "?" in field]
+            data_dict = dict(zip(fields, pair.values))
 
-    # for span in intergrate_span:
-    #     print(len(span))
-    #     print(f"segmentID: {span[0].segmentID}")
-    #     print("-------------------------------------")
-    #     for s in span:
-    #         print(s.endpointName)
-    #     print("=====================================")
+        # 遍历字典，找到含keywords的字段及其对应的值
+        for field, value in data_dict.items():
+            if any(keyword in field for keyword in keywords):
+                # print(f"字段名: {field}, 值: {value}")
+
+                 # 将 Pair 对象添加到 value_to_pairs 字典中
+                if value not in value_to_pairs:
+                    value_to_pairs[value] = []
+                value_to_pairs[value].append(pair)
+
+    # 包含相同值的数据库语句
+    for value, pairs in value_to_pairs.items():
+        print(f"Value: {value}")
+        cnt = 1
+        for pair in pairs:
+            print(f"[stmt {cnt}] {pair.stmt}")
+            cnt += 1
+        print("\n")
+
+    
+        
+        
+
