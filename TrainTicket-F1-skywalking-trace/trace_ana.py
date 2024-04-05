@@ -163,7 +163,19 @@ def analyze_segment_level(spans):
         tree_dict[item["parentSegmentId"]].append(item["segmentId"])
 
     # 最后，从根节点开始打印树
-    print_tree(intergrate_span, tree_dict, None)
+    # print_tree(intergrate_span, tree_dict, None)
+    return intergrate_span, tree_dict
+
+def get_segment_by_span(span, spans):
+    """
+    输入一个 span，打印与其相关的segement
+    """
+    intergrate_span, tree_dict = analyze_segment_level(spans)
+    for spans in intergrate_span:
+        if span in spans:
+            for s in spans:
+                if(s.tags.get("http.method") != None and s.tags.get("url") != None):
+                    print(f'[Request] {s.tags["http.method"]} {s.tags["url"]}')
 
 def divide_by_segment(spans):
     """
@@ -219,12 +231,18 @@ if __name__ == "__main__":
 
     # 包含相同值的数据库语句
     for value, pairs in value_to_pairs.items():
+        print("=================")
         print(f"Value: {value}")
         cnt = 1
         for pair in pairs:
+            print("——————————————————————————")
             print(f"[stmt {cnt}] {pair.stmt}")
+            print("--------------------------")
+            
+            get_segment_by_span(pair.span, spans)
             cnt += 1
         print("\n")
+    
 
     
         
