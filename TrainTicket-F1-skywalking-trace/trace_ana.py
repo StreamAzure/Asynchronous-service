@@ -2,6 +2,8 @@ import json
 import re
 from utils.file_helper import *
 from utils.sql_parse import *
+from itertools import combinations
+from datetime import datetime, UTC
 
 class Span:
     def __init__(self, span):
@@ -126,7 +128,7 @@ def get_stmt_param_pair(span) -> Pair:
         return None
 
 # 定义一个递归函数来打印树
-def print_tree(intergrate_span, tree_dict, parent_id, level=0):
+def _print_tree(intergrate_span, tree_dict, parent_id, level=0):
     if parent_id in tree_dict:
         for child_id in tree_dict[parent_id]:
             print("     " * level + "-------------------------------------")
@@ -136,13 +138,31 @@ def print_tree(intergrate_span, tree_dict, parent_id, level=0):
                 if span[0].segmentID == child_id:
                     for s in span:
                         print("     " * level + s.endpointName)
-            print_tree(intergrate_span, tree_dict, child_id, level + 1)
+            _print_tree(intergrate_span, tree_dict, child_id, level + 1)
+
+def _divide_by_segment(spans):
+    """
+    按照 segmentID 分割 span, 同一 segmentID 的span为同一个列表
+    """
+    intergrate_span = []
+    # segmentID 相同的 span 加入到一个集合
+    for span in spans:
+        if len(intergrate_span) == 0:
+            intergrate_span.append([span])
+        else:
+            for i in range(len(intergrate_span)):
+                if intergrate_span[i][0].segmentID == span.segmentID:
+                    intergrate_span[i].append(span)
+                    break
+            else:
+                intergrate_span.append([span])
+    return intergrate_span
 
 def analyze_segment_level(spans):
     """
     所有 span 构成 segment 树，并打印
     """
-    intergrate_span = divide_by_segment(spans)
+    intergrate_span = _divide_by_segment(spans)
     
     # 对于每个集合，构造字典，如 {"segmentId": "1", "parentSegmentId": None}
     data = []
@@ -175,27 +195,9 @@ def get_segment_by_span(span, spans):
         if span in spans:
             for s in spans:
                 if(s.tags.get("http.method") != None and s.tags.get("url") != None):
-                    print(f'[Request] {s.tags["http.method"]} {s.tags["url"]}')
+                    print(f'{s.tags["http.method"]} {s.tags["url"]}')
 
-def divide_by_segment(spans):
-    """
-    按照 segmentID 分割 span, 同一 segmentID 的span为同一个列表
-    """
-    intergrate_span = []
-    # segmentID 相同的 span 加入到一个集合
-    for span in spans:
-        if len(intergrate_span) == 0:
-            intergrate_span.append([span])
-        else:
-            for i in range(len(intergrate_span)):
-                if intergrate_span[i][0].segmentID == span.segmentID:
-                    intergrate_span[i].append(span)
-                    break
-            else:
-                intergrate_span.append([span])
-    return intergrate_span
-
-if __name__ == "__main__":
+def main():
     file_path = 'span.json'
     spans = []
     spans = load_spans_from_file(file_path)
@@ -229,19 +231,55 @@ if __name__ == "__main__":
                     value_to_pairs[value] = []
                 value_to_pairs[value].append(pair)
 
-    # 包含相同值的数据库语句
-    for value, pairs in value_to_pairs.items():
-        print("=================")
-        print(f"Value: {value}")
-        cnt = 1
-        for pair in pairs:
-            print("——————————————————————————")
-            print(f"[stmt {cnt}] {pair.stmt}")
-            print("--------------------------")
+    # 输出包含相同值的数据库语句
+    # for value, pairs in value_to_pairs.items():
+    #     print("=================")
+    #     print(f"Value: {value}")
+    #     cnt = 1
+    #     for pair in pairs:
+    #         print("——————————————————————————")
+    #         print(f"[stmt {cnt}] [{pair.span.startTime}]")
+    #         print("--------------------------")
             
-            get_segment_by_span(pair.span, spans)
-            cnt += 1
-        print("\n")
+    #         get_segment_by_span(pair.span, spans)
+    #         cnt += 1
+    #     print("\n")
+
+    # for value, pairs in value_to_pairs.items():
+    #     print(f"Value: {value}")
+    #     print("可请求：")
+    #     for pair in pairs:
+    #         get_segment_by_span(pair.span, spans)
+    #     print("")
+
+    # 进一步筛选，如果某几个 pairs 在几个集合中均共同出现
+    # 想不到好的算法，先两两求交，得出那些在两个集合里都出现过的Pairs
+    all_sets = [set(value) for value in value_to_pairs.values()]
+    intersections = []
+    for pair in combinations(all_sets, 2):
+        intersection = pair[0].intersection(pair[1])
+        if intersection:
+            intersections.append(intersection)
+    # 输出所有非空的交集结果
+    for intersect in intersections:
+        print("----")
+        for i in intersect:
+            timestamp_in_seconds = i.span.startTime / 1000
+            dt_object = datetime.fromtimestamp(timestamp_in_seconds, UTC)
+            print(f"[{dt_object}]", get_segment_by_span(i.span, spans))
+
+
+if __name__ == "__main__":
+    # main()
+    file_path = 'data/normal-trace.json'
+    spans = []
+    spans = load_spans_from_file(file_path)
+    intergrate_span, tree_dict = analyze_segment_level(spans)
+    # _print_tree(intergrate_span, tree_dict, None)
+    db_statements = get_all_db_statement(spans)
+    with open('normal-db-stat.txt', 'w') as file:
+        for db in db_statements:
+            file.write(db + '\n')
     
 
     
