@@ -4,7 +4,7 @@ from utils.file_helper import *
 from utils.sql_parse import *
 from itertools import combinations
 from datetime import datetime, UTC
-from object import Span, Pair 
+from object import Span, RequestSpanBundle, Req
 
 def load_spans_from_file(file_path):
     """
@@ -19,22 +19,6 @@ def load_spans_from_file(file_path):
     for span in data:
         spans.append(Span(span))
     return spans
-
-def get_stmt_param_pair(span) -> Pair:
-    """
-    获取 span 中的数据库操作语句，及对应的值列表
-    以 Pair 对象进行捆绑，pair.stmt 和 pair.values
-    """
-    # 正则表达式匹配 Mysql/JDBC/PreparedStatement/*
-    pattern = r"Mysql/JDBC/PreparedStatement/(.*)"
-    match = re.match(pattern, span.endpointName)
-    if match:
-        stmt = span.tags["db.statement"]
-        params = span.tags["db.sql.parameters"].strip("[]").split(",")
-        fields, other_fileds = get_sql_keys(stmt)
-        return Pair(span, stmt, params, fields, other_fileds)
-    else:
-        return None
 
 # 定义一个递归函数来打印树
 def _print_tree(intergrate_span, tree_dict, parent_id, level=0):
@@ -95,32 +79,30 @@ def analyze_segment_level(spans):
     # print_tree(intergrate_span, tree_dict, None)
     return intergrate_span, tree_dict
 
-def get_segment_by_span(span, spans):
+def get_correspond_request(span, spans):
     """
-    输入一个 span，打印与其相关的segement
+    输入一个 span，溯源到它的 request URL
     """
     intergrate_span, tree_dict = analyze_segment_level(spans)
     for spans in intergrate_span:
         if span in spans:
             for s in spans:
                 if(s.tags.get("http.method") != None and s.tags.get("url") != None):
-                    print(f'{s.tags["http.method"]} {s.tags["url"]}')
+                    return s.tags["http.method"], s.tags["url"]
+    return None
 
-def get_id_request_groups(spans):
+def get_id_span_groups(spans):
     """
     1. 从Span中提取SQL语句，启发式识别ID字段，并找到对应的值
-    2. 对于每一个ID值，筛选出包含该ID值的所有 request URL，为一个 ID-Request group
+    2. 对于每一个ID值，筛选出包含该ID值的所有span，为一个 ID-span group
     """
     # key: ID值
     # value: list, 含有该ID值的span
-    id_request_groups = {}
+    id_span_groups = {}
     keywords = ["id", "ID", "Id"]
 
     for span in spans:
-        # pair = get_stmt_param_pair(span)
-        # if pair == None:
-        #     continue
-        if span.sqlStmt == None :
+        if span.sqlStmt is None :
            continue
         data_dict = {}
         fields, _ = get_sql_keys(span.sqlStmt) # SQL字段名
@@ -139,101 +121,57 @@ def get_id_request_groups(spans):
         # 记录含有ID值的span
         for field, value in data_dict.items():
             if any(keyword in field for keyword in keywords):
-                if value not in id_request_groups:
-                    id_request_groups[value] = []
-                id_request_groups[value].append(span)
-    return id_request_groups
+                if value not in id_span_groups:
+                    id_span_groups[value] = []
+                id_span_groups[value].append(span)
+    return id_span_groups
 
+def debug_show_id_request_group(span_file):
+    """
+    debug 用，直接打印看 id_request_group 结果
+    """
+    spans = load_spans_from_file(span_file)
+    id_span_groups = get_id_span_groups(spans)
+    for id_value, spanList in id_span_groups.items():
+        print(f"Value: {id_value}")
+        cnt = 1
+        for span in spanList:
+            method, url = get_correspond_request(span, spans)
+            print(f"[stmt {cnt}] [{span.startTime}] [{method} {url}]")
+            cnt += 1
+        print()
+
+def get_bundles(span, spans) -> RequestSpanBundle:
+    """
+    根据 span，将 SQL 语句及其对应的request捆绑为RequestSpanBundle对象
+    """
+    if span.sqlStmt is None :
+       return None
+    req = None
+    sql_operation = get_operation(span.sqlStmt)
+    method, url = get_correspond_request(span, spans)
+    if sql_operation == 'select': 
+        req = Req(method, url, 'read')
+    else:
+        req = Req(method, url, 'write')
+    return RequestSpanBundle(req, span)
 
 def main():
-    file_path = 'span.json'
-    spans = []
-    spans = load_spans_from_file(file_path)
-    
-    # analyze_segment_level(spans)
 
-    keywords = ["id", "ID", "Id"]
-
-    # 创建一个字典，键是字段值，值是包含这个字段值的所有 Pair 对象的列表
-    value_to_pairs = {}
-
+    span_file = 'data/normal-trace.json'
+    spans = load_spans_from_file(span_file)
     for span in spans:
-        pair = get_stmt_param_pair(span)
-        if pair == None:
-            continue
-        data_dict = {}
-        if get_operation(pair.stmt) == 'insert':
-            data_dict = dict(zip(fields, pair.values))
-        else:
-            # 含有 ? 的字段
-            fields = [field for field in pair.fields if "?" in field]
-            data_dict = dict(zip(fields, pair.values))
-
-        # 遍历字典，找到含keywords的字段及其对应的值
-        for field, value in data_dict.items():
-            if any(keyword in field for keyword in keywords):
-                # print(f"字段名: {field}, 值: {value}")
-
-                 # 将 Pair 对象添加到 value_to_pairs 字典中
-                if value not in value_to_pairs:
-                    value_to_pairs[value] = []
-                value_to_pairs[value].append(pair)
-
-    # 输出包含相同值的数据库语句
-    # for value, pairs in value_to_pairs.items():
-    #     print("=================")
-    #     print(f"Value: {value}")
-    #     cnt = 1
-    #     for pair in pairs:
-    #         print("——————————————————————————")
-    #         print(f"[stmt {cnt}] [{pair.span.startTime}]")
-    #         print("--------------------------")
-            
-    #         get_segment_by_span(pair.span, spans)
-    #         cnt += 1
-    #     print("\n")
-
-    # for value, pairs in value_to_pairs.items():
-    #     print(f"Value: {value}")
-    #     print("可请求：")
-    #     for pair in pairs:
-    #         get_segment_by_span(pair.span, spans)
-    #     print("")
-
-    # 进一步筛选，如果某几个 pairs 在几个集合中均共同出现
-    # 想不到好的算法，先两两求交，得出那些在两个集合里都出现过的Pairs
-    all_sets = [set(value) for value in value_to_pairs.values()]
-    intersections = []
-    for pair in combinations(all_sets, 2):
-        intersection = pair[0].intersection(pair[1])
-        if intersection:
-            intersections.append(intersection)
-    # 输出所有非空的交集结果
-    for intersect in intersections:
-        print("----")
-        for i in intersect:
-            timestamp_in_seconds = i.span.startTime / 1000
-            dt_object = datetime.fromtimestamp(timestamp_in_seconds, UTC)
-            print(f"[{dt_object}]", get_segment_by_span(i.span, spans))
+        get_bundles(span, spans)
 
 
 if __name__ == "__main__":
-    # main()
-    file_path = 'data/normal-trace.json'
-    spans = load_spans_from_file(file_path)
+    main()
     # intergrate_span, tree_dict = analyze_segment_level(spans)
     # # _print_tree(intergrate_span, tree_dict, None)
     # db_statements = get_all_db_statement(spans, True)
     # with open('normal-db-stat.txt', 'w') as file:
     #     for db in db_statements:
     #         file.write(db + '\n')
-    
-    id_request_groups = get_id_request_groups(spans)
-    for id_value, spanList in id_request_groups.items():
-        print(id_value)
-        for span in spanList:
-            print(span.spanID, end=" ")
-        print()
 
 
     

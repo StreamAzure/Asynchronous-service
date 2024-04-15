@@ -72,13 +72,16 @@ class Span:
         else:
             return None
 
-class Pair:
-    def __init__(self, span, stmt, values, fields=None, other_fields=None):
-        self.span = span # 所属的span
-        self.stmt = stmt
-        self.values = values
-        self.fields = fields
-        self.other_fields = other_fields # 不含问号的token，一般是表名
-    
-    def __str__(self) -> str:
-        return f"stmt: {self.stmt}\nvalues: {self.values}\nfields: {self.fields}"
+class Req:
+    def __init__(self, method, url, type) -> None:
+        self.http_method = method # 'GET','PUT', etc.
+        self.url = url
+        self.type = type # 'read' or 'write'
+        
+class RequestSpanBundle:
+    """
+    <Req, Span>
+    """
+    def __init__(self, req:Req, span:Span):
+        self.req = req
+        self.span = span
