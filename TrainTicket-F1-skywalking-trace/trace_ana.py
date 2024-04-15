@@ -111,34 +111,38 @@ def get_id_request_groups(spans):
     1. 从Span中提取SQL语句，启发式识别ID字段，并找到对应的值
     2. 对于每一个ID值，筛选出包含该ID值的所有 request URL，为一个 ID-Request group
     """
-    id_request_groups = []
+    # key: ID值
+    # value: list, 含有该ID值的span
+    id_request_groups = {}
     keywords = ["id", "ID", "Id"]
 
-    # 创建一个字典，键是字段值，值是包含这个字段值的所有 Pair 对象的列表
-    value_to_pairs = {}
-
     for span in spans:
-        pair = get_stmt_param_pair(span)
-        if pair == None:
-            continue
+        # pair = get_stmt_param_pair(span)
+        # if pair == None:
+        #     continue
+        if span.sqlStmt == None :
+           continue
         data_dict = {}
-        if get_operation(pair.stmt) == 'insert':
+        fields, _ = get_sql_keys(span.sqlStmt) # SQL字段名
+        values = span.tags["db.sql.parameters"].strip("[]").split(",") # SQL字段值
+
+        # 捆绑字段名和值
+        if get_operation(span.sqlStmt) == 'insert':
             # 对于 insert，SQL语句中 fields 直接为一个列表，直接使用
-            data_dict = dict(zip(fields, pair.values))
+            data_dict = dict(zip(fields, values))
         else:
             # 对于其他SQL语句，筛选含有 ? 的token，如 document_type=?
-            fields = [field for field in pair.fields if "?" in field]
-            data_dict = dict(zip(fields, pair.values))
+            fields = [field for field in fields if "?" in field]
+            data_dict = dict(zip(fields, values))
 
-        # 启发式识别其中的ID字段
+        # 启发式识别其中的ID字段，并找到对应值
+        # 记录含有ID值的span
         for field, value in data_dict.items():
             if any(keyword in field for keyword in keywords):
-                # print(f"字段名: {field}, 值: {value}")
-
-                 # 将 Pair 对象添加到 value_to_pairs 字典中
-                if value not in value_to_pairs:
-                    value_to_pairs[value] = []
-                value_to_pairs[value].append(pair)
+                if value not in id_request_groups:
+                    id_request_groups[value] = []
+                id_request_groups[value].append(span)
+    return id_request_groups
 
 
 def main():
@@ -223,7 +227,14 @@ if __name__ == "__main__":
     # with open('normal-db-stat.txt', 'w') as file:
     #     for db in db_statements:
     #         file.write(db + '\n')
-    # get_id_request_groups(spans)
+    
+    id_request_groups = get_id_request_groups(spans)
+    for id_value, spanList in id_request_groups.items():
+        print(id_value)
+        for span in spanList:
+            print(span.spanID, end=" ")
+        print()
+
 
     
         
