@@ -18,76 +18,61 @@ def load_spans_from_file(file_path):
         spans.append(Span(span))
     return spans
 
-# 定义一个递归函数来打印树
-def _print_tree(intergrate_span, tree_dict, parent_id, level=0):
-    if parent_id in tree_dict:
-        for child_id in tree_dict[parent_id]:
+def _print_trace(segments, segment_tree, parent_segment_id, level=0):
+    if parent_segment_id in segment_tree:
+        for child_segment_id in segment_tree[parent_segment_id]:
             print("     " * level + "-------------------------------------")
-            print("     " * level + child_id)
-            # 打印拥有这个 child_id 的 span
-            for span in intergrate_span:
-                if span[0].segmentID == child_id:
-                    for s in span:
-                        print("     " * level + s.endpointName)
-            _print_tree(intergrate_span, tree_dict, child_id, level + 1)
+            print("     " * level + child_segment_id)
+            # 该 child_segment 的 span
+            for span in segments[child_segment_id]:
+                print("     " * level + span.endpointName)
+            _print_trace(segments, segment_tree, child_segment_id, level + 1)
 
-def _divide_by_segment(spans):
+def trace_analyze(spans):
     """
-    按照 segmentID 分割 span, 同一 segmentID 的span为同一个列表
+    分析一个 trace 中 segment 之间的层级关系
+    将 span 按 segmentID 分组并按时间(spanID)排序
     """
-    intergrate_span = []
-    # segmentID 相同的 span 加入到一个集合
+    # 按 segmentID 分组, key: segmentID, value: span list
+    segments = {}
     for span in spans:
-        if len(intergrate_span) == 0:
-            intergrate_span.append([span])
-        else:
-            for i in range(len(intergrate_span)):
-                if intergrate_span[i][0].segmentID == span.segmentID:
-                    intergrate_span[i].append(span)
-                    break
-            else:
-                intergrate_span.append([span])
-    return intergrate_span
-
-def analyze_segment_level(spans):
-    """
-    所有 span 构成 segment 树，并打印
-    """
-    intergrate_span = _divide_by_segment(spans)
+        if span.segmentID not in segments:
+            segments[span.segmentID] = []
+        segments[span.segmentID].append(span)
     
-    # 对于每个集合，构造字典，如 {"segmentId": "1", "parentSegmentId": None}
-    data = []
-    for span in intergrate_span:
-        segment = {}
-        segment["segmentId"] = span[0].segmentID
-        if len(span[0].refs) > 0 :
-            segment["parentSegmentId"] = span[0].refs[0]["parentSegmentId"]
-        else :
-            segment["parentSegmentId"] = None
-        data.append(segment)
+    # segment 内部按 spanID 从小到大排序
+    for segment in segments.values():
+        segment = sorted(segment, key = lambda span: span.spanID)
     
-    # 构建一个字典，键是 parentSegmentId，值是所有的子 segmentId
-    tree_dict = {}
-    for item in data:
-        if item["parentSegmentId"] not in tree_dict:
-            tree_dict[item["parentSegmentId"]] = []
-        tree_dict[item["parentSegmentId"]].append(item["segmentId"])
+    # 构造父 segmentID 与与其所有子 segmentID (list)的映射
+    # 在消息队列场景下一个 segment 可能有多个父 segment，但这里不考虑，segment 关系直接视为树
+    # key: parentSegementID, value: childSegmentID(list)
+    segment_tree = {}
+    for segmentID, spans in segments.items():
+        if len(spans[0].refs) > 0 :
+            parentSegmentID = spans[0].refs[0]["parentSegmentId"]
+        else: 
+            parentSegmentID = None
+        if parentSegmentID not in segment_tree:
+            segment_tree[parentSegmentID] = []
+        segment_tree[parentSegmentID].append(segmentID)
+    
+    # _print_trace(segments, segment_tree, None)
+    return segments, segment_tree
 
-    # 最后，从根节点开始打印树
-    # print_tree(intergrate_span, tree_dict, None)
-    return intergrate_span, tree_dict
-
-def get_correspond_request(span, spans):
+def get_correspond_request(span, segments):
     """
+    segments: 将span按segment分组构成的字典
     输入一个 span，溯源到它的 request URL
     """
-    intergrate_span, tree_dict = analyze_segment_level(spans)
-    for spans in intergrate_span:
-        if span in spans:
-            for s in spans:
-                if(s.tags.get("http.method") != None and s.tags.get("url") != None):
-                    return s.tags["http.method"], s.tags["url"]
-    return None
+    entrySpan = segments[span.segmentID][0]
+    if entrySpan.type != "Entry":
+        raise Exception("segment[0] 不是 entrySpan")
+    
+    http_method = entrySpan.tags["http.method"]
+    url = entrySpan.tags["url"]
+
+    return http_method, url
 
 def get_id_span_groups(spans):
     """
@@ -124,22 +109,7 @@ def get_id_span_groups(spans):
                 id_span_groups[value].append(span)
     return id_span_groups
 
-def debug_show_id_request_group(span_file):
-    """
-    debug 用，直接打印看 id_request_group 结果
-    """
-    spans = load_spans_from_file(span_file)
-    id_span_groups = get_id_span_groups(spans)
-    for id_value, spanList in id_span_groups.items():
-        print(f"Value: {id_value}")
-        cnt = 1
-        for span in spanList:
-            method, url = get_correspond_request(span, spans)
-            print(f"[stmt {cnt}] [{span.startTime}] [{method} {url}]")
-            cnt += 1
-        print()
-
-def get_bundle(span, spans) -> RequestSpanBundle:
+def get_bundle(span, segments) -> RequestSpanBundle:
     """
     根据 span，将 SQL 语句及其对应的request捆绑为RequestSpanBundle对象
     """
@@ -147,14 +117,14 @@ def get_bundle(span, spans) -> RequestSpanBundle:
        return None
     req = None
     sql_operation = get_operation(span.sqlStmt)
-    method, url = get_correspond_request(span, spans)
+    method, url = get_correspond_request(span, segments)
     if sql_operation == 'select': 
         req = Req(method, url, 'read')
     else:
         req = Req(method, url, 'write')
     return RequestSpanBundle(req, span)
 
-def get_candidate_pairs(id_span_groups, spans):
+def get_candidate_pairs(id_span_groups, segments, segment_tree):
     
     # key: id_value, value: bundle pairs
     # 初始化所有 key
@@ -164,32 +134,42 @@ def get_candidate_pairs(id_span_groups, spans):
         # 在一个 group 中的 bundle 进行两两配对（至少有一个为 write）
         bundles = []
         for span in spanList:
-            bundle = get_bundle(span, spans)
+            bundle = get_bundle(span, segments)
             bundles.append(bundle)
         
         # write 类型的统一在前，避免重复配对
         bundles = sorted(bundles, key=lambda bundle: bundle.req.type, reverse=True)
         for i, bundle in enumerate(bundles):
-            print(bundle.req.type)
             if bundle.req.type == 'write':
                 for other_bundle in bundles[i+1:]:
                     candidate_pairs[id_value].append((bundle, other_bundle))
 
     for id_value, pairs in candidate_pairs.items():
         # 基于 trace 关系进行剪枝
-        pruned_pairs = trace_based_filter(pairs, spans)
+        pruned_pairs = trace_based_filter(pairs, segments, segment_tree)
 
-
-
-
-
-def main():
-
-    span_file = 'data/normal-trace.json'
+def debug_show_id_request_group(span_file):
+    """
+    debug 用，直接打印看 id_request_group 结果
+    """
     spans = load_spans_from_file(span_file)
     id_span_groups = get_id_span_groups(spans)
-    get_candidate_pairs(id_span_groups, spans)
-    
+    segments, segment_tree = trace_analyze(spans)
+    for id_value, spanList in id_span_groups.items():
+        print(f"Value: {id_value}")
+        cnt = 1
+        for span in spanList:
+            method, url = get_correspond_request(span, segments)
+            print(f"[stmt {cnt}] [{span.startTime}] [{method} {url}]")
+            cnt += 1
+        print()
+
+def main():
+    span_file = 'data/normal-trace.json'
+    spans = load_spans_from_file(span_file)
+    segments, segment_tree = trace_analyze(spans)
+    id_span_groups = get_id_span_groups(spans)
+    get_candidate_pairs(id_span_groups, segments, segment_tree)
 
 if __name__ == "__main__":
     main()
