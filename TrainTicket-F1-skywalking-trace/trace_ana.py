@@ -1,10 +1,8 @@
 import json
-import re
 from utils.file_helper import *
 from utils.sql_parse import *
-from itertools import combinations
-from datetime import datetime, UTC
 from object import Span, RequestSpanBundle, Req
+from prune import trace_based_filter
 
 def load_spans_from_file(file_path):
     """
@@ -141,7 +139,7 @@ def debug_show_id_request_group(span_file):
             cnt += 1
         print()
 
-def get_bundles(span, spans) -> RequestSpanBundle:
+def get_bundle(span, spans) -> RequestSpanBundle:
     """
     根据 span，将 SQL 语句及其对应的request捆绑为RequestSpanBundle对象
     """
@@ -156,13 +154,42 @@ def get_bundles(span, spans) -> RequestSpanBundle:
         req = Req(method, url, 'write')
     return RequestSpanBundle(req, span)
 
+def get_candidate_pairs(id_span_groups, spans):
+    
+    # key: id_value, value: bundle pairs
+    # 初始化所有 key
+    candidate_pairs = {key: [] for key in id_span_groups}
+    
+    for id_value, spanList in id_span_groups.items():
+        # 在一个 group 中的 bundle 进行两两配对（至少有一个为 write）
+        bundles = []
+        for span in spanList:
+            bundle = get_bundle(span, spans)
+            bundles.append(bundle)
+        
+        # write 类型的统一在前，避免重复配对
+        bundles = sorted(bundles, key=lambda bundle: bundle.req.type, reverse=True)
+        for i, bundle in enumerate(bundles):
+            print(bundle.req.type)
+            if bundle.req.type == 'write':
+                for other_bundle in bundles[i+1:]:
+                    candidate_pairs[id_value].append((bundle, other_bundle))
+
+    for id_value, pairs in candidate_pairs.items():
+        # 基于 trace 关系进行剪枝
+        pruned_pairs = trace_based_filter(pairs, spans)
+
+
+
+
+
 def main():
 
     span_file = 'data/normal-trace.json'
     spans = load_spans_from_file(span_file)
-    for span in spans:
-        get_bundles(span, spans)
-
+    id_span_groups = get_id_span_groups(spans)
+    get_candidate_pairs(id_span_groups, spans)
+    
 
 if __name__ == "__main__":
     main()

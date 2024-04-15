@@ -77,6 +77,9 @@ class Req:
         self.http_method = method # 'GET','PUT', etc.
         self.url = url
         self.type = type # 'read' or 'write'
+
+    def __str__(self) -> str:
+        return f"[{self.type}] \n\t{self.http_method} \n\t{self.url}"
         
 class RequestSpanBundle:
     """
@@ -85,3 +88,6 @@ class RequestSpanBundle:
     def __init__(self, req:Req, span:Span):
         self.req = req
         self.span = span
+
+    def __str__(self) -> str:
+        return f"{self.req}\n\t{self.span.sqlStmt}"
