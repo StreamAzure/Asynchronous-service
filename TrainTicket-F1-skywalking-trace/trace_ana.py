@@ -4,70 +4,7 @@ from utils.file_helper import *
 from utils.sql_parse import *
 from itertools import combinations
 from datetime import datetime, UTC
-
-class Span:
-    def __init__(self, span):
-        self.traceID = span["traceId"]
-        self.segmentID = span["segmentId"]
-        self.spanID = span["spanId"]
-        self.parentSpanId = span["parentSpanId"]
-        self.refs = span["refs"]
-        self.service = span["serviceCode"]
-        self.startTime = span["startTime"]
-        self.endTime = span["endTime"]
-        self.endpointName = span["endpointName"]
-        self.type = span["type"]
-        self.peer = span["peer"]
-        self.component = span["component"]
-        self.isError = span["isError"]
-        self.layer = span["layer"]
-        self.tags = self.parse_tags(span["tags"])
-        self.logs = span["logs"]
-
-    def __str__(self):
-        """
-        返回 span 对象的字符串表示形式
-        """
-        span_info = {
-            "traceID": self.traceID,
-            "segmentID": self.segmentID, 
-            "spanID": self.spanID,
-            "service": self.service,
-            "startTime": self.startTime,
-            "endTime": self.endTime,
-            "endpointName": self.endpointName,
-            "type": self.type,
-            "component": self.component,
-            "layer": self.layer,
-            "tags": self.tags,
-        }
-        return json.dumps(span_info, indent=2)
-
-    def parse_tags(self, tag_list) -> dict:
-        """
-        解析 tag 字段
-        """
-        tags = {}
-        for tag in tag_list:
-            tags[tag['key']] = tag['value']
-        return tags
-    
-    def get_tag_keys(self) -> list:
-        """
-        获取 tag 字段中所有 key 的列表
-        """ 
-        return self.tags.keys()
-
-class Pair:
-    def __init__(self, span, stmt, values, fields=None, other_fields=None):
-        self.span = span # 所属的span
-        self.stmt = stmt
-        self.values = values
-        self.fields = fields
-        self.other_fields = other_fields # 不含问号的token，一般是表名
-    
-    def __str__(self) -> str:
-        return f"stmt: {self.stmt}\nvalues: {self.values}\nfields: {self.fields}"
+from object import Span, Pair 
 
 def load_spans_from_file(file_path):
     """
@@ -82,34 +19,6 @@ def load_spans_from_file(file_path):
     for span in data:
         spans.append(Span(span))
     return spans
-
-def get_all_db_statement(spans, params=True):
-    """
-    params: 是否获取参数并嵌入到语句, 默认为True
-    获取所有数据库操作语句
-    """
-    db_statements = []
-    for span in spans:
-        # 正则表达式匹配 Mysql/JDBC/PreparedStatement/*
-        pattern = r"Mysql/JDBC/PreparedStatement/(.*)"
-        match = re.match(pattern, span.endpointName)
-        if match:
-            stat = span.tags["db.statement"]
-            completed_stat = stat
-            if params:
-                exec_tpye = match.group(1)
-                params = span.tags["db.sql.parameters"].strip("[]").split(",")
-                if exec_tpye == "executeQuery":
-                    where_clause = stat.split("where ")[1]
-                    if len(params) > 0:
-                        for param in params:
-                            completed_stat = completed_stat.replace("?", param, 1)
-                elif exec_tpye == "executeUpdate":
-                    if len(params) > 0:
-                        for param in params:
-                            completed_stat = completed_stat.replace("?", param, 1)
-            db_statements.append(completed_stat)
-    return db_statements
 
 def get_stmt_param_pair(span) -> Pair:
     """
@@ -197,6 +106,41 @@ def get_segment_by_span(span, spans):
                 if(s.tags.get("http.method") != None and s.tags.get("url") != None):
                     print(f'{s.tags["http.method"]} {s.tags["url"]}')
 
+def get_id_request_groups(spans):
+    """
+    1. 从Span中提取SQL语句，启发式识别ID字段，并找到对应的值
+    2. 对于每一个ID值，筛选出包含该ID值的所有 request URL，为一个 ID-Request group
+    """
+    id_request_groups = []
+    keywords = ["id", "ID", "Id"]
+
+    # 创建一个字典，键是字段值，值是包含这个字段值的所有 Pair 对象的列表
+    value_to_pairs = {}
+
+    for span in spans:
+        pair = get_stmt_param_pair(span)
+        if pair == None:
+            continue
+        data_dict = {}
+        if get_operation(pair.stmt) == 'insert':
+            # 对于 insert，SQL语句中 fields 直接为一个列表，直接使用
+            data_dict = dict(zip(fields, pair.values))
+        else:
+            # 对于其他SQL语句，筛选含有 ? 的token，如 document_type=?
+            fields = [field for field in pair.fields if "?" in field]
+            data_dict = dict(zip(fields, pair.values))
+
+        # 启发式识别其中的ID字段
+        for field, value in data_dict.items():
+            if any(keyword in field for keyword in keywords):
+                # print(f"字段名: {field}, 值: {value}")
+
+                 # 将 Pair 对象添加到 value_to_pairs 字典中
+                if value not in value_to_pairs:
+                    value_to_pairs[value] = []
+                value_to_pairs[value].append(pair)
+
+
 def main():
     file_path = 'span.json'
     spans = []
@@ -272,15 +216,14 @@ def main():
 if __name__ == "__main__":
     # main()
     file_path = 'data/normal-trace.json'
-    spans = []
     spans = load_spans_from_file(file_path)
-    intergrate_span, tree_dict = analyze_segment_level(spans)
-    # _print_tree(intergrate_span, tree_dict, None)
-    db_statements = get_all_db_statement(spans)
-    with open('normal-db-stat.txt', 'w') as file:
-        for db in db_statements:
-            file.write(db + '\n')
-    
+    # intergrate_span, tree_dict = analyze_segment_level(spans)
+    # # _print_tree(intergrate_span, tree_dict, None)
+    # db_statements = get_all_db_statement(spans, True)
+    # with open('normal-db-stat.txt', 'w') as file:
+    #     for db in db_statements:
+    #         file.write(db + '\n')
+    # get_id_request_groups(spans)
 
     
         
