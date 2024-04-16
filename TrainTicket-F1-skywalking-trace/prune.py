@@ -72,7 +72,7 @@ def LCA_prune(origin_queries:list, segment_tree) -> list:
                 continue
             if(lca[(a,b)] == b):
                 continue
-            pruned_pairs.append((a,b))
+            pruned_pairs.append(q)
         return pruned_pairs
     
     if(origin_queries == None or len(origin_queries) == 0):
@@ -111,6 +111,8 @@ def trace_based_filter(candidate_pairs, segments, segment_tree):
     pruned_pairs = [pair for pair in candidate_pairs if pair[0].span.segmentID != pair[1].span.segmentID]
     print(f"[Rule 1] After: {len(pruned_pairs)}")
     
+    # 两个 request 在 trace 中位于同一路径上
+    #（即两个 request 所属的 segment 的最近公共祖先为其中一个segment自己）
     print(f"[Rule 2] Before: {len(pruned_pairs)}")
     pruned_pairs = LCA_prune(pruned_pairs, segment_tree)
     print(f"[Rule 2] After: {len(pruned_pairs)}")

@@ -79,7 +79,7 @@ class Req:
         self.type = type # 'read' or 'write'
 
     def __str__(self) -> str:
-        return f"[{self.type}] \n\t{self.http_method} \n\t{self.url}"
+        return f"[{self.type}] {self.http_method} {self.url}"
         
 class RequestSpanBundle:
     """

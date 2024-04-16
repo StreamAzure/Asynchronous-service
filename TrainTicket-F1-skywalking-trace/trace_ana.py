@@ -22,17 +22,23 @@ def trace_analyze(spans):
     """
     分析一个 trace 中 segment 之间的层级关系
     将 span 按 segmentID 分组并按时间(spanID)排序
+    同级 segment 按开始时间排序
     """
 
     def _print_trace(segments, segment_tree, parent_segment_id, level=0):
         if(level == 0):
             print(None)
         for child_segment_id in segment_tree[parent_segment_id]:
-            # print("     " * level + "-------------------------------------")
-            print("     " * (level+1) + child_segment_id)
+            format = "   " * (level+1)
+            print(f"{format} -------------------------------------")
+            print(f"{format} {child_segment_id}")
+            print(f"{format} {segments[child_segment_id][0].startTime}")
             # 该 child_segment 的 span
-            # for span in segments[child_segment_id]:
-                # print("     " * level + span.endpointName)
+            for span in segments[child_segment_id]:
+                print(f"{format} [{span.type:<5}] {span.endpointName}")
+                if span.sqlStmt is not None:
+                    print(f"{format}  - [{span.sqlStmt}]")
+                
             _print_trace(segments, segment_tree, child_segment_id, level + 1)
 
     # 按 segmentID 分组, key: segmentID, value: span list
@@ -65,7 +71,7 @@ def trace_analyze(spans):
         if segID not in segment_tree.keys():
             segment_tree[segID] = []
     
-    # _print_trace(segments, segment_tree, None)
+    _print_trace(segments, segment_tree, None)
     return segments, segment_tree
 
 def get_correspond_request(span, segments):
@@ -155,6 +161,9 @@ def get_candidate_pairs(id_span_groups, segments, segment_tree):
     for id_value, pairs in candidate_pairs.items():
         # 基于 trace 关系进行剪枝
         pruned_pairs = trace_based_filter(pairs, segments, segment_tree)
+        candidate_pairs[id_value] = pruned_pairs
+    
+    return candidate_pairs
 
 def debug_show_id_request_group(span_file):
     """
@@ -177,16 +186,19 @@ def main():
     spans = load_spans_from_file(span_file)
     segments, segment_tree = trace_analyze(spans)
     id_span_groups = get_id_span_groups(spans)
-    get_candidate_pairs(id_span_groups, segments, segment_tree)
+    candidate_pairs = get_candidate_pairs(id_span_groups, segments, segment_tree)
+    for id_value, pairs in candidate_pairs.items():
+        print("\n" + id_value)
+        print("----------------")
+        for pair in pairs:
+            print(pair[0].req)
+            print(pair[0].span.sqlStmt_with_param)
+            print(pair[1].req)
+            print(pair[1].span.sqlStmt_with_param)
+            print("-")
 
 if __name__ == "__main__":
     main()
-    # intergrate_span, tree_dict = analyze_segment_level(spans)
-    # # _print_tree(intergrate_span, tree_dict, None)
-    # db_statements = get_all_db_statement(spans, True)
-    # with open('normal-db-stat.txt', 'w') as file:
-    #     for db in db_statements:
-    #         file.write(db + '\n')
 
 
     
