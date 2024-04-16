@@ -18,21 +18,23 @@ def load_spans_from_file(file_path):
         spans.append(Span(span))
     return spans
 
-def _print_trace(segments, segment_tree, parent_segment_id, level=0):
-    if parent_segment_id in segment_tree:
-        for child_segment_id in segment_tree[parent_segment_id]:
-            print("     " * level + "-------------------------------------")
-            print("     " * level + child_segment_id)
-            # 该 child_segment 的 span
-            for span in segments[child_segment_id]:
-                print("     " * level + span.endpointName)
-            _print_trace(segments, segment_tree, child_segment_id, level + 1)
-
 def trace_analyze(spans):
     """
     分析一个 trace 中 segment 之间的层级关系
     将 span 按 segmentID 分组并按时间(spanID)排序
     """
+
+    def _print_trace(segments, segment_tree, parent_segment_id, level=0):
+        if(level == 0):
+            print(None)
+        for child_segment_id in segment_tree[parent_segment_id]:
+            # print("     " * level + "-------------------------------------")
+            print("     " * (level+1) + child_segment_id)
+            # 该 child_segment 的 span
+            # for span in segments[child_segment_id]:
+                # print("     " * level + span.endpointName)
+            _print_trace(segments, segment_tree, child_segment_id, level + 1)
+
     # 按 segmentID 分组, key: segmentID, value: span list
     segments = {}
     for span in spans:
@@ -44,18 +46,24 @@ def trace_analyze(spans):
     for segment in segments.values():
         segment = sorted(segment, key = lambda span: span.spanID)
     
-    # 构造父 segmentID 与与其所有子 segmentID (list)的映射
+    # 构造父 segmentID 与与其所有子 segmentID (list) 的映射
     # 在消息队列场景下一个 segment 可能有多个父 segment，但这里不考虑，segment 关系直接视为树
     # key: parentSegementID, value: childSegmentID(list)
+
     segment_tree = {}
-    for segmentID, spans in segments.items():
-        if len(spans[0].refs) > 0 :
-            parentSegmentID = spans[0].refs[0]["parentSegmentId"]
+    for segmentID, spanlist in segments.items():
+        if len(spanlist[0].refs) > 0 :
+            parentSegmentID = spanlist[0].refs[0]["parentSegmentId"]
         else: 
             parentSegmentID = None
         if parentSegmentID not in segment_tree:
             segment_tree[parentSegmentID] = []
         segment_tree[parentSegmentID].append(segmentID)
+
+    for span in spans:
+        segID = span.segmentID
+        if segID not in segment_tree.keys():
+            segment_tree[segID] = []
     
     # _print_trace(segments, segment_tree, None)
     return segments, segment_tree
