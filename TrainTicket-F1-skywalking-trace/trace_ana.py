@@ -3,6 +3,7 @@ from utils.file_helper import *
 from utils.sql_parse import *
 from object import Span, RequestSpanBundle, Req
 from prune import trace_based_filter
+import os
 
 def load_spans_from_file(file_path):
     """
@@ -165,11 +166,10 @@ def get_candidate_pairs(id_span_groups, segments, segment_tree):
     
     return candidate_pairs
 
-def debug_show_id_request_group(span_file):
+def debug_show_id_request_group(spans):
     """
     debug 用，直接打印看 id_request_group 结果
     """
-    spans = load_spans_from_file(span_file)
     id_span_groups = get_id_span_groups(spans)
     segments, segment_tree = trace_analyze(spans)
     for id_value, spanList in id_span_groups.items():
@@ -182,20 +182,29 @@ def debug_show_id_request_group(span_file):
         print()
 
 def main():
-    span_file = 'data/normal-trace.json'
-    spans = load_spans_from_file(span_file)
-    segments, segment_tree = trace_analyze(spans)
-    id_span_groups = get_id_span_groups(spans)
-    candidate_pairs = get_candidate_pairs(id_span_groups, segments, segment_tree)
-    for id_value, pairs in candidate_pairs.items():
-        print("\n" + id_value)
-        print("----------------")
-        for pair in pairs:
-            print(pair[0].req)
-            print(pair[0].span.sqlStmt_with_param)
-            print(pair[1].req)
-            print(pair[1].span.sqlStmt_with_param)
-            print("-")
+    dir = 'data/train-ticket-f13'
+    spans = []
+
+    all_files = list(get_all_files(dir))
+    for file in all_files:
+        span_file = os.path.join(dir, file)
+        spans += load_spans_from_file(span_file)
+    debug_show_id_request_group(spans)
+    # print(len(spans))
+    # segments, segment_tree = trace_analyze(spans)
+    # id_span_groups = get_id_span_groups(spans)
+    # candidate_pairs = get_candidate_pairs(id_span_groups, segments, segment_tree)
+    # for id_value, pairs in candidate_pairs.items():
+    #     if len(pairs) == 0:
+    #         continue
+    #     print("\n" + id_value)
+    #     print("----------------")
+    #     for pair in pairs:
+    #         print(pair[0].req)
+    #         print(pair[0].span.sqlStmt_with_param)
+    #         print(pair[1].req)
+    #         print(pair[1].span.sqlStmt_with_param)
+    #         print("-")
 
 if __name__ == "__main__":
     main()

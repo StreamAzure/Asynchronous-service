@@ -7,4 +7,5 @@ def get_all_files(directory):
     """
     for root, dirs, files in os.walk(directory):
         for file in files:
-            yield os.path.relpath(os.path.join(root, file), directory)
+            if file.endswith('json'):
+                yield os.path.relpath(os.path.join(root, file), directory)
