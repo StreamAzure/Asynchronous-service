@@ -4,6 +4,7 @@ from utils.sql_parse import *
 from object import Span, RequestSpanBundle, Req
 from prune import trace_based_filter
 import os
+import itertools
 
 def load_spans_from_file(file_path):
     """
@@ -88,6 +89,46 @@ def get_correspond_request(span, segments):
     url = entrySpan.tags["url"]
 
     return http_method, url
+
+def get_ids_for_request(reqBundles: list[RequestSpanBundle]):
+    """
+    每个request都映射到它们的SQL语句包含的ID值集合  
+    """
+    # key: ID值
+    # value: list, 含有该ID值的span
+    keywords = ["id", "ID", "Id"]
+
+    request_ids_dict = {}
+
+    for bundle in reqBundles:
+        data_dict = {}
+        fields, _ = get_sql_keys(bundle.span.sqlStmt) # SQL字段名
+        values = bundle.span.tags["db.sql.parameters"].strip("[]").split(",") # SQL字段值
+
+        # 捆绑字段名和值
+        if get_operation(bundle.span.sqlStmt) == 'insert':
+            # 对于 insert，SQL语句中 fields 直接为一个列表，直接使用
+            data_dict = dict(zip(fields, values))
+        else:
+            # 对于其他SQL语句，筛选含有 ? 的token，如 document_type=?
+            fields = [field for field in fields if "?" in field]
+            data_dict = dict(zip(fields, values))
+
+        # 启发式识别其中的ID字段，并找到对应值
+        # 记录含有ID值的span
+        for field, value in data_dict.items():
+            if any(keyword in field for keyword in keywords):
+                if bundle not in request_ids_dict:
+                    request_ids_dict[bundle] = set()
+                request_ids_dict[bundle].add(value)
+    
+    # for key,value in request_ids_dict.items():
+    #     print(key.span.segmentID)
+    #     print("------")
+    #     for v in value:
+    #         print(v)
+    #     print()
+    return request_ids_dict
 
 def get_id_span_groups(spans):
     """
@@ -181,6 +222,64 @@ def debug_show_id_request_group(spans):
             cnt += 1
         print()
 
+def test():
+    dir = 'data/train-ticket-f13'
+    spans = []
+    all_files = list(get_all_files(dir))
+    for file in all_files:
+        span_file = os.path.join(dir, file)
+        spans += load_spans_from_file(span_file)
+    segments, segment_tree = trace_analyze(spans)
+    bundles = []
+    for span in spans:
+        if span.sqlStmt is None :
+            continue
+        bundles.append(get_bundle(span, segments))
+    request_ids_dict = get_ids_for_request(bundles)
+    # 来个评分机制
+    # 两两匹配计算 ids 集合的交集，交集中元素数量越多，评分越高
+    # 初始化一个空字典来存储匹配分数
+    matching_scores = {}
+
+    # 遍历字典中的所有键，进行两两匹配
+    for req1, req2 in itertools.combinations(request_ids_dict.keys(), 2):
+        if(req1 == req2):
+            continue
+        if req1.req.type == 'read' and req2.req.type == 'read':
+            continue
+        # 计算交集
+        intersection = request_ids_dict[req1].intersection(request_ids_dict[req2])
+        # 计算匹配分数（交集的大小）
+        score = len(intersection)
+        # 存储结果
+        matching_scores[(req1, req2)] = score
+
+    sorted_matching_scores = sorted(
+        matching_scores.items(),  # 获取字典的键值对
+        key=lambda item: item[1],  # 使用字典值（即配对的分数）作为排序依据
+        reverse=True  # 设置为True以降序排序（分数高的在前），设为False则升序排序
+    )
+
+    sorted_matching_scores = dict(sorted_matching_scores)
+
+    candidate_pairs = []
+    # 打印匹配分数
+    for pairs, score in sorted_matching_scores.items():
+        print(f"请求 {pairs[0].span.segmentID} 和请求 {pairs[1].span.segmentID} 的匹配分数是: {score}")
+        if score != 0:
+            candidate_pairs.append(pairs)
+
+    pruned_pairs = trace_based_filter(candidate_pairs, segments, segment_tree)
+    for pairs in pruned_pairs:
+        if len(pairs) == 0:
+            continue
+        print("----------------")
+        print(f"[{pairs[0].span.startTime}] {pairs[0].req}")
+        print(pairs[0].span.sqlStmt_with_param)
+        print(f"[{pairs[1].span.startTime}] {pairs[1].req}")
+        print(pairs[1].span.sqlStmt_with_param)
+        print("-")
+
 def main():
     dir = 'data/train-ticket-f13'
     spans = []
@@ -190,7 +289,6 @@ def main():
         span_file = os.path.join(dir, file)
         spans += load_spans_from_file(span_file)
     debug_show_id_request_group(spans)
-    print(len(spans))
     segments, segment_tree = trace_analyze(spans)
     id_span_groups = get_id_span_groups(spans)
     candidate_pairs = get_candidate_pairs(id_span_groups, segments, segment_tree)
@@ -207,7 +305,7 @@ def main():
             print("-")
 
 if __name__ == "__main__":
-    main()
+    test()
 
 
     
