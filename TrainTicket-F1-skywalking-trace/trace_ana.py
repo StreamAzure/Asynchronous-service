@@ -190,21 +190,21 @@ def main():
         span_file = os.path.join(dir, file)
         spans += load_spans_from_file(span_file)
     debug_show_id_request_group(spans)
-    # print(len(spans))
-    # segments, segment_tree = trace_analyze(spans)
-    # id_span_groups = get_id_span_groups(spans)
-    # candidate_pairs = get_candidate_pairs(id_span_groups, segments, segment_tree)
-    # for id_value, pairs in candidate_pairs.items():
-    #     if len(pairs) == 0:
-    #         continue
-    #     print("\n" + id_value)
-    #     print("----------------")
-    #     for pair in pairs:
-    #         print(pair[0].req)
-    #         print(pair[0].span.sqlStmt_with_param)
-    #         print(pair[1].req)
-    #         print(pair[1].span.sqlStmt_with_param)
-    #         print("-")
+    print(len(spans))
+    segments, segment_tree = trace_analyze(spans)
+    id_span_groups = get_id_span_groups(spans)
+    candidate_pairs = get_candidate_pairs(id_span_groups, segments, segment_tree)
+    for id_value, pairs in candidate_pairs.items():
+        if len(pairs) == 0:
+            continue
+        print("\n" + id_value)
+        print("----------------")
+        for pair in pairs:
+            print(f"[{pair[0].span.startTime}] {pair[0].req}")
+            print(pair[0].span.sqlStmt_with_param)
+            print(f"[{pair[1].span.startTime}] {pair[1].req}")
+            print(pair[1].span.sqlStmt_with_param)
+            print("-")
 
 if __name__ == "__main__":
     main()
