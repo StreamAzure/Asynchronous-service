@@ -76,7 +76,7 @@ def trace_analyze(spans):
     _print_trace(segments, segment_tree, None)
     return segments, segment_tree
 
-def get_correspond_request(span, segments):
+def _get_correspond_request(span, segments):
     """
     segments: 将span按segment分组构成的字典
     输入一个 span，溯源到它的 request URL
@@ -130,41 +130,6 @@ def get_ids_for_request(reqBundles: list[RequestSpanBundle]):
     #     print()
     return request_ids_dict
 
-def get_id_span_groups(spans):
-    """
-    1. 从Span中提取SQL语句，启发式识别ID字段，并找到对应的值
-    2. 对于每一个ID值，筛选出包含该ID值的所有span，为一个 ID-span group
-    """
-    # key: ID值
-    # value: list, 含有该ID值的span
-    id_span_groups = {}
-    keywords = ["id", "ID", "Id"]
-
-    for span in spans:
-        if span.sqlStmt is None :
-           continue
-        data_dict = {}
-        fields, _ = get_sql_keys(span.sqlStmt) # SQL字段名
-        values = span.tags["db.sql.parameters"].strip("[]").split(",") # SQL字段值
-
-        # 捆绑字段名和值
-        if get_operation(span.sqlStmt) == 'insert':
-            # 对于 insert，SQL语句中 fields 直接为一个列表，直接使用
-            data_dict = dict(zip(fields, values))
-        else:
-            # 对于其他SQL语句，筛选含有 ? 的token，如 document_type=?
-            fields = [field for field in fields if "?" in field]
-            data_dict = dict(zip(fields, values))
-
-        # 启发式识别其中的ID字段，并找到对应值
-        # 记录含有ID值的span
-        for field, value in data_dict.items():
-            if any(keyword in field for keyword in keywords):
-                if value not in id_span_groups:
-                    id_span_groups[value] = []
-                id_span_groups[value].append(span)
-    return id_span_groups
-
 def get_bundle(span, segments) -> RequestSpanBundle:
     """
     根据 span，将 SQL 语句及其对应的request捆绑为RequestSpanBundle对象
@@ -173,70 +138,18 @@ def get_bundle(span, segments) -> RequestSpanBundle:
        return None
     req = None
     sql_operation = get_operation(span.sqlStmt)
-    method, url = get_correspond_request(span, segments)
+    method, url = _get_correspond_request(span, segments)
     if sql_operation == 'select': 
         req = Req(method, url, 'read')
     else:
         req = Req(method, url, 'write')
     return RequestSpanBundle(req, span)
 
-def get_candidate_pairs(id_span_groups, segments, segment_tree):
-    
-    # key: id_value, value: bundle pairs
-    # 初始化所有 key
-    candidate_pairs = {key: [] for key in id_span_groups}
-    
-    for id_value, spanList in id_span_groups.items():
-        # 在一个 group 中的 bundle 进行两两配对（至少有一个为 write）
-        bundles = []
-        for span in spanList:
-            bundle = get_bundle(span, segments)
-            bundles.append(bundle)
-        
-        # write 类型的统一在前，避免重复配对
-        bundles = sorted(bundles, key=lambda bundle: bundle.req.type, reverse=True)
-        for i, bundle in enumerate(bundles):
-            if bundle.req.type == 'write':
-                for other_bundle in bundles[i+1:]:
-                    candidate_pairs[id_value].append((bundle, other_bundle))
-
-    for id_value, pairs in candidate_pairs.items():
-        # 基于 trace 关系进行剪枝
-        pruned_pairs = trace_based_filter(pairs, segments, segment_tree)
-        candidate_pairs[id_value] = pruned_pairs
-    
-    return candidate_pairs
-
-def debug_show_id_request_group(spans):
+def compute_matching_scores(request_ids_dict: dict) -> dict:
     """
-    debug 用，直接打印看 id_request_group 结果
+    计算 request_pair 的匹配分数
     """
-    id_span_groups = get_id_span_groups(spans)
-    segments, segment_tree = trace_analyze(spans)
-    for id_value, spanList in id_span_groups.items():
-        print(f"Value: {id_value}")
-        cnt = 1
-        for span in spanList:
-            method, url = get_correspond_request(span, segments)
-            print(f"[stmt {cnt}] [{span.startTime}] [{method} {url}]")
-            cnt += 1
-        print()
-
-def test():
-    dir = 'data/train-ticket-f13'
-    spans = []
-    all_files = list(get_all_files(dir))
-    for file in all_files:
-        span_file = os.path.join(dir, file)
-        spans += load_spans_from_file(span_file)
-    segments, segment_tree = trace_analyze(spans)
-    bundles = []
-    for span in spans:
-        if span.sqlStmt is None :
-            continue
-        bundles.append(get_bundle(span, segments))
-    request_ids_dict = get_ids_for_request(bundles)
-    # 来个评分机制
+    # 评分机制
     # 两两匹配计算 ids 集合的交集，交集中元素数量越多，评分越高
     # 初始化一个空字典来存储匹配分数
     matching_scores = {}
@@ -260,52 +173,55 @@ def test():
         reverse=True  # 设置为True以降序排序（分数高的在前），设为False则升序排序
     )
 
-    sorted_matching_scores = dict(sorted_matching_scores)
-
-    candidate_pairs = []
-    # 打印匹配分数
-    for pairs, score in sorted_matching_scores.items():
-        print(f"请求 {pairs[0].span.segmentID} 和请求 {pairs[1].span.segmentID} 的匹配分数是: {score}")
-        if score != 0:
-            candidate_pairs.append(pairs)
-
-    pruned_pairs = trace_based_filter(candidate_pairs, segments, segment_tree)
-    for pairs in pruned_pairs:
-        if len(pairs) == 0:
-            continue
-        print("----------------")
-        print(f"[{pairs[0].span.startTime}] {pairs[0].req}")
-        print(pairs[0].span.sqlStmt_with_param)
-        print(f"[{pairs[1].span.startTime}] {pairs[1].req}")
-        print(pairs[1].span.sqlStmt_with_param)
-        print("-")
-
+    return dict(sorted_matching_scores)
+    
 def main():
-    dir = 'data/train-ticket-f13'
+    dir = 'data/train-ticket-f1'
     spans = []
-
+    # step 1: get all spans from trace files
     all_files = list(get_all_files(dir))
     for file in all_files:
         span_file = os.path.join(dir, file)
         spans += load_spans_from_file(span_file)
-    debug_show_id_request_group(spans)
+    
+    # step 2: analyze the trace structure of the spans
     segments, segment_tree = trace_analyze(spans)
-    id_span_groups = get_id_span_groups(spans)
-    candidate_pairs = get_candidate_pairs(id_span_groups, segments, segment_tree)
-    for id_value, pairs in candidate_pairs.items():
+    
+    # step 3: find the spans containing SQL statements, then trace the root request of the span, and bind them.
+    bundles = []
+    for span in spans:
+        if span.sqlStmt is None :
+            continue
+        bundles.append(get_bundle(span, segments))
+
+    # step 4: for a request, find all id values in corresponding SQL statements
+    request_ids_dict = get_ids_for_request(bundles)
+
+    # step 5: for a pair of requests, compute the matching score of them 
+    sorted_matching_scores = compute_matching_scores(request_ids_dict)
+    
+    # step 6: get the candidate pairs according to their matching score
+    candidate_pairs = []
+    for pairs, score in sorted_matching_scores.items():
+        print(f"请求 {pairs[0].span.segmentID} 和请求 {pairs[1].span.segmentID} 的匹配分数是: {score}")
+        if score != 0: # There are some ID values occur in both two requests
+            candidate_pairs.append(pairs)
+
+    # step 7: prune the candidate pairs
+    pruned_pairs = trace_based_filter(candidate_pairs, segments, segment_tree)
+    res = {}
+    for i, pairs in enumerate(pruned_pairs):
         if len(pairs) == 0:
             continue
-        print("\n" + id_value)
-        print("----------------")
-        for pair in pairs:
-            print(f"[{pair[0].span.startTime}] {pair[0].req}")
-            print(pair[0].span.sqlStmt_with_param)
-            print(f"[{pair[1].span.startTime}] {pair[1].req}")
-            print(pair[1].span.sqlStmt_with_param)
-            print("-")
+        res[i] = [str(pairs[0].req), str(pairs[1].req)]
+        
+    # step 8: output the result
+    with open("data/train-ticket-f1/candidate_pairs.json", 'w') as f:
+        json_data = json.dumps(res, indent=4)
+        f.write(json_data)
 
 if __name__ == "__main__":
-    test()
+    main()
 
 
     
