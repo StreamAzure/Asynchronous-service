@@ -74,6 +74,7 @@ def trace_analyze(spans):
             segment_tree[segID] = []
     
     _print_trace(segments, segment_tree, None)
+    print()
     return segments, segment_tree
 
 def _get_correspond_request(span, segments):
@@ -93,6 +94,7 @@ def _get_correspond_request(span, segments):
 def get_ids_for_request(reqBundles: list[RequestSpanBundle]):
     """
     每个request都映射到它们的SQL语句包含的ID值集合  
+    剪枝：对于ID值集合相同、路径相同的 read 请求，只留一个
     """
     # key: ID值
     # value: list, 含有该ID值的span
@@ -122,13 +124,30 @@ def get_ids_for_request(reqBundles: list[RequestSpanBundle]):
                     request_ids_dict[bundle] = set()
                 request_ids_dict[bundle].add(value)
     
-    # for key,value in request_ids_dict.items():
-    #     print(key.span.segmentID)
+    # 剪枝：对于ID值集合相同、路径相同的 read 请求，只留一个
+    aux_dict = {}
+    pruned_dict = {}
+    for bundle, id_values in request_ids_dict.items():
+        if bundle.req.type == 'read':
+            key = (str(bundle.req), tuple(sorted(id_values)))
+            if key not in aux_dict:
+                # print(f"未出现过:  {key})")
+                aux_dict[key] = True
+                pruned_dict[bundle] = id_values
+            else:
+                # print(f"已出现过:  {key})")
+                continue
+        else:
+            pruned_dict[bundle] = id_values
+    
+    # for key,value in pruned_dict.items():
+    #     print(f"[{key.req.http_method}][{key.req.type}] {key.req.url}")
     #     print("------")
     #     for v in value:
     #         print(v)
     #     print()
-    return request_ids_dict
+
+    return pruned_dict
 
 def get_bundle(span, segments) -> RequestSpanBundle:
     """
@@ -156,9 +175,7 @@ def compute_matching_scores(request_ids_dict: dict) -> dict:
 
     # 遍历字典中的所有键，进行两两匹配
     for req1, req2 in itertools.combinations(request_ids_dict.keys(), 2):
-        if(req1 == req2):
-            continue
-        if req1.req.type == 'read' and req2.req.type == 'read':
+        if req1.req.type == 'read' and req2.req.type == 'read': # 排除双 read
             continue
         # 计算交集
         intersection = request_ids_dict[req1].intersection(request_ids_dict[req2])
@@ -203,7 +220,7 @@ def main():
     # step 6: get the candidate pairs according to their matching score
     candidate_pairs = []
     for pairs, score in sorted_matching_scores.items():
-        print(f"请求 {pairs[0].span.segmentID} 和请求 {pairs[1].span.segmentID} 的匹配分数是: {score}")
+        # print(f"请求 {pairs[0].span.segmentID} 和请求 {pairs[1].span.segmentID} 的匹配分数是: {score}")
         if score != 0: # There are some ID values occur in both two requests
             candidate_pairs.append(pairs)
 
@@ -216,7 +233,7 @@ def main():
         res[i] = [str(pairs[0].req), str(pairs[1].req)]
         
     # step 8: output the result
-    with open("data/train-ticket-f1/candidate_pairs.json", 'w') as f:
+    with open("data/res/candidate_pairs.json", 'w') as f:
         json_data = json.dumps(res, indent=4)
         f.write(json_data)
 
