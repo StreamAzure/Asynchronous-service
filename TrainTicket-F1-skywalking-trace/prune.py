@@ -1,21 +1,3 @@
-
-# TODO：观察到有一些请求会同时出现在多个 id_span group中
-# 也许可以做剪枝，将同时出现在多个group的一组请求优先测试
-# 想不到好的算法，先两两求交，得出那些在两个集合里都出现过的group
-# all_sets = [set(value) for value in value_to_pairs.values()]
-# intersections = []
-# for pair in combinations(all_sets, 2):
-#     intersection = pair[0].intersection(pair[1])
-#     if intersection:
-#         intersections.append(intersection)
-# # 输出所有非空的交集结果
-# for intersect in intersections:
-#     print("----")
-#     for i in intersect:
-#         timestamp_in_seconds = i.span.startTime / 1000
-#         dt_object = datetime.fromtimestamp(timestamp_in_seconds, UTC)
-#         print(f"[{dt_object}]", get_segment_by_span(i.span, spans))
-
 # LCA算法
 def LCA_prune(origin_queries:list, segment_tree) -> list:
     def pre(origin_queries:list) -> dict:
