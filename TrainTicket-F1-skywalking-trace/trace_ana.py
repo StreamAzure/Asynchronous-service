@@ -7,6 +7,64 @@ from output import origin_output, mask_parameters_output
 import os
 import itertools
 
+TIME_RANGE_MIN = -10  # 最小时间范围（毫秒）
+TIME_RANGE_MAX = 10  # 最大时间范围（毫秒）
+
+def readHTTPFile(filename) -> list:
+    packages = []
+    with open(filename, 'r') as f:
+        for line in f.readlines():
+            line = line.strip()
+            log_entry = json.loads(line)
+            packages.append(log_entry)
+    return packages
+
+def _get_correspond_request_timestamp(span, segments):
+    """
+    segments: 将span按segment分组构成的字典
+    输入一个 span，溯源到它的 request URL
+    """
+    entrySpan = segments[span.segmentID][0]
+    if entrySpan.type != "Entry":
+        raise Exception("segment[0] 不是 entrySpan")
+    
+    return entrySpan.startTime, entrySpan.endTime
+
+def format_or_output(variable):
+    """
+    打印 body
+    """
+    try:
+        # 尝试将变量解析为JSON
+        json.loads(variable)
+        # 如果解析成功，使用json.dumps美化输出
+        return json.dumps(variable, indent=4)
+    except Exception:
+        # 如果解析失败，说明它是一个普通的字符串，直接返回
+        return variable
+    
+def match_request_by_data(packages:list, bundles:list, segments):
+    """
+    根据时间戳、URL等信息将 HTTP 数据和 trace 中的请求相对应
+    """
+    for bundle in bundles:
+        target_url = bundle.req.url
+        target_method = bundle.req.method
+        # 暂时不用 endtime
+        target_timestamp, _ = _get_correspond_request_timestamp(bundle.span, segments)
+        print(f"searching: [{target_timestamp}][{target_method}][{target_url}]")
+
+        for p in packages:
+            if p["method"] == target_method and p["url"] == target_url:
+                # print(p["headers"]["X-Timestamp"])
+                timestamp = p["headers"]["X-Timestamp"]
+                time_diff_ms = int(target_timestamp) - int(timestamp)
+                if TIME_RANGE_MIN <= time_diff_ms <= TIME_RANGE_MAX:
+                    print(timestamp)
+                    # 匹配成功，将HTTP数据中的Body数据填充到bundle.req.body中
+                    bundle.req.body = p["body"]
+                    # print(format_or_output(bundle.req.body))
+
 def load_spans_from_file(file_path):
     """
     从 trace 文件中加载所有span
@@ -195,13 +253,15 @@ def compute_matching_scores(request_ids_dict: dict) -> dict:
 
     return dict(sorted_matching_scores)
     
-def main():
-    dir = 'data/train-ticket-f1'
+def main(output_file):
+    trace_dir = 'data-0502/trace'
+    http_file = 'data-0502/http_data.json'
+
     spans = []
     # step 1: get all spans from trace files
-    all_files = list(get_all_files(dir))
+    all_files = list(get_all_files(trace_dir))
     for file in all_files:
-        span_file = os.path.join(dir, file)
+        span_file = os.path.join(trace_dir, file)
         spans += load_spans_from_file(span_file)
     
     # step 2: analyze the trace structure of the spans
@@ -213,6 +273,10 @@ def main():
         if span.sqlStmt is None :
             continue
         bundles.append(get_bundle(span, segments))
+
+    # 填充 body
+    pakages = readHTTPFile(http_file)
+    match_request_by_data(pakages, bundles, segments)
 
     # step 4: for a request, find all id values in corresponding SQL statements
     request_ids_dict = get_ids_for_request(bundles)
@@ -231,11 +295,11 @@ def main():
     pruned_pairs = trace_based_filter(candidate_pairs, segments, segment_tree)
         
     # step 8: output the result
-    output_file = 'data/res/candidate_pairs.json'
     mask_parameters_output(pruned_pairs, output_file)
 
 if __name__ == "__main__":
-    main()
+    output_file = 'data-0502/res/candidate-pairs.json'
+    main(output_file)
 
 
     

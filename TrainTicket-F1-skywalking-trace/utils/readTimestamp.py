@@ -13,7 +13,7 @@ def readHTTPFile(filename) -> list:
             logs.append(log_entry)
     return logs
     
-def get_timestamps_json(data) -> list:
+def get_timestamps_trace(data) -> list:
     timestamps = []
     for span in data:
         if("/api/v1" in str(span["tags"])):
@@ -33,13 +33,13 @@ def get_timestamps_http(data) -> list:
     return timestamps
 
 def main():
-    span = readTraceFile('data/normal-trace.json')
-    timestamps = sorted(get_timestamps_json(span))
+    span = readTraceFile('../data-0502/trace.json')
+    timestamps = sorted(get_timestamps_trace(span))
     print(len(timestamps))
     for t in timestamps:
         print(t)
     print("----")
-    data = readHTTPFile('data/normal-http.json')
+    data = readHTTPFile('../data-0502/http_data.json')
     timestamps2 = sorted(get_timestamps_http(data))
     print(len(timestamps2))
     for t in timestamps2:
