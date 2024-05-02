@@ -3,6 +3,7 @@ from utils.file_helper import *
 from utils.sql_parse import *
 from object import Span, RequestSpanBundle, Req
 from prune import trace_based_filter
+from output import origin_output, mask_parameters_output
 import os
 import itertools
 
@@ -86,10 +87,11 @@ def _get_correspond_request(span, segments):
     if entrySpan.type != "Entry":
         raise Exception("segment[0] 不是 entrySpan")
     
+    endpoint_name = entrySpan.endpointName
     http_method = entrySpan.tags["http.method"]
     url = entrySpan.tags["url"]
 
-    return http_method, url
+    return http_method, url, endpoint_name
 
 def get_ids_for_request(reqBundles: list[RequestSpanBundle]):
     """
@@ -157,15 +159,16 @@ def get_bundle(span, segments) -> RequestSpanBundle:
        return None
     req = None
     sql_operation = get_operation(span.sqlStmt)
-    method, url = _get_correspond_request(span, segments)
+    method, url, endpoint_name = _get_correspond_request(span, segments)
     if sql_operation == 'select': 
-        req = Req(method, url, 'read')
+        req = Req(method, url, 'read', endpoint_name)
     else:
-        req = Req(method, url, 'write')
+        req = Req(method, url, 'write', endpoint_name)
     return RequestSpanBundle(req, span)
 
 def compute_matching_scores(request_ids_dict: dict) -> dict:
     """
+    将各个请求两两匹配构成 request_pair
     计算 request_pair 的匹配分数
     """
     # 评分机制
@@ -174,15 +177,15 @@ def compute_matching_scores(request_ids_dict: dict) -> dict:
     matching_scores = {}
 
     # 遍历字典中的所有键，进行两两匹配
-    for req1, req2 in itertools.combinations(request_ids_dict.keys(), 2):
-        if req1.req.type == 'read' and req2.req.type == 'read': # 排除双 read
+    for bundle1, bundle2 in itertools.combinations(request_ids_dict.keys(), 2):
+        if bundle1.req.type == 'read' and bundle2.req.type == 'read': # 排除双 read
             continue
         # 计算交集
-        intersection = request_ids_dict[req1].intersection(request_ids_dict[req2])
+        intersection = request_ids_dict[bundle1].intersection(request_ids_dict[bundle2])
         # 计算匹配分数（交集的大小）
         score = len(intersection)
         # 存储结果
-        matching_scores[(req1, req2)] = score
+        matching_scores[(bundle1, bundle2)] = score
 
     sorted_matching_scores = sorted(
         matching_scores.items(),  # 获取字典的键值对
@@ -226,16 +229,10 @@ def main():
 
     # step 7: prune the candidate pairs
     pruned_pairs = trace_based_filter(candidate_pairs, segments, segment_tree)
-    res = {}
-    for i, pairs in enumerate(pruned_pairs):
-        if len(pairs) == 0:
-            continue
-        res[i] = [str(pairs[0].req), str(pairs[1].req)]
         
     # step 8: output the result
-    with open("data/res/candidate_pairs.json", 'w') as f:
-        json_data = json.dumps(res, indent=4)
-        f.write(json_data)
+    output_file = 'data/res/candidate_pairs.json'
+    mask_parameters_output(pruned_pairs, output_file)
 
 if __name__ == "__main__":
     main()

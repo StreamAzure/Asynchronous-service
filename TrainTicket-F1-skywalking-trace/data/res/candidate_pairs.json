@@ -1,42 +1,42 @@
 {
     "0": [
-        "[write] PUT http://172.25.0.72:12032/api/v1/orderOtherService/orderOther",
-        "[write] PUT http://172.25.0.72:12032/api/v1/orderOtherService/orderOther"
+        "[write] PUT /api/v1/orderOtherService/orderOther",
+        "[write] PUT /api/v1/orderOtherService/orderOther"
     ],
     "1": [
-        "[read] GET http://172.25.0.72:12032/api/v1/orderOtherService/orderOther/72ac2456-4539-4fef-9b38-a6a4cf83488b",
-        "[write] PUT http://172.25.0.72:12032/api/v1/orderOtherService/orderOther"
+        "[read] GET /api/v1/orderOtherService/orderOther/?",
+        "[write] PUT /api/v1/orderOtherService/orderOther"
     ],
     "2": [
-        "[read] GET http://172.25.0.72:12032/api/v1/orderOtherService/orderOther/72ac2456-4539-4fef-9b38-a6a4cf83488b",
-        "[write] PUT http://172.25.0.72:12032/api/v1/orderOtherService/orderOther"
+        "[read] GET /api/v1/orderOtherService/orderOther/?",
+        "[write] PUT /api/v1/orderOtherService/orderOther"
     ],
     "3": [
-        "[read] PUT http://172.25.0.72:12032/api/v1/orderOtherService/orderOther",
-        "[write] PUT http://172.25.0.72:12032/api/v1/orderOtherService/orderOther"
+        "[read] PUT /api/v1/orderOtherService/orderOther",
+        "[write] PUT /api/v1/orderOtherService/orderOther"
     ],
     "4": [
-        "[write] PUT http://172.25.0.72:12032/api/v1/orderOtherService/orderOther",
-        "[read] GET http://172.25.0.75:18673/api/v1/inside_pay_service/inside_payment/drawback/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f/0.00"
+        "[write] PUT /api/v1/orderOtherService/orderOther",
+        "[read] GET /api/v1/inside_pay_service/inside_payment/drawback/?/?"
     ],
     "5": [
-        "[write] PUT http://172.25.0.72:12032/api/v1/orderOtherService/orderOther",
-        "[write] GET http://172.25.0.75:18673/api/v1/inside_pay_service/inside_payment/drawback/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f/0.00"
+        "[write] PUT /api/v1/orderOtherService/orderOther",
+        "[write] GET /api/v1/inside_pay_service/inside_payment/drawback/?/?"
     ],
     "6": [
-        "[write] PUT http://172.25.0.72:12032/api/v1/orderOtherService/orderOther",
-        "[read] GET http://172.25.0.79:12031/api/v1/orderservice/order/72ac2456-4539-4fef-9b38-a6a4cf83488b"
+        "[write] PUT /api/v1/orderOtherService/orderOther",
+        "[read] GET /api/v1/orderservice/order/?"
     ],
     "7": [
-        "[read] GET http://172.25.0.75:18673/api/v1/inside_pay_service/inside_payment/drawback/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f/0.00",
-        "[write] PUT http://172.25.0.72:12032/api/v1/orderOtherService/orderOther"
+        "[read] GET /api/v1/inside_pay_service/inside_payment/drawback/?/?",
+        "[write] PUT /api/v1/orderOtherService/orderOther"
     ],
     "8": [
-        "[write] GET http://172.25.0.75:18673/api/v1/inside_pay_service/inside_payment/drawback/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f/0.00",
-        "[write] PUT http://172.25.0.72:12032/api/v1/orderOtherService/orderOther"
+        "[write] GET /api/v1/inside_pay_service/inside_payment/drawback/?/?",
+        "[write] PUT /api/v1/orderOtherService/orderOther"
     ],
     "9": [
-        "[write] PUT http://172.25.0.72:12032/api/v1/orderOtherService/orderOther",
-        "[read] GET http://172.25.0.79:12031/api/v1/orderservice/order/72ac2456-4539-4fef-9b38-a6a4cf83488b"
+        "[write] PUT /api/v1/orderOtherService/orderOther",
+        "[read] GET /api/v1/orderservice/order/?"
     ]
 }

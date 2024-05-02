@@ -73,10 +73,11 @@ class Span:
             return None
 
 class Req:
-    def __init__(self, method, url, type) -> None:
+    def __init__(self, method, url, type, endpoint_name) -> None:
         self.http_method = method # 'GET','PUT', etc.
         self.url = url
         self.type = type # 'read' or 'write'
+        self.endpoint_name = endpoint_name
 
     def __str__(self) -> str:
         return f"[{self.type}] {self.http_method} {self.url}"
