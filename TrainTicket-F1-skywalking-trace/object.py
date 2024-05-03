@@ -1,5 +1,6 @@
 import json
 import re
+from json import JSONEncoder
 
 class Span:
     def __init__(self, span):
@@ -74,13 +75,30 @@ class Span:
 
 class Req:
     def __init__(self, method, url, type, endpoint_name) -> None:
-        self.http_method = method # 'GET','PUT', etc.
+        self.method = method # 'GET','PUT', etc.
         self.url = url
         self.type = type # 'read' or 'write'
         self.endpoint_name = endpoint_name
+        self.body = ""
 
     def __str__(self) -> str:
-        return f"[{self.type}] {self.http_method} {self.url}"
+        if self.body != "":
+            return f"[{self.type}] {self.method} {self.url} {self.body}"
+        else:
+            return f"[{self.type}] {self.method} {self.url}"
+    
+    def __dict__(self) -> dict:
+        return {
+            "type":self.type,
+            "url":self.url,
+            "body":self.body,
+            "method":self.method
+        }
+    
+
+class ReqEncoder(JSONEncoder):
+    def default(self, o):
+        return o.__dict__  
         
 class RequestSpanBundle:
     """
