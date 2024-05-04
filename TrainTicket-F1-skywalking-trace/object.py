@@ -1,6 +1,6 @@
 import json
 import re
-from json import JSONEncoder
+
 
 class Span:
     def __init__(self, span):
@@ -95,11 +95,9 @@ class Req:
             "method":self.method
         }
     
-
-class ReqEncoder(JSONEncoder):
-    def default(self, o):
-        return o.__dict__  
-        
+    def __json__(self):
+        return self.__dict__()
+    
 class RequestSpanBundle:
     """
     <Req, Span>
