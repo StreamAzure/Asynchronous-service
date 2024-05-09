@@ -57,11 +57,11 @@ class Span:
         if match:
             stat = self.tags["db.statement"]
             completed_stat = stat
-            if params:
+            if params and "db.sql.parameters" in self.tags.keys():
                 exec_tpye = match.group(1)
                 params = self.tags["db.sql.parameters"].strip("[]").split(",")
                 if exec_tpye == "executeQuery":
-                    where_clause = stat.split("where ")[1]
+                    # where_clause = stat.split("where ")[1]
                     if len(params) > 0:
                         for param in params:
                             completed_stat = completed_stat.replace("?", param, 1)
@@ -75,6 +75,7 @@ class Span:
 
 class Req:
     def __init__(self, method, url, type, endpoint_name) -> None:
+        self.correspond_package_id = -1
         self.method = method # 'GET','PUT', etc.
         self.url = url
         self.type = type # 'read' or 'write'

@@ -86,18 +86,19 @@ def trace_based_filter(candidate_pairs, segments, segment_tree):
     1. request 具有相同的 segmentID
     2. request 对应的 span 在 segment_tree 中位于同一路径
     """
+    print("\n======== Prune ========\n")
 
     pruned_pairs = []
     # 具有相同的 segmentID，存在HB关系，不会并发
     print(f"[Rule 1] Before: {len(candidate_pairs)}")
     pruned_pairs = [pair for pair in candidate_pairs if pair[0].span.segmentID != pair[1].span.segmentID]
-    print(f"[Rule 1] After: {len(pruned_pairs)}")
+    print(f"[Rule 1] After: {len(pruned_pairs)}\n")
     
     # 两个 request 在 trace 中位于同一路径上
     #（即两个 request 所属的 segment 的最近公共祖先为其中一个segment自己）
     print(f"[Rule 2] Before: {len(pruned_pairs)}")
     pruned_pairs = LCA_prune(pruned_pairs, segment_tree)
-    print(f"[Rule 2] After: {len(pruned_pairs)}")
+    print(f"[Rule 2] After: {len(pruned_pairs)}\n")
 
     print()
     

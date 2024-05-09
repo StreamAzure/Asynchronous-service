@@ -15,7 +15,8 @@ def readHTTPFile(filename) -> list:
     with open(filename, 'r') as f:
         for line in f.readlines():
             line = line.strip()
-            log_entry = json.loads(line)
+            # log_entry = json.loads(line)
+            log_entry = eval(line)
             packages.append(log_entry)
     return packages
 
@@ -52,7 +53,9 @@ def match_request_by_data(packages:list, bundles:list, segments):
         target_method = bundle.req.method
         # 暂时不用 endtime
         target_timestamp, _ = _get_correspond_request_timestamp(bundle.span, segments)
-        print(f"searching: [{target_timestamp}][{target_method}][{target_url}]")
+        print(f"searching for request: [{target_timestamp}][{target_method}][{target_url}]")
+
+        found = False
 
         for p in packages:
             if p["method"] == target_method and p["url"] == target_url:
@@ -61,9 +64,15 @@ def match_request_by_data(packages:list, bundles:list, segments):
                 time_diff_ms = int(target_timestamp) - int(timestamp)
                 if TIME_RANGE_MIN <= time_diff_ms <= TIME_RANGE_MAX:
                     print(timestamp)
+                    found = True
                     # 匹配成功，将HTTP数据中的Body数据填充到bundle.req.body中
-                    bundle.req.body = p["body"]
+                    bundle.req.correspond_package_id = p["id"]
+                    if "content" in p.keys():
+                        bundle.req.body = p["content"]
                     # print(format_or_output(bundle.req.body))
+        
+        if not found:
+            print("not found!")
 
 def load_spans_from_file(file_path):
     """
@@ -132,7 +141,7 @@ def trace_analyze(spans):
         if segID not in segment_tree.keys():
             segment_tree[segID] = []
     
-    _print_trace(segments, segment_tree, None)
+    # _print_trace(segments, segment_tree, None)
     print()
     return segments, segment_tree
 
@@ -165,7 +174,10 @@ def get_ids_for_request(reqBundles: list[RequestSpanBundle]):
     for bundle in reqBundles:
         data_dict = {}
         fields, _ = get_sql_keys(bundle.span.sqlStmt) # SQL字段名
-        values = bundle.span.tags["db.sql.parameters"].strip("[]").split(",") # SQL字段值
+        if "db.sql.parameters" in bundle.span.tags.keys():
+            values = bundle.span.tags["db.sql.parameters"].strip("[]").split(",") # SQL字段值
+        else:
+            values = []
 
         # 捆绑字段名和值
         if get_operation(bundle.span.sqlStmt) == 'insert':
@@ -252,10 +264,31 @@ def compute_matching_scores(request_ids_dict: dict) -> dict:
     )
 
     return dict(sorted_matching_scores)
+
+def unique_by_fields(lst):
+    """
+    span 去重
+    多个 trace 文件中可能有一些 span 重复出现
+    """
+    # 用于存储已见到的元素的 traceID, segmentID, spanID 组合
+    seen = set()
+    # 用于存储去重后的唯一元素
+    unique_lst = []
+
+    for item in lst:
+        # 创建一个元组，包含用于去重的字段
+        identifier = (item.traceID, item.segmentID, item.spanID)
+        
+        # 如果这个组合还没有出现过
+        if identifier not in seen:
+            # 添加到已见到的组合中
+            seen.add(identifier)
+            # 将元素添加到结果列表中
+            unique_lst.append(item)
+
+    return unique_lst
     
-def main(output_file):
-    trace_dir = 'data-0502/trace'
-    http_file = 'data-0502/http_data.json'
+def main(trace_dir, http_file, output_file):
 
     spans = []
     # step 1: get all spans from trace files
@@ -263,6 +296,10 @@ def main(output_file):
     for file in all_files:
         span_file = os.path.join(trace_dir, file)
         spans += load_spans_from_file(span_file)
+
+    print(f"去重前，size of spans: {len(spans)}")
+    spans = unique_by_fields(spans)
+    print(f"去重后，size of spans: {len(spans)}")
     
     # step 2: analyze the trace structure of the spans
     segments, segment_tree = trace_analyze(spans)
@@ -281,15 +318,23 @@ def main(output_file):
     # step 4: for a request, find all id values in corresponding SQL statements
     request_ids_dict = get_ids_for_request(bundles)
 
+    print(f"共有 {len(request_ids_dict)} 个相关 request")
+
     # step 5: for a pair of requests, compute the matching score of them 
     sorted_matching_scores = compute_matching_scores(request_ids_dict)
     
     # step 6: get the candidate pairs according to their matching score
     candidate_pairs = []
     for pairs, score in sorted_matching_scores.items():
-        # print(f"请求 {pairs[0].span.segmentID} 和请求 {pairs[1].span.segmentID} 的匹配分数是: {score}")
+        print(f"请求 [{pairs[0].req.correspond_package_id}]{pairs[0].span.segmentID} 和请求 [{pairs[1].req.correspond_package_id}]{pairs[1].span.segmentID} 的匹配分数是: {score}")
         if score != 0: # There are some ID values occur in both two requests
             candidate_pairs.append(pairs)
+    
+    count1 = sum(1 for key, value in sorted_matching_scores.items() if value == 1)
+    count2 = sum(1 for key, value in sorted_matching_scores.items() if value == 2)
+
+    print(f"键值为 '1' 的键值对数量是: {count1}")
+    print(f"键值为 '2' 的键值对数量是: {count2}")
 
     # step 7: prune the candidate pairs
     pruned_pairs = trace_based_filter(candidate_pairs, segments, segment_tree)
@@ -298,8 +343,12 @@ def main(output_file):
     mask_parameters_output(pruned_pairs, output_file)
 
 if __name__ == "__main__":
-    output_file = 'data-0502/res/candidate-pairs.json'
-    main(output_file)
+    output_file = 'data-0509/res/candidate-pairs.json'
+    trace_dir = 'data-0509/trace'
+    http_file = 'data-0509/http/http_flows.json'
+
+    main(trace_dir, http_file, output_file)
+
 
 
     
