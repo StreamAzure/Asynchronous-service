@@ -1,0 +1,58 @@
+{
+    "0": [
+        "[read] GET /api/v1/orderservice/order/?",
+        "[write] PUT /api/v1/orderservice/order"
+    ],
+    "1": [
+        "[read] GET /api/v1/orderservice/order/?",
+        "[write] PUT /api/v1/orderservice/order"
+    ],
+    "2": [
+        "[write] PUT /api/v1/orderservice/order",
+        "[read] GET /api/v1/inside_pay_service/inside_payment/drawback/?/?"
+    ],
+    "3": [
+        "[write] PUT /api/v1/orderservice/order",
+        "[write] GET /api/v1/inside_pay_service/inside_payment/drawback/?/?"
+    ],
+    "4": [
+        "[write] PUT /api/v1/orderservice/order",
+        "[read] GET /api/v1/userservice/users/id/?"
+    ],
+    "5": [
+        "[write] PUT /api/v1/orderservice/order",
+        "[write] GET /api/v1/inside_pay_service/inside_payment/drawback/?/?"
+    ],
+    "6": [
+        "[write] PUT /api/v1/orderservice/order",
+        "[read] GET /api/v1/orderservice/order/?"
+    ],
+    "7": [
+        "[read] GET /api/v1/inside_pay_service/inside_payment/drawback/?/?",
+        "[write] PUT /api/v1/orderservice/order"
+    ],
+    "8": [
+        "[write] GET /api/v1/inside_pay_service/inside_payment/drawback/?/?",
+        "[read] GET /api/v1/userservice/users/id/?"
+    ],
+    "9": [
+        "[write] GET /api/v1/inside_pay_service/inside_payment/drawback/?/?",
+        "[write] PUT /api/v1/orderservice/order"
+    ],
+    "10": [
+        "[read] GET /api/v1/userservice/users/id/?",
+        "[write] PUT /api/v1/orderservice/order"
+    ],
+    "11": [
+        "[read] GET /api/v1/userservice/users/id/?",
+        "[write] GET /api/v1/inside_pay_service/inside_payment/drawback/?/?"
+    ],
+    "12": [
+        "[write] PUT /api/v1/orderservice/order",
+        "[write] GET /api/v1/inside_pay_service/inside_payment/drawback/?/?"
+    ],
+    "13": [
+        "[write] PUT /api/v1/orderservice/order",
+        "[read] GET /api/v1/orderservice/order/?"
+    ]
+}
