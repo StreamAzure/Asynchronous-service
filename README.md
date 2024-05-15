@@ -1,16 +1,26 @@
-TODO:
+# 注意
+有些查询请求，其 SQL 语句是 SELECT，但 HTTP 方法是 PUT。
+当前实现中以 SQL 语句为准， SELECT 的一概视为 read 请求
+如 F1：
+select GET http://172.25.0.72:12032/api/v1/orderOtherService/orderOther/72ac2456-4539-4fef-9b38-a6a4cf83488b
+select PUT http://172.25.0.72:12032/api/v1/orderOtherService/orderOther
+update PUT http://172.25.0.72:12032/api/v1/orderOtherService/orderOther
+select GET http://172.25.0.75:18673/api/v1/inside_pay_service/inside_payment/drawback/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f/0.00
+insert GET http://172.25.0.75:18673/api/v1/inside_pay_service/inside_payment/drawback/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f/0.00
+select PUT http://172.25.0.72:12032/api/v1/orderOtherService/orderOther
+update PUT http://172.25.0.72:12032/api/v1/orderOtherService/orderOther
+select GET http://172.25.0.79:12031/api/v1/orderservice/order/72ac2456-4539-4fef-9b38-a6a4cf83488b
+select GET http://172.25.0.72:12032/api/v1/orderOtherService/orderOther/72ac2456-4539-4fef-9b38-a6a4cf83488b
+select GET http://172.25.0.72:12032/api/v1/orderOtherService/orderOther/72ac2456-4539-4fef-9b38-a6a4cf83488b
 
-- [×] 03/07 报文需要去重：类型、HTTP方法、URL相同、源和目的IP对称且时间戳相差不超过100的（注：未加入“源和目的IP对称”这个条件但暂时实现去重）
-- [ ] 03/08 筛选出来的报文……真能按时间戳相近来列入怀疑名单吗
-
-
-
-packet 字段：
-['_PickleType', '__all_slots__', '__bool__', '__bytes__', '__class__', '__class_getitem__', '__contains__', '__deepcopy__', '__delattr__', '__delitem__', '__dict__', '__dir__', '__div__', '__doc__', '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__', '__getitem__', '__getstate__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__iter__', '__iterlen__', '__le__', '__len__', '__lt__', '__module__', '__mul__', '__ne__', '__new__', '__nonzero__', '__orig_bases__', '__parameters__', '__rdiv__', '__reduce__', '__reduce_ex__', '__repr__', '__rmul__', '__rtruediv__', '__setattr__', '__setitem__', '__setstate__', '__signature__', '__sizeof__', '__slots__', '__str__', '__subclasshook__', '__truediv__', '__weakref__', '_answered', '_defrag_pos', '_do_summary', '_is_protocol', '_name', '_overload_fields', '_pkt', '_resolve_alias', '_show_or_dump', '_superdir', 'add_parent', 'add_payload', 'add_underlayer', 'aliastypes', 'answers', 'build', 'build_done', 'build_padding', 'build_ps', 'canvas_dump', 'class_default_fields', 'class_default_fields_ref', 'class_dont_cache', 'class_fieldtype', 'class_packetfields', 'clear_cache', 'clone_with', 'command', 'comment', 'copy', 'copy_field_value', 'copy_fields_dict', 'decode_payload_as', 'default_fields', 'default_payload_class', 'delfieldval', 'deprecated_fields', 'direction', 'dispatch_hook', 'display', 'dissect', 'dissection_done', 'do_build', 'do_build_payload', 'do_build_ps', 'do_dissect', 'do_dissect_payload', 'do_init_cached_fields', 'do_init_fields', 'dst', 'explicit', 'extract_padding', 'fields', 'fields_desc', 'fieldtype', 'firstlayer', 'fragment', 'from_hexcap', 'get_field', 'getfield_and_val', 'getfieldval', 'getlayer', 'guess_payload_class', 'hashret', 'haslayer', 'hide_defaults', 'init_fields', 'iterpayloads', 'lastlayer', 'layers', 'lower_bonds', 'match_subclass', 'mysummary', 'name', 'original', 'overload_fields', 'overloaded_fields', 'packetfields', 'parent', 'payload', 'payload_guess', 'pdfdump', 'post_build', 'post_dissect', 'post_dissection', 'post_transforms', 'pre_dissect', 'prepare_cached_fields', 'psdump', 'raw_packet_cache', 'raw_packet_cache_fields', 'remove_parent', 'remove_payload', 'remove_underlayer', 'route', 'self_build', 'sent_time', 'setfieldval', 'show', 'show2', 'show_indent', 'show_summary', 'sniffed_on', 'sprintf', 'src', 'summary', 'svgdump', 'time', 'type', 'underlayer', 'upper_bonds', 'wirelen']
-
-
-关于时间戳：
-这个时间戳看起来像是一个 Unix 时间戳，但是它的长度比通常的 Unix 时间戳要长。这可能是因为它是以微秒（而不是秒）为单位的。
-Unix 时间戳是从 1970 年 1 月 1 日（UTC）开始计算的秒数。如果这个时间戳是以微秒为单位的，那么你可以通过将它除以 1,000,000 来将它转换为以秒为单位的时间戳。
-
-前10位数字相同的时间戳表示的是同一秒内的时间戳
+# 优化
+1. 以 SQL 语句方法为准，将 SELECT 的标记为 read 请求，其他为 write 请求；
+    - 为什么不用HTTP Method：因为观察到某些 PUT 类型的请求，最终对应的数据库语句是 SELECT
+2. 在构造 request_ids_dict 时，对于ID值集合相同、路径相同的 read 请求，只留一个
+    - 因为可以视为查询相同的对象，这种请求是幂等的
+3. 基于 request_ids_dict 两两配对构成 request_pairs 时，排除双 read 的 request
+4. 将 request 对应 id_values 集合的交集元素个数作为 pairs 的匹配分数，结果按分数从高到低排序
+    - TODO: 当 pairs 过多时，可以优先测试分数高的
+    - TODO: 有效性？
+5. 剪枝：利用 skyWalking 的 segment 设计，若 pair 中的 span 具有相同的 segmentID，则它们是同一线程中先后发生的请求，不是可并发的请求
+6. 剪枝：利用 trace 结构，若 pair 中的 span 具有父子关系（位于同一条路径上），则它们也具有 HB 关系，不是可并发的请求（暂时没啥用）

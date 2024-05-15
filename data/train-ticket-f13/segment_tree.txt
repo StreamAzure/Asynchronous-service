@@ -1,0 +1,96 @@
+None
+    -------------------------------------
+    4054a7b50d8146a09ff2289e0583dd59.97.17134272226330000
+    1713427222633
+    [Entry] GET:/api/v1/cancelservice/cancel/{orderId}/{loginId}
+    [Exit ] /api/v1/orderservice/order/c80cf7cd-10d7-47c0-b366-e93aeba0a888
+    [Exit ] /api/v1/orderservice/order
+    [Exit ] /api/v1/inside_pay_service/inside_payment/drawback/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f/40.00
+    [Exit ] /api/v1/userservice/users/id/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f
+    [Entry] GET:/api/v1/cancelservice/cancel/{orderId}/{loginId}
+    [Exit ] /api/v1/orderservice/order/c80cf7cd-10d7-47c0-b366-e93aeba0a888
+    [Exit ] /api/v1/orderservice/order
+    [Exit ] /api/v1/inside_pay_service/inside_payment/drawback/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f/40.00
+    [Exit ] /api/v1/userservice/users/id/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f
+       -------------------------------------
+       d496d3b3a77a41cd892a0d7139b43c3a.103.17134272226470190
+       1713427222647
+       [Entry] GET:/api/v1/orderservice/order/{orderId}
+       [Local] HikariCP/Connection/getConnection
+       [Exit ] Mysql/JDBC/PreparedStatement/executeQuery
+        - [select order0_.id as id1_0_0_, order0_.account_id as account_2_0_0_, order0_.bought_date as bought_d3_0_0_, order0_.coach_number as coach_nu4_0_0_, order0_.contacts_document_number as contacts5_0_0_, order0_.contacts_name as contacts6_0_0_, order0_.document_type as document7_0_0_, order0_.from_station as from_sta8_0_0_, order0_.price as price9_0_0_, order0_.seat_class as seat_cl10_0_0_, order0_.seat_number as seat_nu11_0_0_, order0_.status as status12_0_0_, order0_.to_station as to_stat13_0_0_, order0_.train_number as train_n14_0_0_, order0_.travel_date as travel_15_0_0_, order0_.travel_time as travel_16_0_0_ from orders order0_ where order0_.id=?]
+       [Exit ] Mysql/JDBC/Connection/commit
+       [Local] HikariCP/Connection/close
+       [Entry] GET:/api/v1/orderservice/order/{orderId}
+       [Local] HikariCP/Connection/getConnection
+       [Exit ] Mysql/JDBC/PreparedStatement/executeQuery
+        - [select order0_.id as id1_0_0_, order0_.account_id as account_2_0_0_, order0_.bought_date as bought_d3_0_0_, order0_.coach_number as coach_nu4_0_0_, order0_.contacts_document_number as contacts5_0_0_, order0_.contacts_name as contacts6_0_0_, order0_.document_type as document7_0_0_, order0_.from_station as from_sta8_0_0_, order0_.price as price9_0_0_, order0_.seat_class as seat_cl10_0_0_, order0_.seat_number as seat_nu11_0_0_, order0_.status as status12_0_0_, order0_.to_station as to_stat13_0_0_, order0_.train_number as train_n14_0_0_, order0_.travel_date as travel_15_0_0_, order0_.travel_time as travel_16_0_0_ from orders order0_ where order0_.id=?]
+       [Exit ] Mysql/JDBC/Connection/commit
+       [Local] HikariCP/Connection/close
+       -------------------------------------
+       d496d3b3a77a41cd892a0d7139b43c3a.101.17134272226620190
+       1713427222662
+       [Entry] PUT:/api/v1/orderservice/order
+       [Local] HikariCP/Connection/getConnection
+       [Exit ] Mysql/JDBC/PreparedStatement/executeQuery
+        - [select order0_.id as id1_0_0_, order0_.account_id as account_2_0_0_, order0_.bought_date as bought_d3_0_0_, order0_.coach_number as coach_nu4_0_0_, order0_.contacts_document_number as contacts5_0_0_, order0_.contacts_name as contacts6_0_0_, order0_.document_type as document7_0_0_, order0_.from_station as from_sta8_0_0_, order0_.price as price9_0_0_, order0_.seat_class as seat_cl10_0_0_, order0_.seat_number as seat_nu11_0_0_, order0_.status as status12_0_0_, order0_.to_station as to_stat13_0_0_, order0_.train_number as train_n14_0_0_, order0_.travel_date as travel_15_0_0_, order0_.travel_time as travel_16_0_0_ from orders order0_ where order0_.id=?]
+       [Exit ] Mysql/JDBC/Connection/commit
+       [Exit ] Mysql/JDBC/PreparedStatement/executeUpdate
+        - [update orders set account_id=?, bought_date=?, coach_number=?, contacts_document_number=?, contacts_name=?, document_type=?, from_station=?, price=?, seat_class=?, seat_number=?, status=?, to_station=?, train_number=?, travel_date=?, travel_time=? where id=?]
+       [Exit ] Mysql/JDBC/Connection/commit
+       [Local] HikariCP/Connection/close
+       [Entry] PUT:/api/v1/orderservice/order
+       [Local] HikariCP/Connection/getConnection
+       [Exit ] Mysql/JDBC/PreparedStatement/executeQuery
+        - [select order0_.id as id1_0_0_, order0_.account_id as account_2_0_0_, order0_.bought_date as bought_d3_0_0_, order0_.coach_number as coach_nu4_0_0_, order0_.contacts_document_number as contacts5_0_0_, order0_.contacts_name as contacts6_0_0_, order0_.document_type as document7_0_0_, order0_.from_station as from_sta8_0_0_, order0_.price as price9_0_0_, order0_.seat_class as seat_cl10_0_0_, order0_.seat_number as seat_nu11_0_0_, order0_.status as status12_0_0_, order0_.to_station as to_stat13_0_0_, order0_.train_number as train_n14_0_0_, order0_.travel_date as travel_15_0_0_, order0_.travel_time as travel_16_0_0_ from orders order0_ where order0_.id=?]
+       [Exit ] Mysql/JDBC/Connection/commit
+       [Exit ] Mysql/JDBC/PreparedStatement/executeUpdate
+        - [update orders set account_id=?, bought_date=?, coach_number=?, contacts_document_number=?, contacts_name=?, document_type=?, from_station=?, price=?, seat_class=?, seat_number=?, status=?, to_station=?, train_number=?, travel_date=?, travel_time=? where id=?]
+       [Exit ] Mysql/JDBC/Connection/commit
+       [Local] HikariCP/Connection/close
+       -------------------------------------
+       c54202eac5ac484e85a85ea0e175763e.99.17134272226820000
+       1713427222682
+       [Entry] GET:/api/v1/inside_pay_service/inside_payment/drawback/{userId}/{money}
+       [Local] HikariCP/Connection/getConnection
+       [Exit ] Mysql/JDBC/PreparedStatement/executeQuery
+        - [select money0_.id as id1_0_, money0_.money as money2_0_, money0_.type as type3_0_, money0_.user_id as user_id4_0_ from inside_money money0_ where money0_.user_id=?]
+       [Exit ] Mysql/JDBC/PreparedStatement/executeUpdate
+        - [insert into inside_money (money, type, user_id, id) values (?, ?, ?, ?)]
+       [Exit ] Mysql/JDBC/Connection/commit
+       [Local] HikariCP/Connection/close
+       [Entry] GET:/api/v1/inside_pay_service/inside_payment/drawback/{userId}/{money}
+       [Local] HikariCP/Connection/getConnection
+       [Exit ] Mysql/JDBC/PreparedStatement/executeQuery
+        - [select money0_.id as id1_0_, money0_.money as money2_0_, money0_.type as type3_0_, money0_.user_id as user_id4_0_ from inside_money money0_ where money0_.user_id=?]
+       [Exit ] Mysql/JDBC/PreparedStatement/executeUpdate
+        - [insert into inside_money (money, type, user_id, id) values (?, ?, ?, ?)]
+       [Exit ] Mysql/JDBC/Connection/commit
+       [Local] HikariCP/Connection/close
+       -------------------------------------
+       b36ccc9ab87c4b918a2afecac45027e3.104.17134272227130030
+       1713427222713
+       [Entry] GET:/api/v1/userservice/users/id/{userId}
+       [Local] HikariCP/Connection/getConnection
+       [Exit ] Mysql/JDBC/PreparedStatement/executeQuery
+        - [select user0_.user_id as user_id1_0_, user0_.document_num as document2_0_, user0_.document_type as document3_0_, user0_.email as email4_0_, user0_.gender as gender5_0_, user0_.password as password6_0_, user0_.user_name as user_nam7_0_ from user user0_ where user0_.user_id=?]
+       [Local] HikariCP/Connection/close
+       [Entry] GET:/api/v1/userservice/users/id/{userId}
+       [Local] HikariCP/Connection/getConnection
+       [Exit ] Mysql/JDBC/PreparedStatement/executeQuery
+        - [select user0_.user_id as user_id1_0_, user0_.document_num as document2_0_, user0_.document_type as document3_0_, user0_.email as email4_0_, user0_.gender as gender5_0_, user0_.password as password6_0_, user0_.user_name as user_nam7_0_ from user user0_ where user0_.user_id=?]
+       [Local] HikariCP/Connection/close
+    -------------------------------------
+    c54202eac5ac484e85a85ea0e175763e.98.17134272226330000
+    1713427222633
+    [Entry] POST:/api/v1/inside_pay_service/inside_payment
+    [Exit ] /api/v1/orderservice/order/c80cf7cd-10d7-47c0-b366-e93aeba0a888
+       -------------------------------------
+       d496d3b3a77a41cd892a0d7139b43c3a.95.17134272246460184
+       1713427224646
+       [Entry] GET:/api/v1/orderservice/order/{orderId}
+       [Local] HikariCP/Connection/getConnection
+       [Exit ] Mysql/JDBC/PreparedStatement/executeQuery
+        - [select order0_.id as id1_0_0_, order0_.account_id as account_2_0_0_, order0_.bought_date as bought_d3_0_0_, order0_.coach_number as coach_nu4_0_0_, order0_.contacts_document_number as contacts5_0_0_, order0_.contacts_name as contacts6_0_0_, order0_.document_type as document7_0_0_, order0_.from_station as from_sta8_0_0_, order0_.price as price9_0_0_, order0_.seat_class as seat_cl10_0_0_, order0_.seat_number as seat_nu11_0_0_, order0_.status as status12_0_0_, order0_.to_station as to_stat13_0_0_, order0_.train_number as train_n14_0_0_, order0_.travel_date as travel_15_0_0_, order0_.travel_time as travel_16_0_0_ from orders order0_ where order0_.id=?]
+       [Exit ] Mysql/JDBC/Connection/commit
+       [Local] HikariCP/Connection/close
