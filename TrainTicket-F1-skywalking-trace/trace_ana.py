@@ -295,6 +295,7 @@ def main(trace_dir, http_file, output_file):
     all_files = list(get_all_files(trace_dir))
     for file in all_files:
         span_file = os.path.join(trace_dir, file)
+        print(f"reading {span_file}")
         spans += load_spans_from_file(span_file)
 
     print(f"去重前，size of spans: {len(spans)}")
@@ -330,11 +331,10 @@ def main(trace_dir, http_file, output_file):
         if score != 0: # There are some ID values occur in both two requests
             candidate_pairs.append(pairs)
     
-    count1 = sum(1 for key, value in sorted_matching_scores.items() if value == 1)
-    count2 = sum(1 for key, value in sorted_matching_scores.items() if value == 2)
-
-    print(f"键值为 '1' 的键值对数量是: {count1}")
-    print(f"键值为 '2' 的键值对数量是: {count2}")
+    for value in set(sorted_matching_scores.values()):
+        count = sum(1 for key, v in sorted_matching_scores.items() if v == value)
+        print(f"Pairs with score {value}: {count}")
+    
 
     # step 7: prune the candidate pairs
     pruned_pairs = trace_based_filter(candidate_pairs, segments, segment_tree)
@@ -343,9 +343,9 @@ def main(trace_dir, http_file, output_file):
     mask_parameters_output(pruned_pairs, output_file)
 
 if __name__ == "__main__":
-    output_file = 'data-0509/res/candidate-pairs.json'
-    trace_dir = 'data-0509/trace'
-    http_file = 'data-0509/http/http_flows.json'
+    output_file = 'data-0511-f13/res/candidate-pairs.json'
+    trace_dir = 'data-0511-f13/trace'
+    http_file = 'data-0511-f13/http/http_flows.json'
 
     main(trace_dir, http_file, output_file)
 
