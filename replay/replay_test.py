@@ -13,6 +13,7 @@ headers = {
             'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
             'Connection': 'keep-alive',
         }
+
 def login(username="fdse_microservice", password="111111") -> bool:
     """
     登陆并建立session，返回登陆结果
@@ -39,42 +40,41 @@ def login(username="fdse_microservice", password="111111") -> bool:
     else:
         print("login failed")
         return False
-
-def send_package(str):
-    global token
+    
+def str2package(str) -> dict:
     req = eval(str)
-    url = req['url']
-    p_headers = req['headers']
-    method = req['method']
-    content = req['content']
+    req['headers']["Authorization"] = f"Bearer {token}"
+    req['headers']["Host"] = 'localhost:12032'
 
-    p_headers["Authorization"] = f"Bearer {token}"
-    p_headers["Host"] = 'localhost:12032'
+    return req
 
-    print(json.dumps(p_headers, indent=4))
-    # print(content)
-
-
+def send_package(req):
     url = 'http://localhost:12032'
 
     response = requests.post(
-        url, timeout=5, headers=p_headers, json=content
+        url, timeout=5, headers=req["headers"], json=req["content"]
     )
     if response.status_code == 200:
-        print(response.content)
+        print(response.text)
     else:
-        print(response)
+        print(response.status_code, response.text)
 
-str1 = ""
-str2 = ""
-with open('data-0509/http/http_flows.json', 'r') as f:
-    lines = f.readlines()
-    str1 = lines[44].strip()
-    str2 = lines[46].strip()
+def replay(req1, req2):
+    send_package(req1)
+    send_package(req2)
 
-login()
-send_package(str1)
-send_package(str2)
+if __name__ == "__main__":
+    str1 = ""
+    str2 = ""
+    with open('data-0509-f1/http/http_flows.json', 'r') as f:
+        lines = f.readlines()
+        str1 = lines[44].strip()
+        str2 = lines[46].strip()
+    
+    login()
+    req1 = str2package(str1)
+    req2 = str2package(str2)
+    replay(req1, req2)
 
 
 

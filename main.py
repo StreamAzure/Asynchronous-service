@@ -7,6 +7,7 @@ from output import origin_output, mask_parameters_output
 import os
 import itertools
 
+# 通过时间戳匹配报文的误差范围
 TIME_RANGE_MIN = -10  # 最小时间范围（毫秒）
 TIME_RANGE_MAX = 10  # 最大时间范围（毫秒）
 
