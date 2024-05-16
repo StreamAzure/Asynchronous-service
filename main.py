@@ -58,7 +58,7 @@ def match_request_by_data(packages:list, bundles:list, segments):
         target_method = bundle.req.method
         # 暂时不用 endtime
         target_timestamp, _ = _get_correspond_request_timestamp(bundle.span, segments)
-        print(f"searching for request: [{target_timestamp}][{target_method}][{target_url}]")
+        # print(f"searching for request: [{target_timestamp}][{target_method}][{target_url}]")
 
         found = False
 
@@ -68,7 +68,7 @@ def match_request_by_data(packages:list, bundles:list, segments):
                 timestamp = p["headers"]["X-Timestamp"]
                 time_diff_ms = int(target_timestamp) - int(timestamp)
                 if TIME_RANGE_MIN <= time_diff_ms <= TIME_RANGE_MAX:
-                    print(timestamp)
+                    # print(timestamp)
                     found = True
                     # 匹配成功，将HTTP数据中的Body数据填充到bundle.req.body中
                     bundle.req.correspond_package_id = p["id"]
@@ -77,7 +77,8 @@ def match_request_by_data(packages:list, bundles:list, segments):
                     # print(format_or_output(bundle.req.body))
         
         if not found:
-            print("not found!")
+            # print("not found!")
+            pass
 
 def load_spans_from_file(file_path):
     """
@@ -302,10 +303,6 @@ def main(trace_dir, http_file, output_file):
         span_file = os.path.join(trace_dir, file)
         print(f"reading {span_file}")
         spans += load_spans_from_file(span_file)
-
-    print(f"去重前，size of spans: {len(spans)}")
-    spans = unique_by_fields(spans)
-    print(f"去重后，size of spans: {len(spans)}")
     
     # step 2: analyze the trace structure of the spans
     segments, segment_tree = trace_analyze(spans)
@@ -332,7 +329,7 @@ def main(trace_dir, http_file, output_file):
     # step 6: get the candidate pairs according to their matching score
     candidate_pairs = []
     for pairs, score in sorted_matching_scores.items():
-        print(f"请求 [{pairs[0].req.correspond_package_id}]{pairs[0].span.segmentID} 和请求 [{pairs[1].req.correspond_package_id}]{pairs[1].span.segmentID} 的匹配分数是: {score}")
+        # print(f"请求 [{pairs[0].req.correspond_package_id}]{pairs[0].span.segmentID} 和请求 [{pairs[1].req.correspond_package_id}]{pairs[1].span.segmentID} 的匹配分数是: {score}")
         if score != 0: # There are some ID values occur in both two requests
             candidate_pairs.append(pairs)
     
@@ -348,9 +345,11 @@ def main(trace_dir, http_file, output_file):
     mask_parameters_output(pruned_pairs, output_file)
 
 if __name__ == "__main__":
-    output_file = 'data-0511-f13/res/candidate-pairs.json'
-    trace_dir = 'data-0511-f13/trace'
-    http_file = 'data-0511-f13/http/http_flows.json'
+    data_dir = 'data-0516-f1'
+
+    output_file = data_dir + '/res/candidate-pairs.json'
+    trace_dir = data_dir + '/trace'
+    http_file = data_dir + '/http/http_flows.json'
 
     main(trace_dir, http_file, output_file)
 
