@@ -42,8 +42,8 @@ def mask_parameters_output(candidate_pairs:list, output_file):
         _mask_parameters(pairs[1])
         # res[i] = [str(pairs[0].req), str(pairs[1].req)]
         res[i] = [
-            json.dumps(pairs[0].req, default=lambda obj: obj.__json__()),
-            json.dumps(pairs[1].req, default=lambda obj: obj.__json__())
+            pairs[0].req.__dict__(),
+            pairs[1].req.__dict__()
         ]
     json_data = json.dumps(res, indent=4)
     with open(output_file, 'w') as f:

@@ -17,6 +17,10 @@ def readHTTPFile(filename) -> list:
             line = line.strip()
             # log_entry = json.loads(line)
             log_entry = eval(line)
+            if log_entry["content"] != "":
+                log_entry["content"]  = eval(log_entry["content"])
+            else:
+                log_entry["content"] = None
             packages.append(log_entry)
     return packages
 
@@ -348,7 +352,6 @@ if __name__ == "__main__":
     http_file = 'data-0511-f13/http/http_flows.json'
 
     main(trace_dir, http_file, output_file)
-
 
 
     
