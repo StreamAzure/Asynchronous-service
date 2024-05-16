@@ -23,7 +23,7 @@ def readHTTPFile(filename) -> list:
 def _get_correspond_request_timestamp(span, segments):
     """
     segments: 将span按segment分组构成的字典
-    输入一个 span，溯源到它的 request URL
+    输入一个 span，溯源到它的 request span 的时间戳
     """
     entrySpan = segments[span.segmentID][0]
     if entrySpan.type != "Entry":
