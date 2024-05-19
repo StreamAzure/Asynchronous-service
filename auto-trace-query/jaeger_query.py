@@ -73,8 +73,9 @@ def query_trace_list(url):
 def main():
     services = query_services()
     services.remove("jaeger-all-in-one")
-    start = "2024-05-19 11:44:00"
-    end =  "2024-05-19 11:47:00"
+    start = "2024-05-19 12:20:00"
+    end =  "2024-05-19 12:40:00"
+    print(services)
 
     trace_visited = []
     span_visited = []
@@ -100,7 +101,7 @@ def main():
                 if spanID in span_visited:
                     continue
                 span_visited.append(spanID)
-                pattern = re.compile(r'redis|mongo')
+                pattern = re.compile(r'redis|mongo|Mongo|Redis')
                 if pattern.search(span["operationName"]):
                     db_req_cnt += 1
                     print(f"[{span['spanID']}] {span['operationName']}")
