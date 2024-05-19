@@ -3,16 +3,16 @@
     "trace": {
       "spans": [
         {
-          "traceId": "84f47819c101435f9e510ed245f91c53.109.17158558501620003",
-          "segmentId": "84f47819c101435f9e510ed245f91c53.109.17158558501620002",
+          "traceId": "84f47819c101435f9e510ed245f91c53.106.17158580354770021",
+          "segmentId": "84f47819c101435f9e510ed245f91c53.106.17158580354770020",
           "spanId": 0,
           "parentSpanId": -1,
           "refs": [],
           "serviceCode": "ts-gateway-service",
           "serviceInstanceName": "912481f4f7154f6b950821fbaa3a16cb@172.19.0.42",
-          "startTime": 1715855850162,
-          "endTime": 1715855850164,
-          "endpointName": "POST:/api/v1/users/login",
+          "startTime": 1715858035477,
+          "endTime": 1715858035478,
+          "endpointName": "POST:/api/v1/preserveservice/preserve",
           "type": "Entry",
           "peer": "",
           "component": "Tomcat",
@@ -21,7 +21,7 @@
           "tags": [
             {
               "key": "url",
-              "value": "http://ts-gateway-service:18888/api/v1/users/login"
+              "value": "http://ts-gateway-service:18888/api/v1/preserveservice/preserve"
             },
             {
               "key": "http.method",

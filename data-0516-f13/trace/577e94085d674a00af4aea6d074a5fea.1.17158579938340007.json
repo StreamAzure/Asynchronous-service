@@ -1,0 +1,40 @@
+{
+  "data": {
+    "trace": {
+      "spans": [
+        {
+          "traceId": "577e94085d674a00af4aea6d074a5fea.1.17158579938340007",
+          "segmentId": "577e94085d674a00af4aea6d074a5fea.1.17158579938340006",
+          "spanId": 0,
+          "parentSpanId": -1,
+          "refs": [],
+          "serviceCode": "ts-inside-payment-service",
+          "serviceInstanceName": "0c96a5496fc842efbdc847d254568548@172.19.0.53",
+          "startTime": 1715857993835,
+          "endTime": 1715857993848,
+          "endpointName": "Mysql/JDBC/Statement/executeQuery",
+          "type": "Exit",
+          "peer": "ts-inside-payment-mysql:3306",
+          "component": "mysql-connector-java",
+          "isError": false,
+          "layer": "Database",
+          "tags": [
+            {
+              "key": "db.type",
+              "value": "Mysql"
+            },
+            {
+              "key": "db.instance",
+              "value": "ts"
+            },
+            {
+              "key": "db.statement",
+              "value": "SHOW FULL TABLES FROM `ts` LIKE '%'"
+            }
+          ],
+          "logs": []
+        }
+      ]
+    }
+  }
+}

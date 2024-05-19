@@ -3,16 +3,16 @@
     "trace": {
       "spans": [
         {
-          "traceId": "84f47819c101435f9e510ed245f91c53.103.17158558503160003",
-          "segmentId": "84f47819c101435f9e510ed245f91c53.103.17158558503160002",
+          "traceId": "84f47819c101435f9e510ed245f91c53.105.17158580353710009",
+          "segmentId": "84f47819c101435f9e510ed245f91c53.105.17158580353710008",
           "spanId": 0,
           "parentSpanId": -1,
           "refs": [],
           "serviceCode": "ts-gateway-service",
           "serviceInstanceName": "912481f4f7154f6b950821fbaa3a16cb@172.19.0.42",
-          "startTime": 1715855850316,
-          "endTime": 1715855850318,
-          "endpointName": "POST:/api/v1/travel2service/trips/left",
+          "startTime": 1715858035371,
+          "endTime": 1715858035373,
+          "endpointName": "GET:/api/v1/verifycode/generate",
           "type": "Entry",
           "peer": "",
           "component": "Tomcat",
@@ -21,11 +21,11 @@
           "tags": [
             {
               "key": "url",
-              "value": "http://ts-gateway-service:18888/api/v1/travel2service/trips/left"
+              "value": "http://ts-gateway-service:18888/api/v1/verifycode/generate"
             },
             {
               "key": "http.method",
-              "value": "POST"
+              "value": "GET"
             },
             {
               "key": "http.status_code",

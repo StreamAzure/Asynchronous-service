@@ -3,16 +3,16 @@
     "trace": {
       "spans": [
         {
-          "traceId": "84f47819c101435f9e510ed245f91c53.105.17158558512370001",
-          "segmentId": "84f47819c101435f9e510ed245f91c53.105.17158558512370000",
+          "traceId": "84f47819c101435f9e510ed245f91c53.100.17158580354770025",
+          "segmentId": "84f47819c101435f9e510ed245f91c53.100.17158580354770024",
           "spanId": 0,
           "parentSpanId": -1,
           "refs": [],
           "serviceCode": "ts-gateway-service",
           "serviceInstanceName": "912481f4f7154f6b950821fbaa3a16cb@172.19.0.42",
-          "startTime": 1715855851237,
-          "endTime": 1715855851239,
-          "endpointName": "POST:/api/v1/inside_pay_service/inside_payment",
+          "startTime": 1715858035477,
+          "endTime": 1715858035478,
+          "endpointName": "POST:/api/v1/travelservice/trips/left",
           "type": "Entry",
           "peer": "",
           "component": "Tomcat",
@@ -21,7 +21,7 @@
           "tags": [
             {
               "key": "url",
-              "value": "http://ts-gateway-service:18888/api/v1/inside_pay_service/inside_payment"
+              "value": "http://ts-gateway-service:18888/api/v1/travelservice/trips/left"
             },
             {
               "key": "http.method",

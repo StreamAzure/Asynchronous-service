@@ -3,15 +3,15 @@
     "trace": {
       "spans": [
         {
-          "traceId": "860de05daca1489fa23ef8f140c5244f.109.17158558501410005",
-          "segmentId": "860de05daca1489fa23ef8f140c5244f.109.17158558501410004",
+          "traceId": "860de05daca1489fa23ef8f140c5244f.108.17158580353750005",
+          "segmentId": "860de05daca1489fa23ef8f140c5244f.108.17158580353750004",
           "spanId": 0,
           "parentSpanId": -1,
           "refs": [],
           "serviceCode": "ts-verification-code-service",
           "serviceInstanceName": "77bd379e924c4f2185a42ea5c1fac3ce@172.19.0.39",
-          "startTime": 1715855850141,
-          "endTime": 1715855850157,
+          "startTime": 1715858035375,
+          "endTime": 1715858035378,
           "endpointName": "GET:/api/v1/verifycode/generate",
           "type": "Entry",
           "peer": "",

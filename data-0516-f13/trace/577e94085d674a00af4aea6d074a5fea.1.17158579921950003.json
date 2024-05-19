@@ -1,0 +1,27 @@
+{
+  "data": {
+    "trace": {
+      "spans": [
+        {
+          "traceId": "577e94085d674a00af4aea6d074a5fea.1.17158579921950003",
+          "segmentId": "577e94085d674a00af4aea6d074a5fea.1.17158579921950002",
+          "spanId": 0,
+          "parentSpanId": -1,
+          "refs": [],
+          "serviceCode": "ts-inside-payment-service",
+          "serviceInstanceName": "0c96a5496fc842efbdc847d254568548@172.19.0.53",
+          "startTime": 1715857992195,
+          "endTime": 1715857992198,
+          "endpointName": "HikariCP/Connection/close",
+          "type": "Local",
+          "peer": "",
+          "component": "HikariCP",
+          "isError": false,
+          "layer": "Unknown",
+          "tags": [],
+          "logs": []
+        }
+      ]
+    }
+  }
+}

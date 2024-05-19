@@ -3,16 +3,16 @@
     "trace": {
       "spans": [
         {
-          "traceId": "84f47819c101435f9e510ed245f91c53.107.17158558513420001",
-          "segmentId": "84f47819c101435f9e510ed245f91c53.107.17158558513420000",
+          "traceId": "84f47819c101435f9e510ed245f91c53.104.17158579854600029",
+          "segmentId": "84f47819c101435f9e510ed245f91c53.104.17158579854600028",
           "spanId": 0,
           "parentSpanId": -1,
           "refs": [],
           "serviceCode": "ts-gateway-service",
           "serviceInstanceName": "912481f4f7154f6b950821fbaa3a16cb@172.19.0.42",
-          "startTime": 1715855851342,
-          "endTime": 1715855851344,
-          "endpointName": "GET:/api/v1/cancelservice/cancel/6d81e458-5eaf-4b38-a1d1-7466bf3ad2b1/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+          "startTime": 1715857985460,
+          "endTime": 1715857985461,
+          "endpointName": "GET:/api/v1/verifycode/generate",
           "type": "Entry",
           "peer": "",
           "component": "Tomcat",
@@ -21,7 +21,7 @@
           "tags": [
             {
               "key": "url",
-              "value": "http://ts-gateway-service:18888/api/v1/cancelservice/cancel/6d81e458-5eaf-4b38-a1d1-7466bf3ad2b1/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f"
+              "value": "http://ts-gateway-service:18888/api/v1/verifycode/generate"
             },
             {
               "key": "http.method",
