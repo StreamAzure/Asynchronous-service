@@ -156,9 +156,20 @@ def _get_correspond_request(span, segments):
     segments: 将span按segment分组构成的字典
     输入一个 span，溯源到它的 request URL
     """
-    entrySpan = segments[span.segmentID][0]
-    if entrySpan.type != "Entry":
-        raise Exception("segment[0] 不是 entrySpan")
+    # entrySpan = segments[span.segmentID][0] 
+    entrySpan = None
+    for s in segments[span.segmentID]:
+        if s.spanID == 0 or entrySpan.type == "Entry" :
+            entrySpan = s
+            break
+    
+    # if entrySpan.type != "Entry":
+    #     print(f"WARNING: segment[0] 不是 entrySpan, entrySpan.type: {entrySpan.type}")
+    if entrySpan is None:
+        raise Exception(f"找不到 entrySpan")
+    
+    if "http.method" not in entrySpan.tags.keys():
+        raise Exception(f"没有对应字段！Span: {entrySpan.spanID} {entrySpan.tags}")
     
     endpoint_name = entrySpan.endpointName
     http_method = entrySpan.tags["http.method"]
@@ -345,7 +356,7 @@ def main(trace_dir, http_file, output_file):
     mask_parameters_output(pruned_pairs, output_file)
 
 if __name__ == "__main__":
-    data_dir = 'data-0516-f1'
+    data_dir = 'data-0516-f13'
 
     output_file = data_dir + '/res/candidate-pairs.json'
     trace_dir = data_dir + '/trace'
