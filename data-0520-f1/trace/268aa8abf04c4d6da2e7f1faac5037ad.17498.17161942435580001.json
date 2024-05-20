@@ -1,0 +1,40 @@
+{
+  "data": {
+    "trace": {
+      "spans": [
+        {
+          "traceId": "268aa8abf04c4d6da2e7f1faac5037ad.17498.17161942435580001",
+          "segmentId": "268aa8abf04c4d6da2e7f1faac5037ad.17498.17161942435580000",
+          "spanId": 0,
+          "parentSpanId": -1,
+          "refs": [],
+          "serviceCode": "ts-travel-service",
+          "serviceInstanceName": "63b9cf435a694f2ca225c0e84f49a0a0@172.28.0.80",
+          "startTime": 1716194243558,
+          "endTime": 1716194243558,
+          "endpointName": "Mysql/JDBC/Connection/close",
+          "type": "Exit",
+          "peer": "ts-travel-mysql:3306",
+          "component": "mysql-connector-java",
+          "isError": false,
+          "layer": "Database",
+          "tags": [
+            {
+              "key": "db.type",
+              "value": "Mysql"
+            },
+            {
+              "key": "db.instance",
+              "value": "ts"
+            },
+            {
+              "key": "db.statement",
+              "value": ""
+            }
+          ],
+          "logs": []
+        }
+      ]
+    }
+  }
+}

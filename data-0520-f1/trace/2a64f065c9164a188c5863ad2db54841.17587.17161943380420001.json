@@ -1,0 +1,40 @@
+{
+  "data": {
+    "trace": {
+      "spans": [
+        {
+          "traceId": "2a64f065c9164a188c5863ad2db54841.17587.17161943380420001",
+          "segmentId": "2a64f065c9164a188c5863ad2db54841.17587.17161943380420000",
+          "spanId": 0,
+          "parentSpanId": -1,
+          "refs": [],
+          "serviceCode": "ts-consign-service",
+          "serviceInstanceName": "e4171533b6e54bd78b46890f384b0b53@172.28.0.45",
+          "startTime": 1716194338042,
+          "endTime": 1716194338046,
+          "endpointName": "Mysql/JDBC/Connection/close",
+          "type": "Exit",
+          "peer": "ts-consign-mysql:3306",
+          "component": "mysql-connector-java",
+          "isError": false,
+          "layer": "Database",
+          "tags": [
+            {
+              "key": "db.type",
+              "value": "Mysql"
+            },
+            {
+              "key": "db.instance",
+              "value": "ts"
+            },
+            {
+              "key": "db.statement",
+              "value": ""
+            }
+          ],
+          "logs": []
+        }
+      ]
+    }
+  }
+}

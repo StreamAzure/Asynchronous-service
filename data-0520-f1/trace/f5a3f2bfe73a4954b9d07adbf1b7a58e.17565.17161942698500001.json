@@ -1,0 +1,40 @@
+{
+  "data": {
+    "trace": {
+      "spans": [
+        {
+          "traceId": "f5a3f2bfe73a4954b9d07adbf1b7a58e.17565.17161942698500001",
+          "segmentId": "f5a3f2bfe73a4954b9d07adbf1b7a58e.17565.17161942698500000",
+          "spanId": 0,
+          "parentSpanId": -1,
+          "refs": [],
+          "serviceCode": "ts-train-service",
+          "serviceInstanceName": "2f5a76cea0f8416eb84c97ecaf66be0f@172.28.0.50",
+          "startTime": 1716194269850,
+          "endTime": 1716194269851,
+          "endpointName": "Mysql/JDBC/Connection/close",
+          "type": "Exit",
+          "peer": "ts-train-mysql:3306",
+          "component": "mysql-connector-java",
+          "isError": false,
+          "layer": "Database",
+          "tags": [
+            {
+              "key": "db.type",
+              "value": "Mysql"
+            },
+            {
+              "key": "db.instance",
+              "value": "ts"
+            },
+            {
+              "key": "db.statement",
+              "value": ""
+            }
+          ],
+          "logs": []
+        }
+      ]
+    }
+  }
+}

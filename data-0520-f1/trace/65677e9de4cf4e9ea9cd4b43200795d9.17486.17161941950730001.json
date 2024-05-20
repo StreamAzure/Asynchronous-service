@@ -1,0 +1,40 @@
+{
+  "data": {
+    "trace": {
+      "spans": [
+        {
+          "traceId": "65677e9de4cf4e9ea9cd4b43200795d9.17486.17161941950730001",
+          "segmentId": "65677e9de4cf4e9ea9cd4b43200795d9.17486.17161941950730000",
+          "spanId": 0,
+          "parentSpanId": -1,
+          "refs": [],
+          "serviceCode": "ts-food-service",
+          "serviceInstanceName": "07ebe16628364f928cbdc822cd7a527b@172.28.0.66",
+          "startTime": 1716194195073,
+          "endTime": 1716194195074,
+          "endpointName": "Mysql/JDBC/Connection/close",
+          "type": "Exit",
+          "peer": "ts-food-mysql:3306",
+          "component": "mysql-connector-java",
+          "isError": false,
+          "layer": "Database",
+          "tags": [
+            {
+              "key": "db.type",
+              "value": "Mysql"
+            },
+            {
+              "key": "db.instance",
+              "value": "ts"
+            },
+            {
+              "key": "db.statement",
+              "value": ""
+            }
+          ],
+          "logs": []
+        }
+      ]
+    }
+  }
+}

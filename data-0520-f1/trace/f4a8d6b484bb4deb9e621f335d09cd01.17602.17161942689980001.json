@@ -1,0 +1,40 @@
+{
+  "data": {
+    "trace": {
+      "spans": [
+        {
+          "traceId": "f4a8d6b484bb4deb9e621f335d09cd01.17602.17161942689980001",
+          "segmentId": "f4a8d6b484bb4deb9e621f335d09cd01.17602.17161942689980000",
+          "spanId": 0,
+          "parentSpanId": -1,
+          "refs": [],
+          "serviceCode": "ts-contacts-service",
+          "serviceInstanceName": "38a6ccdd790d4e46b0e2066d0e6295d7@172.28.0.39",
+          "startTime": 1716194268998,
+          "endTime": 1716194268998,
+          "endpointName": "Mysql/JDBC/Connection/close",
+          "type": "Exit",
+          "peer": "ts-contacts-mysql:3306",
+          "component": "mysql-connector-java",
+          "isError": false,
+          "layer": "Database",
+          "tags": [
+            {
+              "key": "db.type",
+              "value": "Mysql"
+            },
+            {
+              "key": "db.instance",
+              "value": "ts"
+            },
+            {
+              "key": "db.statement",
+              "value": ""
+            }
+          ],
+          "logs": []
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,309 @@
+[Segment] 2fc6657b1aec4ce0a6997496ba34ad0f.120.17161943310620002
+POST:/api/v1/preserveotherservice/preserveOther
+/api/v1/securityservice/securityConfigs/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f
+/api/v1/contactservice/contacts/891d0a1b-cc01-4652-817b-254ec41b965e
+/api/v1/travel2service/trip_detail
+/api/v1/basicservice/basic/travel
+/api/v1/seatservice/seats
+/api/v1/orderOtherService/orderOther
+/api/v1/userservice/users/id/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f
+
+[Segment] 99031c53c28e4f55865d13fd8204c28e.108.17161943317150002
+GET:/api/v1/securityservice/securityConfigs/{accountId}
+/api/v1/orderservice/order/security/Mon May 20 16:38:51 CST 2024/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f
+/api/v1/orderOtherService/orderOther/security/Mon May 20 16:38:52 CST 2024/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f
+Mysql/JDBC/PreparedStatement/executeQuery
+Mysql/JDBC/PreparedStatement/executeQuery
+
+[Segment] 5340148a2fa241c7a431f5bda3412b91.107.17161943322520002
+GET:/api/v1/orderservice/order/security/{checkDate}/{accountId}
+Mysql/JDBC/PreparedStatement/executeQuery
+
+[Segment] 5b78e3d935394e5f839d032aa6d0a780.111.17161943325210016
+GET:/api/v1/orderOtherService/orderOther/security/{checkDate}/{accountId}
+Mysql/JDBC/PreparedStatement/executeQuery
+
+[Segment] f4a8d6b484bb4deb9e621f335d09cd01.119.17161943326080002
+GET:/api/v1/contactservice/contacts/{id}
+Mysql/JDBC/PreparedStatement/executeQuery
+
+[Segment] cf1a80d47a714bf282f0462c78c72518.116.17161943326500002
+POST:/api/v1/travel2service/trip_detail
+Mysql/JDBC/PreparedStatement/executeQuery
+/api/v1/basicservice/basic/travel
+/api/v1/seatservice/seats/left_tickets
+/api/v1/seatservice/seats/left_tickets
+Mysql/JDBC/PreparedStatement/executeQuery
+
+[Segment] cbc2b7abb10f47cba38e557b87168e40.112.17161943326900006
+POST:/api/v1/basicservice/basic/travel
+/api/v1/stationservice/stations/id/shanghai
+/api/v1/stationservice/stations/id/nanjing
+/api/v1/trainservice/trains/byName/ZhiDa
+/api/v1/routeservice/routes/0b23bd3e-876a-4af3-b920-c50a90c90b04
+/api/v1/priceservice/prices/0b23bd3e-876a-4af3-b920-c50a90c90b04/ZhiDa
+
+[Segment] def16ad9bbda4f278b6c208b8f5f45f4.123.17161943327220004
+GET:/api/v1/stationservice/stations/id/{stationNameForId}
+Mysql/JDBC/PreparedStatement/executeQuery
+
+[Segment] def16ad9bbda4f278b6c208b8f5f45f4.124.17161943327480006
+GET:/api/v1/stationservice/stations/id/{stationNameForId}
+Mysql/JDBC/PreparedStatement/executeQuery
+
+[Segment] f5a3f2bfe73a4954b9d07adbf1b7a58e.123.17161943327620002
+GET:/api/v1/trainservice/trains/byName/{name}
+Mysql/JDBC/PreparedStatement/executeQuery
+
+[Segment] bb5ea1042ee1498f97d17b6829cb13c5.117.17161943327830002
+GET:/api/v1/routeservice/routes/{routeId}
+Mysql/JDBC/PreparedStatement/executeQuery
+Mysql/JDBC/PreparedStatement/executeQuery
+Mysql/JDBC/PreparedStatement/executeQuery
+
+[Segment] e4caae291449448f86c8ef3cdf7a7101.124.17161943328240002
+GET:/api/v1/priceservice/prices/{routeId}/{trainType}
+Mysql/JDBC/PreparedStatement/executeQuery
+
+[Segment] 78b5bd33a597462dacb06ed45fdb8cec.116.17161943328470004
+POST:/api/v1/seatservice/seats/left_tickets
+/api/v1/orderOtherService/orderOther/tickets
+/api/v1/configservice/configs/DirectTicketAllocationProportion
+
+[Segment] 5b78e3d935394e5f839d032aa6d0a780.112.17161943328540018
+POST:/api/v1/orderOtherService/orderOther/tickets
+Mysql/JDBC/PreparedStatement/executeQuery
+
+[Segment] 3c867515df724710a14ed53272a5abcb.127.17161943328680006
+GET:/api/v1/configservice/configs/{configName}
+Mysql/JDBC/PreparedStatement/executeQuery
+
+[Segment] 78b5bd33a597462dacb06ed45fdb8cec.120.17161943328860008
+POST:/api/v1/seatservice/seats/left_tickets
+/api/v1/orderOtherService/orderOther/tickets
+/api/v1/configservice/configs/DirectTicketAllocationProportion
+
+[Segment] 5b78e3d935394e5f839d032aa6d0a780.114.17161943328920020
+POST:/api/v1/orderOtherService/orderOther/tickets
+Mysql/JDBC/PreparedStatement/executeQuery
+
+[Segment] 3c867515df724710a14ed53272a5abcb.128.17161943329040006
+GET:/api/v1/configservice/configs/{configName}
+Mysql/JDBC/PreparedStatement/executeQuery
+
+[Segment] cbc2b7abb10f47cba38e557b87168e40.113.17161943329460006
+POST:/api/v1/basicservice/basic/travel
+/api/v1/stationservice/stations/id/shanghai
+/api/v1/stationservice/stations/id/nanjing
+/api/v1/trainservice/trains/byName/ZhiDa
+/api/v1/routeservice/routes/0b23bd3e-876a-4af3-b920-c50a90c90b04
+/api/v1/priceservice/prices/0b23bd3e-876a-4af3-b920-c50a90c90b04/ZhiDa
+
+[Segment] def16ad9bbda4f278b6c208b8f5f45f4.125.17161943329550004
+GET:/api/v1/stationservice/stations/id/{stationNameForId}
+Mysql/JDBC/PreparedStatement/executeQuery
+
+[Segment] def16ad9bbda4f278b6c208b8f5f45f4.116.17161943329730008
+GET:/api/v1/stationservice/stations/id/{stationNameForId}
+Mysql/JDBC/PreparedStatement/executeQuery
+
+[Segment] f5a3f2bfe73a4954b9d07adbf1b7a58e.124.17161943329840004
+GET:/api/v1/trainservice/trains/byName/{name}
+Mysql/JDBC/PreparedStatement/executeQuery
+
+[Segment] bb5ea1042ee1498f97d17b6829cb13c5.118.17161943329960004
+GET:/api/v1/routeservice/routes/{routeId}
+Mysql/JDBC/PreparedStatement/executeQuery
+Mysql/JDBC/PreparedStatement/executeQuery
+Mysql/JDBC/PreparedStatement/executeQuery
+
+[Segment] e4caae291449448f86c8ef3cdf7a7101.125.17161943330150004
+GET:/api/v1/priceservice/prices/{routeId}/{trainType}
+Mysql/JDBC/PreparedStatement/executeQuery
+
+[Segment] 78b5bd33a597462dacb06ed45fdb8cec.121.17161943330620006
+POST:/api/v1/seatservice/seats
+/api/v1/orderOtherService/orderOther/tickets
+
+[Segment] 5b78e3d935394e5f839d032aa6d0a780.115.17161943330950018
+POST:/api/v1/orderOtherService/orderOther/tickets
+Mysql/JDBC/PreparedStatement/executeQuery
+
+[Segment] 5b78e3d935394e5f839d032aa6d0a780.105.17161943331200018
+POST:/api/v1/orderOtherService/orderOther
+Mysql/JDBC/PreparedStatement/executeQuery
+Mysql/JDBC/PreparedStatement/executeQuery
+Mysql/JDBC/PreparedStatement/executeUpdate
+
+[Segment] b5f2a316cf78412cba77a41564f3071d.111.17161943331520002
+GET:/api/v1/userservice/users/id/{userId}
+Mysql/JDBC/PreparedStatement/executeQuery
+
+[Segment] 4262555336244ce8810e31a67b879f2b.117.17161943282500008
+POST:/api/v1/users/login
+
+[Segment] 351f15e51b03414e99d7b349dd9f9401.110.17161943334510002
+POST:/api/v1/inside_pay_service/inside_payment
+/api/v1/orderOtherService/orderOther/ecd9f060-12dd-4776-863c-1a62f54d303f
+Mysql/JDBC/PreparedStatement/executeQuery
+Mysql/JDBC/PreparedStatement/executeQuery
+/api/v1/paymentservice/payment
+Mysql/JDBC/PreparedStatement/executeUpdate
+/api/v1/orderOtherService/orderOther/status/ecd9f060-12dd-4776-863c-1a62f54d303f/1
+
+[Segment] 5b78e3d935394e5f839d032aa6d0a780.107.17161943344100014
+GET:/api/v1/orderOtherService/orderOther/{orderId}
+Mysql/JDBC/PreparedStatement/executeQuery
+
+[Segment] 2cc5f48a93724fc987a2495bf9572bda.113.17161943348480002
+POST:/api/v1/paymentservice/payment
+Mysql/JDBC/PreparedStatement/executeQuery
+Mysql/JDBC/PreparedStatement/executeQuery
+Mysql/JDBC/PreparedStatement/executeUpdate
+
+[Segment] 5b78e3d935394e5f839d032aa6d0a780.108.17161943350750012
+GET:/api/v1/orderOtherService/orderOther/status/{orderId}/{status}
+Mysql/JDBC/PreparedStatement/executeQuery
+Mysql/JDBC/PreparedStatement/executeUpdate
+
+[Segment] cf1a80d47a714bf282f0462c78c72518.117.17161943287570002
+POST:/api/v1/travel2service/trips/left
+Mysql/JDBC/PreparedStatement/executeQuery
+/api/v1/basicservice/basic/travels
+/api/v1/seatservice/seats/left_tickets
+/api/v1/seatservice/seats/left_tickets
+
+[Segment] cbc2b7abb10f47cba38e557b87168e40.121.17161943291150004
+POST:/api/v1/basicservice/basic/travels
+/api/v1/stationservice/stations/idlist
+/api/v1/trainservice/trains/byNames
+/api/v1/routeservice/routes/byIds/
+/api/v1/priceservice/prices/byRouteIdsAndTrainTypes
+
+[Segment] def16ad9bbda4f278b6c208b8f5f45f4.122.17161943298360006
+POST:/api/v1/stationservice/stations/idlist
+Mysql/JDBC/PreparedStatement/executeQuery
+
+[Segment] f5a3f2bfe73a4954b9d07adbf1b7a58e.122.17161943299900004
+POST:/api/v1/trainservice/trains/byNames
+Mysql/JDBC/PreparedStatement/executeQuery
+
+[Segment] bb5ea1042ee1498f97d17b6829cb13c5.116.17161943300150004
+POST:/api/v1/routeservice/routes/byIds
+Mysql/JDBC/PreparedStatement/executeQuery
+Mysql/JDBC/PreparedStatement/executeQuery
+Mysql/JDBC/PreparedStatement/executeQuery
+Mysql/JDBC/PreparedStatement/executeQuery
+Mysql/JDBC/PreparedStatement/executeQuery
+Mysql/JDBC/PreparedStatement/executeQuery
+Mysql/JDBC/PreparedStatement/executeQuery
+Mysql/JDBC/PreparedStatement/executeQuery
+Mysql/JDBC/PreparedStatement/executeQuery
+Mysql/JDBC/PreparedStatement/executeQuery
+Mysql/JDBC/PreparedStatement/executeQuery
+
+[Segment] e4caae291449448f86c8ef3cdf7a7101.123.17161943300540004
+POST:/api/v1/priceservice/prices/byRouteIdsAndTrainTypes
+Mysql/JDBC/PreparedStatement/executeQuery
+
+[Segment] 78b5bd33a597462dacb06ed45fdb8cec.117.17161943301440006
+POST:/api/v1/seatservice/seats/left_tickets
+/api/v1/orderOtherService/orderOther/tickets
+/api/v1/configservice/configs/DirectTicketAllocationProportion
+
+[Segment] 5b78e3d935394e5f839d032aa6d0a780.110.17161943306050012
+POST:/api/v1/orderOtherService/orderOther/tickets
+Mysql/JDBC/PreparedStatement/executeQuery
+
+[Segment] 3c867515df724710a14ed53272a5abcb.125.17161943307110006
+GET:/api/v1/configservice/configs/{configName}
+Mysql/JDBC/PreparedStatement/executeQuery
+
+[Segment] 78b5bd33a597462dacb06ed45fdb8cec.118.17161943308480006
+POST:/api/v1/seatservice/seats/left_tickets
+/api/v1/orderOtherService/orderOther/tickets
+/api/v1/configservice/configs/DirectTicketAllocationProportion
+
+[Segment] 5b78e3d935394e5f839d032aa6d0a780.109.17161943308780014
+POST:/api/v1/orderOtherService/orderOther/tickets
+Mysql/JDBC/PreparedStatement/executeQuery
+
+[Segment] 3c867515df724710a14ed53272a5abcb.126.17161943309040006
+GET:/api/v1/configservice/configs/{configName}
+Mysql/JDBC/PreparedStatement/executeQuery
+
+[Segment] 4262555336244ce8810e31a67b879f2b.122.17161943281080002
+GET:/api/v1/verifycode/generate
+
+[Segment] 4262555336244ce8810e31a67b879f2b.121.17161943310540014
+POST:/api/v1/preserveotherservice/preserveOther
+
+[Segment] 4262555336244ce8810e31a67b879f2b.115.17161943359040012
+GET:/api/v1/cancelservice/cancel/ecd9f060-12dd-4776-863c-1a62f54d303f/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f
+
+[Segment] 30cea0c7b0d94bcdb856f74fe7b89261.120.17161943282560002
+POST:/api/v1/users/login
+/api/v1/verifycode/verify/1234
+Mysql/JDBC/PreparedStatement/executeQuery
+Mysql/JDBC/PreparedStatement/executeQuery
+Mysql/JDBC/PreparedStatement/executeQuery
+
+[Segment] 9844d1592f6d46ae81acd14b10ccff71.114.17161943284590002
+GET:/api/v1/verifycode/verify/{verifyCode}
+
+[Segment] 4262555336244ce8810e31a67b879f2b.118.17161943287490002
+POST:/api/v1/travel2service/trips/left
+
+[Segment] 7d9519d2617e4c02a057f417fd38a5a5.115.17161943359760002
+GET:/api/v1/cancelservice/cancel/{orderId}/{loginId}
+/api/v1/orderservice/order/ecd9f060-12dd-4776-863c-1a62f54d303f
+/api/v1/orderOtherService/orderOther/ecd9f060-12dd-4776-863c-1a62f54d303f
+/api/v1/orderOtherService/orderOther/ecd9f060-12dd-4776-863c-1a62f54d303f
+
+[Segment] 7d9519d2617e4c02a057f417fd38a5a5.19031.17161943383530000
+SpringAsync
+/api/v1/orderOtherService/orderOther/ecd9f060-12dd-4776-863c-1a62f54d303f
+/api/v1/orderOtherService/orderOther
+/api/v1/inside_pay_service/inside_payment/drawback/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f/280.00
+
+[Segment] 5b78e3d935394e5f839d032aa6d0a780.109.17161943404030016
+GET:/api/v1/orderOtherService/orderOther/{orderId}
+Mysql/JDBC/PreparedStatement/executeQuery
+
+[Segment] 5b78e3d935394e5f839d032aa6d0a780.111.17161943404430018
+PUT:/api/v1/orderOtherService/orderOther
+Mysql/JDBC/PreparedStatement/executeQuery
+Mysql/JDBC/PreparedStatement/executeUpdate
+
+[Segment] 351f15e51b03414e99d7b349dd9f9401.109.17161943405630002
+GET:/api/v1/inside_pay_service/inside_payment/drawback/{userId}/{money}
+Mysql/JDBC/PreparedStatement/executeQuery
+Mysql/JDBC/PreparedStatement/executeUpdate
+
+[Segment] 7d9519d2617e4c02a057f417fd38a5a5.19032.17161943383530000
+SpringAsync
+/api/v1/orderOtherService/orderOther
+
+[Segment] 5b78e3d935394e5f839d032aa6d0a780.110.17161943394600014
+PUT:/api/v1/orderOtherService/orderOther
+Mysql/JDBC/PreparedStatement/executeQuery
+Mysql/JDBC/PreparedStatement/executeUpdate
+
+[Segment] 5340148a2fa241c7a431f5bda3412b91.108.17161943382550002
+GET:/api/v1/orderservice/order/{orderId}
+Mysql/JDBC/PreparedStatement/executeQuery
+
+[Segment] 5b78e3d935394e5f839d032aa6d0a780.106.17161943383310016
+GET:/api/v1/orderOtherService/orderOther/{orderId}
+Mysql/JDBC/PreparedStatement/executeQuery
+
+[Segment] 5b78e3d935394e5f839d032aa6d0a780.112.17161943407590020
+GET:/api/v1/orderOtherService/orderOther/{orderId}
+Mysql/JDBC/PreparedStatement/executeQuery
+
+[Segment] 4262555336244ce8810e31a67b879f2b.114.17161943334450008
+POST:/api/v1/inside_pay_service/inside_payment
+
+[Segment] 9844d1592f6d46ae81acd14b10ccff71.106.17161943281240004
+GET:/api/v1/verifycode/generate
+
