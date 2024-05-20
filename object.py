@@ -14,30 +14,33 @@ class Span:
         self.endTime = span["endTime"]
         self.endpointName = span["endpointName"]
         self.type = span["type"]
-        self.peer = span["peer"]
         self.component = span["component"]
         self.isError = span["isError"]
         self.layer = span["layer"]
         self.tags = self._parse_tags(span["tags"])
-        self.logs = span["logs"]
         self.sqlStmt = self._parse_SQL()
         self.sqlStmt_with_param = self._parse_SQL(params=True)
+        self.x_operation_type = ""
+
+    def __hash__(self):
+        return hash((self.traceID, self.segmentID, self.spanID, self.x_operation_type))
 
     def __str__(self):
         """
         返回 span 对象的字符串表示形式
         """
         span_info = {
+            "x_operation_type": self.x_operation_type,
             "traceID": self.traceID,
             "segmentID": self.segmentID, 
             "spanID": self.spanID,
             "service": self.service,
-            "startTime": self.startTime,
-            "endTime": self.endTime,
+            # "startTime": self.startTime,
+            # "endTime": self.endTime,
             "endpointName": self.endpointName,
-            "type": self.type,
+            # "type": self.type,
             "component": self.component,
-            "layer": self.layer,
+            # "layer": self.layer,
             "tags": self.tags,
         }
         return json.dumps(span_info, indent=2)
@@ -74,13 +77,12 @@ class Span:
             return None
 
 class Req:
-    def __init__(self, method, url, type, endpoint_name) -> None:
-        self.correspond_package_id = -1
+    def __init__(self, method, url, body, endpointName, type) -> None:
         self.method = method # 'GET','PUT', etc.
         self.url = url
+        self.body = json.loads(body) if body != "" else {}
         self.type = type # 'read' or 'write'
-        self.endpoint_name = endpoint_name
-        self.body = ""
+        self.endpointName = endpointName
 
     def __str__(self) -> str:
         if self.body != "":
@@ -96,16 +98,24 @@ class Req:
             "method":self.method
         }
     
+    def __eq__(self, other):
+        if isinstance(other, Req):
+            if self.method != other.method or self.url != other.url:
+                return False
+            if self.endpointName != other.endpointName or self.type != other.type:
+                return False
+            if self.body != other.body:
+                return False
+            return True
+        return False
+    
     def __json__(self):
         return self.__dict__()
     
-class RequestSpanBundle:
-    """
-    <Req, Span>
-    """
-    def __init__(self, req:Req, span:Span):
-        self.req = req
-        self.span = span
-
-    def __str__(self) -> str:
-        return f"{self.req}\n\t{self.span.sqlStmt}"
+class Bundle:
+    def __init__(self, reqSpan:Span, ids:list) -> None:
+        self.reqSpan = reqSpan
+        self.ids = ids
+    
+    def __hash__(self):
+        return hash((self.reqSpan, tuple(self.ids)))

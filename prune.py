@@ -3,8 +3,8 @@ def LCA_prune(origin_queries:list, segment_tree) -> list:
     def pre(origin_queries:list) -> dict:
         queries = {}
         for q in origin_queries:
-            segID_1 = q[0].span.segmentID
-            segID_2 = q[1].span.segmentID
+            segID_1 = q[0].segmentID
+            segID_2 = q[1].segmentID
             if segID_1 not in queries.keys():
                 queries[segID_1] = []
             if segID_2 not in queries.keys():
@@ -48,8 +48,8 @@ def LCA_prune(origin_queries:list, segment_tree) -> list:
         """
         pruned_pairs = []
         for q in origin_queries:
-            a = q[0].span.segmentID
-            b = q[1].span.segmentID
+            a = q[0].segmentID
+            b = q[1].segmentID
             if(lca[(a,b)] == a):
                 continue
             if(lca[(a,b)] == b):
@@ -88,21 +88,27 @@ def trace_based_filter(candidate_pairs, segments, segment_tree):
     """
     print("\n======== Prune ========\n")
 
-    pruned_pairs = []
-    # 具有相同的 segmentID，存在HB关系，不会并发
-    print(f"[Rule 1] Before: {len(candidate_pairs)}")
-    pruned_pairs = [pair for pair in candidate_pairs if pair[0].span.segmentID != pair[1].span.segmentID]
-    print(f"[Rule 1] After: {len(pruned_pairs)}\n")
-    
-    # 两个 request 在 trace 中位于同一路径上
-    #（即两个 request 所属的 segment 的最近公共祖先为其中一个segment自己）
-    print(f"[Rule 2] Before: {len(pruned_pairs)}")
-    pruned_pairs = LCA_prune(pruned_pairs, segment_tree)
-    print(f"[Rule 2] After: {len(pruned_pairs)}\n")
+    for id, pairs in candidate_pairs.items():
 
-    print()
-    
-    return pruned_pairs
+        pruned_pairs = []
+        print(f"[ID] {id}")
+
+        # 具有相同的 segmentID，存在HB关系，不会并发
+        print(f"[Rule 1] Before: {len(pairs)}")
+        pruned_pairs = [pair for pair in pairs if pair[0].segmentID != pair[1].segmentID]
+        print(f"[Rule 1] After: {len(pruned_pairs)}")
+        
+        # 两个 request 在 trace 中位于同一路径上
+        #（即两个 request 所属的 segment 的最近公共祖先为其中一个segment自己）
+        print(f"[Rule 2] Before: {len(pruned_pairs)}")
+        pruned_pairs = LCA_prune(pruned_pairs, segment_tree)
+        print(f"[Rule 2] After: {len(pruned_pairs)}")
+
+        print()
+
+        candidate_pairs[id] = pruned_pairs
+        
+    return candidate_pairs
 
 if __name__ == "__main__":
     pass

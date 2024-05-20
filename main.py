@@ -1,84 +1,11 @@
 import json
 from utils.file_helper import *
 from utils.sql_parse import *
-from object import Span, RequestSpanBundle, Req
+from object import Span, Req, Bundle
 from prune import trace_based_filter
-from output import origin_output, mask_parameters_output
+from output import mask_parameters_output, save_segments
 import os
 import itertools
-
-# 通过时间戳匹配报文的误差范围
-TIME_RANGE_MIN = -10  # 最小时间范围（毫秒）
-TIME_RANGE_MAX = 10  # 最大时间范围（毫秒）
-
-def readHTTPFile(filename) -> list:
-    packages = []
-    with open(filename, 'r') as f:
-        for line in f.readlines():
-            line = line.strip()
-            # log_entry = json.loads(line)
-            log_entry = eval(line)
-            if log_entry["content"] != "":
-                log_entry["content"]  = eval(log_entry["content"])
-            else:
-                log_entry["content"] = None
-            packages.append(log_entry)
-    return packages
-
-def _get_correspond_request_timestamp(span, segments):
-    """
-    segments: 将span按segment分组构成的字典
-    输入一个 span，溯源到它的 request span 的时间戳
-    """
-    entrySpan = segments[span.segmentID][0]
-    if entrySpan.type != "Entry":
-        raise Exception("segment[0] 不是 entrySpan")
-    
-    return entrySpan.startTime, entrySpan.endTime
-
-def format_or_output(variable):
-    """
-    打印 body
-    """
-    try:
-        # 尝试将变量解析为JSON
-        json.loads(variable)
-        # 如果解析成功，使用json.dumps美化输出
-        return json.dumps(variable, indent=4)
-    except Exception:
-        # 如果解析失败，说明它是一个普通的字符串，直接返回
-        return variable
-    
-def match_request_by_data(packages:list, bundles:list, segments):
-    """
-    根据时间戳、URL等信息将 HTTP 数据和 trace 中的请求相对应
-    """
-    for bundle in bundles:
-        target_url = bundle.req.url
-        target_method = bundle.req.method
-        # 暂时不用 endtime
-        target_timestamp, _ = _get_correspond_request_timestamp(bundle.span, segments)
-        # print(f"searching for request: [{target_timestamp}][{target_method}][{target_url}]")
-
-        found = False
-
-        for p in packages:
-            if p["method"] == target_method and p["url"] == target_url:
-                # print(p["headers"]["X-Timestamp"])
-                timestamp = p["headers"]["X-Timestamp"]
-                time_diff_ms = int(target_timestamp) - int(timestamp)
-                if TIME_RANGE_MIN <= time_diff_ms <= TIME_RANGE_MAX:
-                    # print(timestamp)
-                    found = True
-                    # 匹配成功，将HTTP数据中的Body数据填充到bundle.req.body中
-                    bundle.req.correspond_package_id = p["id"]
-                    if "content" in p.keys():
-                        bundle.req.body = p["content"]
-                    # print(format_or_output(bundle.req.body))
-        
-        if not found:
-            # print("not found!")
-            pass
 
 def load_spans_from_file(file_path):
     """
@@ -123,10 +50,18 @@ def trace_analyze(spans):
         if span.segmentID not in segments:
             segments[span.segmentID] = []
         segments[span.segmentID].append(span)
-    
-    # segment 内部按 spanID 从小到大排序
-    for segment in segments.values():
-        segment = sorted(segment, key = lambda span: span.spanID)
+
+    new_segments = {}
+    for segmentID, spanlist in segments.items():
+        # 去除无用 span 和 segment
+        if len(spanlist) == 1 and spanlist[0].endpointName == 'Mysql/JDBC/Connection/close':
+            continue
+        spanlist = sorted(spanlist, key = lambda span: span.spanID)
+        spanlist = [span for span in spanlist if "HikariCP" not in span.endpointName and "Mysql/JDBC/Connection/commit" not in span.endpointName]
+
+        new_segments[segmentID] = spanlist
+
+    segments = new_segments
     
     # 构造父 segmentID 与与其所有子 segmentID (list) 的映射
     # 在消息队列场景下一个 segment 可能有多个父 segment，但这里不考虑，segment 关系直接视为树
@@ -151,221 +86,173 @@ def trace_analyze(spans):
     print()
     return segments, segment_tree
 
-def _get_correspond_request(span, segments):
+def _get_correspond_request_span(span, segments) -> Span:
     """
     segments: 将span按segment分组构成的字典
-    输入一个 span，溯源到它的 request URL
-    """
-    # entrySpan = segments[span.segmentID][0] 
-    entrySpan = None
-    for s in segments[span.segmentID]:
-        if s.spanID == 0 or entrySpan.type == "Entry" :
-            entrySpan = s
-            break
-    
-    # if entrySpan.type != "Entry":
-    #     print(f"WARNING: segment[0] 不是 entrySpan, entrySpan.type: {entrySpan.type}")
-    if entrySpan is None:
-        raise Exception(f"找不到 entrySpan")
-    
-    if "http.method" not in entrySpan.tags.keys():
-        raise Exception(f"没有对应字段！Span: {entrySpan.spanID} {entrySpan.tags}")
-    
-    endpoint_name = entrySpan.endpointName
-    http_method = entrySpan.tags["http.method"]
-    url = entrySpan.tags["url"]
-
-    return http_method, url, endpoint_name
-
-def get_ids_for_request(reqBundles: list[RequestSpanBundle]):
-    """
-    每个request都映射到它们的SQL语句包含的ID值集合  
-    剪枝：对于ID值集合相同、路径相同的 read 请求，只留一个
-    """
-    # key: ID值
-    # value: list, 含有该ID值的span
-    keywords = ["id", "ID", "Id"]
-
-    request_ids_dict = {}
-
-    for bundle in reqBundles:
-        data_dict = {}
-        fields, _ = get_sql_keys(bundle.span.sqlStmt) # SQL字段名
-        if "db.sql.parameters" in bundle.span.tags.keys():
-            values = bundle.span.tags["db.sql.parameters"].strip("[]").split(",") # SQL字段值
-        else:
-            values = []
-
-        # 捆绑字段名和值
-        if get_operation(bundle.span.sqlStmt) == 'insert':
-            # 对于 insert，SQL语句中 fields 直接为一个列表，直接使用
-            data_dict = dict(zip(fields, values))
-        else:
-            # 对于其他SQL语句，筛选含有 ? 的token，如 document_type=?
-            fields = [field for field in fields if "?" in field]
-            data_dict = dict(zip(fields, values))
-
-        # 启发式识别其中的ID字段，并找到对应值
-        # 记录含有ID值的span
-        for field, value in data_dict.items():
-            if any(keyword in field for keyword in keywords):
-                if bundle not in request_ids_dict:
-                    request_ids_dict[bundle] = set()
-                request_ids_dict[bundle].add(value)
-    
-    # 剪枝：对于ID值集合相同、路径相同的 read 请求，只留一个
-    aux_dict = {}
-    pruned_dict = {}
-    for bundle, id_values in request_ids_dict.items():
-        if bundle.req.type == 'read':
-            key = (str(bundle.req), tuple(sorted(id_values)))
-            if key not in aux_dict:
-                # print(f"未出现过:  {key})")
-                aux_dict[key] = True
-                pruned_dict[bundle] = id_values
-            else:
-                # print(f"已出现过:  {key})")
-                continue
-        else:
-            pruned_dict[bundle] = id_values
-    
-    # for key,value in pruned_dict.items():
-    #     print(f"[{key.req.http_method}][{key.req.type}] {key.req.url}")
-    #     print("------")
-    #     for v in value:
-    #         print(v)
-    #     print()
-
-    return pruned_dict
-
-def get_bundle(span, segments) -> RequestSpanBundle:
-    """
-    根据 span，将 SQL 语句及其对应的request捆绑为RequestSpanBundle对象
+    输入一个 SQL span，溯源到它的 entry_span
     """
     if span.sqlStmt is None :
-       return None
-    req = None
-    sql_operation = get_operation(span.sqlStmt)
-    method, url, endpoint_name = _get_correspond_request(span, segments)
-    if sql_operation == 'select': 
-        req = Req(method, url, 'read', endpoint_name)
-    else:
-        req = Req(method, url, 'write', endpoint_name)
-    return RequestSpanBundle(req, span)
+        raise Exception(f"span {span.spanID} is not a valid SQL span!")
 
-def compute_matching_scores(request_ids_dict: dict) -> dict:
+    entrySpan = segments[span.segmentID][0] 
+    
+    if entrySpan.type != "Entry":
+        print(f"WARNING: segment[0] 不是 entrySpan, entrySpan.type: {entrySpan.type}")
+    
+    if "http.method" not in entrySpan.tags.keys():
+        raise Exception(f"Not a HTTP span! Span: {entrySpan.spanID} {entrySpan.tags}")
+    
+    return entrySpan
+
+def get_ids(sqlSpan: Span):
+    if sqlSpan.sqlStmt is None :
+        raise Exception(f"span {sqlSpan.spanID} is not a valid SQL span!")
+    
+    KEYWORDS = ["id", "ID", "Id"]
+
+    fields, _ = get_sql_keys(sqlSpan.sqlStmt)
+    values = []
+    if "db.sql.parameters" in sqlSpan.tags.keys():
+        values = sqlSpan.tags["db.sql.parameters"].strip("[]").split(",") # SQL字段值
+    
+    # 还无法解析的：
+    # SELECT * from route where id in (d693a2c5-ef87-4a3c-bef8-600b43f62c68, 1367db1f-461e-4ab7-87ad-2bcc05fd9cb7, 9fc9c261-3263-4bfa-82f8-bb44e06b2f52, 20eb7122-3a11-423f-b10a-be0dc5bce7db, 0b23bd3e-876a-4af3-b920-c50a90c90b04)
+
+    # 捆绑字段名和值
+    if get_operation(sqlSpan.sqlStmt) == 'insert':
+        # 对于 insert，SQL语句中 fields 直接为一个列表，直接使用
+        data_dict = dict(zip(fields, values))
+    else:
+        # 对于其他SQL语句，筛选含有 ? 的token，如 document_type=?
+        fields = [field for field in fields if "?" in field]
+        data_dict = dict(zip(fields, values))
+
+    ids = []
+    
+    # 启发式识别其中的ID字段，并找到对应值
+    # 记录含有ID值的span
+    for field, value in data_dict.items():
+        if any(keyword in field for keyword in KEYWORDS): # 字段名中包含关键字
+            ids.append(value) # 记录值
+
+    return ids
+
+def create_request_ids_map(spans, segments):
+    """
+    对于每一个 SQL span，取出其 ID 值，并找到对应的 request Span，构成一一映射
+    可能一个 request 会触发多次 SQL，导致多个 SQL span 能追溯到同一个 request span
+    此时将 request span 进行复制
+
+    元组会进行去重
+    """
+    request_ids_map = []
+    for span in spans:
+        if span.sqlStmt is not None : # a span containing SQL statements
+            sql_operation = get_operation(span.sqlStmt)
+            reqSpan = _get_correspond_request_span(span, segments)
+            ids = get_ids(span)
+
+            if sql_operation == 'select': 
+                reqSpan.x_operation_type = 'read'
+            else:
+                reqSpan.x_operation_type = 'write'
+
+            if len(ids) > 0:
+                request_ids_map.append(Bundle(reqSpan, ids))
+    
+    seen = set()
+    unique_list = []
+    for bundle in request_ids_map:
+        if bundle.__hash__() not in seen:
+            unique_list.append(bundle)
+            seen.add(bundle.__hash__())
+
+    ## Debug
+
+    # with open("origin_tuple.txt", 'w') as f:
+    #     for item in request_ids_map:
+    #         f.write(str(item[0]))
+    #         f.write("\n")
+    #         f.write(str(item[1]) + "\n\n")
+
+    # with open("new_tuple.txt", 'w') as f:
+    #     for item in unique_list:
+    #         f.write(str(item[0]))
+    #         f.write("\n")
+    #         f.write(str(item[1]) + "\n\n")
+
+    print(f"去重前元组个数：{len(request_ids_map)}")
+    print(f"去重后元组个数：{len(unique_list)}")
+
+    return unique_list
+
+def formulate_candidate_pairs(request_ids_map : list) -> dict:
     """
     将各个请求两两匹配构成 request_pair
-    计算 request_pair 的匹配分数
+    ids 交集大小需 >= 1
     """
-    # 评分机制
-    # 两两匹配计算 ids 集合的交集，交集中元素数量越多，评分越高
-    # 初始化一个空字典来存储匹配分数
-    matching_scores = {}
 
-    # 遍历字典中的所有键，进行两两匹配
-    for bundle1, bundle2 in itertools.combinations(request_ids_dict.keys(), 2):
-        if bundle1.req.type == 'read' and bundle2.req.type == 'read': # 排除双 read
+    candidate_pairs = {}
+
+    # 进行两两匹配
+    for bundle1, bundle2 in itertools.combinations(request_ids_map, 2):
+        if bundle1.reqSpan.x_operation_type == 'read' and bundle2.reqSpan.x_operation_type == 'read': 
+            # 排除双 read
             continue
-        # 计算交集
-        intersection = request_ids_dict[bundle1].intersection(request_ids_dict[bundle2])
-        # 计算匹配分数（交集的大小）
-        score = len(intersection)
-        # 存储结果
-        matching_scores[(bundle1, bundle2)] = score
-
-    sorted_matching_scores = sorted(
-        matching_scores.items(),  # 获取字典的键值对
-        key=lambda item: item[1],  # 使用字典值（即配对的分数）作为排序依据
-        reverse=True  # 设置为True以降序排序（分数高的在前），设为False则升序排序
-    )
-
-    return dict(sorted_matching_scores)
-
-def unique_by_fields(lst):
-    """
-    span 去重
-    多个 trace 文件中可能有一些 span 重复出现
-    """
-    # 用于存储已见到的元素的 traceID, segmentID, spanID 组合
-    seen = set()
-    # 用于存储去重后的唯一元素
-    unique_lst = []
-
-    for item in lst:
-        # 创建一个元组，包含用于去重的字段
-        identifier = (item.traceID, item.segmentID, item.spanID)
+        # 计算ids交集
+        intersection = set(bundle1.ids) & set(bundle2.ids)
         
-        # 如果这个组合还没有出现过
-        if identifier not in seen:
-            # 添加到已见到的组合中
-            seen.add(identifier)
-            # 将元素添加到结果列表中
-            unique_lst.append(item)
+        for id in intersection:
+            if id not in candidate_pairs.keys():
+                candidate_pairs[id] = []
+            candidate_pairs[id].append((bundle1.reqSpan, bundle2.reqSpan))
 
-    return unique_lst
-    
-def main(trace_dir, http_file, output_file):
+    return candidate_pairs
 
+
+def main(trace_dir, output_dir):
     spans = []
-    # step 1: get all spans from trace files
+
+    ### step 1: get all spans from trace files
     all_files = list(get_all_files(trace_dir))
     for file in all_files:
         span_file = os.path.join(trace_dir, file)
-        print(f"reading {span_file}")
-        spans += load_spans_from_file(span_file)
+        try:
+            spans += load_spans_from_file(span_file)
+        except:
+            raise Exception(f"failed in reading trace files: reading {span_file}")
     
-    # step 2: analyze the trace structure of the spans
+    print(f"total span: {len(spans)}")
+    
+    ### step 2: analyze the trace structure of the spans
     segments, segment_tree = trace_analyze(spans)
-    
-    # step 3: find the spans containing SQL statements, then trace the root request of the span, and bind them.
-    bundles = []
-    for span in spans:
-        if span.sqlStmt is None :
-            continue
-        bundles.append(get_bundle(span, segments))
 
-    # 填充 body
-    pakages = readHTTPFile(http_file)
-    match_request_by_data(pakages, bundles, segments)
+    segments_ouput_file = output_dir + '/segments.txt'
+    save_segments(segments, segments_ouput_file)
+    print(f"Segments data saved in {segments_ouput_file}\n")
 
-    # step 4: for a request, find all id values in corresponding SQL statements
-    request_ids_dict = get_ids_for_request(bundles)
+    ### step 3: 构造 reqSpan 到 ids 的映射
+    request_ids_map = create_request_ids_map(spans, segments)
 
-    print(f"共有 {len(request_ids_dict)} 个相关 request")
+    ### step 4: 生成冲突请求对
+    candidate_pairs = formulate_candidate_pairs(request_ids_map)
 
-    # step 5: for a pair of requests, compute the matching score of them 
-    sorted_matching_scores = compute_matching_scores(request_ids_dict)
-    
-    # step 6: get the candidate pairs according to their matching score
-    candidate_pairs = []
-    for pairs, score in sorted_matching_scores.items():
-        # print(f"请求 [{pairs[0].req.correspond_package_id}]{pairs[0].span.segmentID} 和请求 [{pairs[1].req.correspond_package_id}]{pairs[1].span.segmentID} 的匹配分数是: {score}")
-        if score != 0: # There are some ID values occur in both two requests
-            candidate_pairs.append(pairs)
-    
-    for value in set(sorted_matching_scores.values()):
-        count = sum(1 for key, v in sorted_matching_scores.items() if v == value)
-        print(f"Pairs with score {value}: {count}")
-    
+    ### step 5: 剪枝
+    candidate_pairs = trace_based_filter(candidate_pairs, segments, segment_tree)
 
-    # step 7: prune the candidate pairs
-    pruned_pairs = trace_based_filter(candidate_pairs, segments, segment_tree)
-        
-    # step 8: output the result
-    mask_parameters_output(pruned_pairs, output_file)
+    ### output: 输出，内有去重
+    mask_parameters_output(candidate_pairs, output_dir)
+
 
 if __name__ == "__main__":
-    data_dir = 'data-0516-f13'
+    data_dir = 'data-0520-f1'
+    output_dir = data_dir + '/res'
+    try:
+        os.makedirs(output_dir, exist_ok=True)
+        print(f"Output dir '{output_dir}' created or existed.")
+    except OSError as error:
+        print(f"error when creating output dir: {error}")
 
-    output_file = data_dir + '/res/candidate-pairs.json'
     trace_dir = data_dir + '/trace'
-    http_file = data_dir + '/http/http_flows.json'
 
-    main(trace_dir, http_file, output_file)
-
-
-    
-        
-        
-
+    main(trace_dir, output_dir)
