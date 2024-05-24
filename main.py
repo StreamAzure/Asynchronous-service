@@ -3,7 +3,7 @@ from utils.file_helper import *
 from utils.sql_parse import *
 from object import Span, Req, Bundle
 from prune import trace_based_filter
-from output import mask_parameters_output, save_segments
+from output import mask_parameters_output, save_segments, origin_output
 import os
 import itertools
 
@@ -21,28 +21,36 @@ def load_spans_from_file(file_path):
         spans.append(Span(span))
     return spans
 
-def trace_analyze(spans):
+def trace_analyze(spans, output_dir):
     """
     分析一个 trace 中 segment 之间的层级关系
     将 span 按 segmentID 分组并按时间(spanID)排序
     同级 segment 按开始时间排序
     """
 
-    def _print_trace(segments, segment_tree, parent_segment_id, level=0):
+    def _print_trace(segments, segment_tree, parent_segment_id, level=0, output_file = None):
         if(level == 0):
-            print(None)
+            print('Root')
+            if output_file is not None:
+                output_file.write('Root\n')
         for child_segment_id in segment_tree[parent_segment_id]:
             format = "   " * (level+1)
             print(f"{format} -------------------------------------")
             print(f"{format} {child_segment_id}")
-            print(f"{format} {segments[child_segment_id][0].startTime}")
+            if output_file is not None:
+                output_file.write(f"{format} -------------------------------------\n")
+                output_file.write(f"{format} {child_segment_id}\n")
             # 该 child_segment 的 span
             for span in segments[child_segment_id]:
-                print(f"{format} [{span.type:<5}] {span.endpointName}")
+                print(f"{format} [{span.type:<5}] {span.endpointName}\n")
+                if output_file is not None:
+                    output_file.write(f"{format} [{span.type:<5}] {span.endpointName}\n")
                 if span.sqlStmt is not None:
                     print(f"{format}  - [{span.sqlStmt}]")
+                    if output_file is not None:
+                        output_file.write(f"{format}  - [{span.sqlStmt_with_param}]\n")
                 
-            _print_trace(segments, segment_tree, child_segment_id, level + 1)
+            _print_trace(segments, segment_tree, child_segment_id, level + 1, output_file)
 
     # 按 segmentID 分组, key: segmentID, value: span list
     segments = {}
@@ -82,7 +90,10 @@ def trace_analyze(spans):
         if segID not in segment_tree.keys():
             segment_tree[segID] = []
     
-    # _print_trace(segments, segment_tree, None)
+    f = None
+    f = open(output_dir + "/segment_tree.txt", 'w')
+    _print_trace(segments, segment_tree, None, 0, f)
+    f.close()
     print()
     return segments, segment_tree
 
@@ -157,8 +168,9 @@ def create_request_ids_map(spans, segments):
             else:
                 reqSpan.x_operation_type = 'write'
 
+
             if len(ids) > 0:
-                request_ids_map.append(Bundle(reqSpan, ids))
+                request_ids_map.append(Bundle(reqSpan, ids, span.peer,span.tags["db.instance"]))
     
     seen = set()
     unique_list = []
@@ -199,6 +211,10 @@ def formulate_candidate_pairs(request_ids_map : list) -> dict:
         if bundle1.reqSpan.x_operation_type == 'read' and bundle2.reqSpan.x_operation_type == 'read': 
             # 排除双 read
             continue
+
+        if bundle1.peer != bundle2.peer or bundle1.db != bundle2.db:
+            continue
+
         # 计算ids交集
         intersection = set(bundle1.ids) & set(bundle2.ids)
         
@@ -225,7 +241,7 @@ def main(trace_dir, output_dir):
     print(f"total span: {len(spans)}")
     
     ### step 2: analyze the trace structure of the spans
-    segments, segment_tree = trace_analyze(spans)
+    segments, segment_tree = trace_analyze(spans, output_dir)
 
     segments_ouput_file = output_dir + '/segments.txt'
     save_segments(segments, segments_ouput_file)
@@ -241,7 +257,7 @@ def main(trace_dir, output_dir):
     candidate_pairs = trace_based_filter(candidate_pairs, segments, segment_tree)
 
     ### output: 输出，内有去重
-    mask_parameters_output(candidate_pairs, output_dir)
+    origin_output(candidate_pairs, output_dir)
 
 
 if __name__ == "__main__":

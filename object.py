@@ -14,6 +14,7 @@ class Span:
         self.endTime = span["endTime"]
         self.endpointName = span["endpointName"]
         self.type = span["type"]
+        self.peer = span["peer"]
         self.component = span["component"]
         self.isError = span["isError"]
         self.layer = span["layer"]
@@ -113,9 +114,11 @@ class Req:
         return self.__dict__()
     
 class Bundle:
-    def __init__(self, reqSpan:Span, ids:list) -> None:
+    def __init__(self, reqSpan:Span, ids:list, peer:str, db:str) -> None:
         self.reqSpan = reqSpan
         self.ids = ids
+        self.peer = peer
+        self.db = db
     
     def __hash__(self):
-        return hash((self.reqSpan, tuple(self.ids)))
+        return hash((self.reqSpan, tuple(self.ids), self.peer, self.db))

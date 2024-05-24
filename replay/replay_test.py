@@ -41,23 +41,28 @@ def login(username="fdse_microservice", password="111111") -> bool:
         print("login failed")
         return False
     
-def str2package(str) -> dict:
-    req = eval(str)
+def send_package(req):
+    url = 'http://localhost:12032'
+    req['headers'] = {}
     req['headers']["Authorization"] = f"Bearer {token}"
     req['headers']["Host"] = 'localhost:12032'
 
-    return req
-
-def send_package(req):
-    url = 'http://localhost:12032'
-
-    response = requests.post(
-        url, timeout=5, headers=req["headers"], json=req["content"]
-    )
-    if response.status_code == 200:
-        print(response.text)
-    else:
-        print(response.status_code, response.text)
+    if req["method"] == "POST":
+        response = requests.post(
+            url+req["url"], timeout=5, headers=req["headers"], json=req["body"]
+        )
+        if response.status_code == 200:
+            print(response.text)
+        else:
+            print(response.status_code, response.text)
+    elif req["method"] == 'GET':
+        response = requests.get(
+            url+req["url"], timeout=5, headers=req["headers"], json=req["body"]
+        )
+        if response.status_code == 200:
+            print(response.text)
+        else:
+            print(response.status_code, response.text)
 
 def replay(req1, req2):
     send_package(req1)
@@ -66,14 +71,15 @@ def replay(req1, req2):
 if __name__ == "__main__":
     str1 = ""
     str2 = ""
-    with open('data-0509-f1/http/http_flows.json', 'r') as f:
-        lines = f.readlines()
-        str1 = lines[44].strip()
-        str2 = lines[46].strip()
+    file = './candidate-pairs.json'
+    with open(file, 'r') as f:
+        data = f.read()
+        data = json.loads(data)
+        for index, value in data.items():
+            req1 = value[0]
+            req2 = value[1]
     
     login()
-    req1 = str2package(str1)
-    req2 = str2package(str2)
     replay(req1, req2)
 
 
