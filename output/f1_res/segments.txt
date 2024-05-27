@@ -1,373 +1,47 @@
-[Segment] 4fbbe0042ab14d4d818a9672697719d6.107.17168038014930000
-POST:/api/v1/travel2service/trips/left
-Mysql/JDBC/PreparedStatement/executeQuery
-/api/v1/basicservice/basic/travels
-/api/v1/seatservice/seats/left_tickets
-/api/v1/seatservice/seats/left_tickets
-
-[Segment] 85071118bf6745c48f563d112b2d39c2.108.17168038015320000
-POST:/api/v1/basicservice/basic/travels
-/api/v1/stationservice/stations/idlist
-/api/v1/trainservice/trains/byNames
-/api/v1/routeservice/routes/byIds/
-/api/v1/priceservice/prices/byRouteIdsAndTrainTypes
-
-[Segment] 42cabeb1e92641ba95fb5a9725f9c89f.110.17168038015500000
-POST:/api/v1/stationservice/stations/idlist
-Mysql/JDBC/PreparedStatement/executeQuery
-
-[Segment] 48d573ecd52349a6be64e069695f9e7c.105.17168038015850000
-POST:/api/v1/trainservice/trains/byNames
-Mysql/JDBC/PreparedStatement/executeQuery
-
-[Segment] 5a17a4214cad4016bdcabbb9e94980e0.109.17168038016130000
-POST:/api/v1/routeservice/routes/byIds
-Mysql/JDBC/PreparedStatement/executeQuery
-Mysql/JDBC/PreparedStatement/executeQuery
-Mysql/JDBC/PreparedStatement/executeQuery
-Mysql/JDBC/PreparedStatement/executeQuery
-Mysql/JDBC/PreparedStatement/executeQuery
-Mysql/JDBC/PreparedStatement/executeQuery
-Mysql/JDBC/PreparedStatement/executeQuery
-Mysql/JDBC/PreparedStatement/executeQuery
-Mysql/JDBC/PreparedStatement/executeQuery
-Mysql/JDBC/PreparedStatement/executeQuery
-Mysql/JDBC/PreparedStatement/executeQuery
-
-[Segment] 63e279e9174b4ef0b3fea5cdedae96c4.106.17168038018410000
-POST:/api/v1/priceservice/prices/byRouteIdsAndTrainTypes
-Mysql/JDBC/PreparedStatement/executeQuery
-
-[Segment] 688a09a5f0e1427fafe69499a10897f4.110.17168038019000000
-POST:/api/v1/seatservice/seats/left_tickets
-/api/v1/orderOtherService/orderOther/tickets
-/api/v1/configservice/configs/DirectTicketAllocationProportion
-
-[Segment] d42845e688a346559ef265ae273b6e06.108.17168038019120002
-POST:/api/v1/orderOtherService/orderOther/tickets
-Mysql/JDBC/PreparedStatement/executeQuery
-
-[Segment] 7974cf6417e849ccb0c7855b2869b880.109.17168038019380000
-GET:/api/v1/configservice/configs/{configName}
-Mysql/JDBC/PreparedStatement/executeQuery
-
-[Segment] 688a09a5f0e1427fafe69499a10897f4.111.17168038019610000
-POST:/api/v1/seatservice/seats/left_tickets
-/api/v1/orderOtherService/orderOther/tickets
-/api/v1/configservice/configs/DirectTicketAllocationProportion
-
-[Segment] d42845e688a346559ef265ae273b6e06.109.17168038019680002
-POST:/api/v1/orderOtherService/orderOther/tickets
-Mysql/JDBC/PreparedStatement/executeQuery
-
-[Segment] 7974cf6417e849ccb0c7855b2869b880.110.17168038019840000
-GET:/api/v1/configservice/configs/{configName}
-Mysql/JDBC/PreparedStatement/executeQuery
-
-[Segment] ff9d6fa07182467fa0cb9478f906f8c4.93.17168038071780002
-POST:/api/v1/inside_pay_service/inside_payment
-
-[Segment] ff9d6fa07182467fa0cb9478f906f8c4.101.17168038023240002
-POST:/api/v1/preserveotherservice/preserveOther
-
-[Segment] cfb4941310ee4ba49b2ba6d676bd4225.109.17168038022580000
-GET:/api/v1/contactservice/contacts/account/{accountId}
-Mysql/JDBC/PreparedStatement/executeQuery
-
-[Segment] 2f02610fbff3435eb2cc5ed152ed8ab7.101.17168038012660002
-POST:/api/v1/users/login
-/api/v1/verifycode/verify/1234
-Mysql/JDBC/PreparedStatement/executeQuery
-Mysql/JDBC/PreparedStatement/executeQuery
-Mysql/JDBC/PreparedStatement/executeQuery
-
-[Segment] d13edc41184a44fcb7f463121dbbf2c0.106.17168038013120004
-GET:/api/v1/verifycode/verify/{verifyCode}
-
-[Segment] d13edc41184a44fcb7f463121dbbf2c0.105.17168038011570004
-GET:/api/v1/verifycode/generate
-
-[Segment] d5516438448a4ca5a95515b8f39366d7.106.17168038020750000
-GET:/api/v1/foodservice/foods/{date}/{startStation}/{endStation}/{tripId}
-/api/v1/trainfoodservice/trainfoods/D1345
-/api/v1/travelservice/routes/D1345
-/api/v1/stationfoodservice/stationfoodstores
-
-[Segment] 84226d71435a4109b213912b2f1215e9.108.17168038021030000
-GET:/api/v1/trainfoodservice/trainfoods/{tripId}
-Mysql/JDBC/PreparedStatement/executeQuery
-Mysql/JDBC/PreparedStatement/executeQuery
-
-[Segment] 04fdc6e4a1dd46c888eba3ebc9084956.103.17168038021640000
-GET:/api/v1/travelservice/routes/{tripId}
-Mysql/JDBC/PreparedStatement/executeQuery
-/api/v1/routeservice/routes/f3d4d4ef-693b-4456-8eed-59c0d717dd08
-
-[Segment] 5a17a4214cad4016bdcabbb9e94980e0.110.17168038021860000
-GET:/api/v1/routeservice/routes/{routeId}
-Mysql/JDBC/PreparedStatement/executeQuery
-Mysql/JDBC/PreparedStatement/executeQuery
-Mysql/JDBC/PreparedStatement/executeQuery
-
-[Segment] 20e0f6172e82445c9f4ab9accba77f49.110.17168038022180000
-POST:/api/v1/stationfoodservice/stationfoodstores
-Mysql/JDBC/PreparedStatement/executeQuery
-
-[Segment] 92ad764a32f04bb4a28dbe9a73cb9023.106.17168038020100000
-GET:/api/v1/assuranceservice/assurances/types
-
-[Segment] ff9d6fa07182467fa0cb9478f906f8c4.96.17168038020030000
-GET:/api/v1/assuranceservice/assurances/types
-
-[Segment] ff9d6fa07182467fa0cb9478f906f8c4.93.17168038014880000
-POST:/api/v1/travel2service/trips/left
-
-[Segment] ff9d6fa07182467fa0cb9478f906f8c4.98.17168038020600000
-GET:/api/v1/foodservice/foods/2021-07-14/Shang%20Hai/Su%20Zhou/D1345
-
-[Segment] f6ef5a63bf7b4332ae1ba198d16a7816.106.17168038071830000
-POST:/api/v1/inside_pay_service/inside_payment
-/api/v1/orderOtherService/orderOther/006cc0d3-4baa-4fad-bf36-c57911099b9a
-Mysql/JDBC/PreparedStatement/executeQuery
-Mysql/JDBC/PreparedStatement/executeQuery
-/api/v1/paymentservice/payment
-Mysql/JDBC/PreparedStatement/executeUpdate
-/api/v1/orderOtherService/orderOther/status/006cc0d3-4baa-4fad-bf36-c57911099b9a/1
-
-[Segment] d42845e688a346559ef265ae273b6e06.104.17168038072000004
-GET:/api/v1/orderOtherService/orderOther/{orderId}
-Mysql/JDBC/PreparedStatement/executeQuery
-
-[Segment] fe7f01f03147481c88c3052ce88f8c67.108.17168038072380000
-POST:/api/v1/paymentservice/payment
-Mysql/JDBC/PreparedStatement/executeQuery
-Mysql/JDBC/PreparedStatement/executeQuery
-Mysql/JDBC/PreparedStatement/executeUpdate
-
-[Segment] d42845e688a346559ef265ae273b6e06.105.17168038073140006
-GET:/api/v1/orderOtherService/orderOther/status/{orderId}/{status}
-Mysql/JDBC/PreparedStatement/executeQuery
-Mysql/JDBC/PreparedStatement/executeUpdate
-
-[Segment] d42845e688a346559ef265ae273b6e06.106.17168038095400004
-POST:/api/v1/orderOtherService/orderOther/refresh
-Mysql/JDBC/PreparedStatement/executeQuery
-
-[Segment] 93f908fdd3104df98304b5494af96ea2.108.17168038073480000
+[Segment] 7d9519d2617e4c02a057f417fd38a5a5.115.17161943359760002
 GET:/api/v1/cancelservice/cancel/{orderId}/{loginId}
-/api/v1/orderservice/order/006cc0d3-4baa-4fad-bf36-c57911099b9a
-/api/v1/orderOtherService/orderOther/006cc0d3-4baa-4fad-bf36-c57911099b9a
-/api/v1/orderOtherService/orderOther/006cc0d3-4baa-4fad-bf36-c57911099b9a
+/api/v1/orderservice/order/ecd9f060-12dd-4776-863c-1a62f54d303f
+/api/v1/orderOtherService/orderOther/ecd9f060-12dd-4776-863c-1a62f54d303f
+/api/v1/orderOtherService/orderOther/ecd9f060-12dd-4776-863c-1a62f54d303f
 
-[Segment] 93f908fdd3104df98304b5494af96ea2.843.17168038074110000
+[Segment] 7d9519d2617e4c02a057f417fd38a5a5.19031.17161943383530000
 SpringAsync
+/api/v1/orderOtherService/orderOther/ecd9f060-12dd-4776-863c-1a62f54d303f
 /api/v1/orderOtherService/orderOther
+/api/v1/inside_pay_service/inside_payment/drawback/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f/280.00
 
-[Segment] d42845e688a346559ef265ae273b6e06.108.17168038084250004
-PUT:/api/v1/orderOtherService/orderOther
-Mysql/JDBC/PreparedStatement/executeQuery
-Mysql/JDBC/PreparedStatement/executeUpdate
-
-[Segment] 93f908fdd3104df98304b5494af96ea2.842.17168038074110000
-SpringAsync
-/api/v1/orderOtherService/orderOther/006cc0d3-4baa-4fad-bf36-c57911099b9a
-/api/v1/orderOtherService/orderOther
-/api/v1/inside_pay_service/inside_payment/drawback/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f/98.00
-
-[Segment] d42845e688a346559ef265ae273b6e06.109.17168038094150004
+[Segment] 5b78e3d935394e5f839d032aa6d0a780.109.17161943404030016
 GET:/api/v1/orderOtherService/orderOther/{orderId}
 Mysql/JDBC/PreparedStatement/executeQuery
 
-[Segment] d42845e688a346559ef265ae273b6e06.110.17168038094270004
+[Segment] 5b78e3d935394e5f839d032aa6d0a780.111.17161943404430018
 PUT:/api/v1/orderOtherService/orderOther
 Mysql/JDBC/PreparedStatement/executeQuery
 Mysql/JDBC/PreparedStatement/executeUpdate
 
-[Segment] f6ef5a63bf7b4332ae1ba198d16a7816.107.17168038094480000
+[Segment] 351f15e51b03414e99d7b349dd9f9401.109.17161943405630002
 GET:/api/v1/inside_pay_service/inside_payment/drawback/{userId}/{money}
 Mysql/JDBC/PreparedStatement/executeQuery
 Mysql/JDBC/PreparedStatement/executeUpdate
 
-[Segment] f216b0aac6004f41aba643d57dac60ca.108.17168038073760000
+[Segment] 7d9519d2617e4c02a057f417fd38a5a5.19032.17161943383530000
+SpringAsync
+/api/v1/orderOtherService/orderOther
+
+[Segment] 5b78e3d935394e5f839d032aa6d0a780.110.17161943394600014
+PUT:/api/v1/orderOtherService/orderOther
+Mysql/JDBC/PreparedStatement/executeQuery
+Mysql/JDBC/PreparedStatement/executeUpdate
+
+[Segment] 5340148a2fa241c7a431f5bda3412b91.108.17161943382550002
 GET:/api/v1/orderservice/order/{orderId}
 Mysql/JDBC/PreparedStatement/executeQuery
 
-[Segment] d42845e688a346559ef265ae273b6e06.107.17168038073990004
+[Segment] 5b78e3d935394e5f839d032aa6d0a780.106.17161943383310016
 GET:/api/v1/orderOtherService/orderOther/{orderId}
 Mysql/JDBC/PreparedStatement/executeQuery
 
-[Segment] d42845e688a346559ef265ae273b6e06.111.17168038094690004
+[Segment] 5b78e3d935394e5f839d032aa6d0a780.112.17161943407590020
 GET:/api/v1/orderOtherService/orderOther/{orderId}
 Mysql/JDBC/PreparedStatement/executeQuery
-
-[Segment] ff9d6fa07182467fa0cb9478f906f8c4.99.17168038095990002
-PUT:/api/v1/consignservice/consigns
-
-[Segment] ff9d6fa07182467fa0cb9478f906f8c4.99.17168038022530000
-GET:/api/v1/contactservice/contacts/account/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f
-
-[Segment] ff9d6fa07182467fa0cb9478f906f8c4.95.17168038011490010
-GET:/api/v1/verifycode/generate
-
-[Segment] 9bd8268cf7574cb3b58b1b964437cdad.105.17168038023470000
-POST:/api/v1/preserveotherservice/preserveOther
-/api/v1/securityservice/securityConfigs/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f
-/api/v1/contactservice/contacts/2fad9c9c-d28f-4e76-a197-df06f4c19f57
-/api/v1/travel2service/trip_detail
-/api/v1/basicservice/basic/travel
-/api/v1/seatservice/seats
-/api/v1/orderOtherService/orderOther
-/api/v1/foodservice/orders
-/api/v1/userservice/users/id/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f
-
-[Segment] 081aba808b624cd68ebc24adeb8bbdaa.103.17168038026660000
-GET:/api/v1/securityservice/securityConfigs/{accountId}
-/api/v1/orderservice/order/security/Mon May 27 17:56:42 CST 2024/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f
-/api/v1/orderOtherService/orderOther/security/Mon May 27 17:56:42 CST 2024/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f
-Mysql/JDBC/PreparedStatement/executeQuery
-Mysql/JDBC/PreparedStatement/executeQuery
-
-[Segment] f216b0aac6004f41aba643d57dac60ca.107.17168038026950000
-GET:/api/v1/orderservice/order/security/{checkDate}/{accountId}
-Mysql/JDBC/PreparedStatement/executeQuery
-
-[Segment] d42845e688a346559ef265ae273b6e06.110.17168038027720002
-GET:/api/v1/orderOtherService/orderOther/security/{checkDate}/{accountId}
-Mysql/JDBC/PreparedStatement/executeQuery
-
-[Segment] cfb4941310ee4ba49b2ba6d676bd4225.110.17168038030650000
-GET:/api/v1/contactservice/contacts/{id}
-Mysql/JDBC/PreparedStatement/executeQuery
-
-[Segment] 4fbbe0042ab14d4d818a9672697719d6.108.17168038030900000
-POST:/api/v1/travel2service/trip_detail
-Mysql/JDBC/PreparedStatement/executeQuery
-/api/v1/basicservice/basic/travel
-/api/v1/seatservice/seats/left_tickets
-/api/v1/seatservice/seats/left_tickets
-Mysql/JDBC/PreparedStatement/executeQuery
-
-[Segment] 85071118bf6745c48f563d112b2d39c2.109.17168038031110000
-POST:/api/v1/basicservice/basic/travel
-/api/v1/stationservice/stations/id/shanghai
-/api/v1/stationservice/stations/id/nanjing
-/api/v1/trainservice/trains/byName/ZhiDa
-/api/v1/routeservice/routes/0b23bd3e-876a-4af3-b920-c50a90c90b04
-/api/v1/priceservice/prices/0b23bd3e-876a-4af3-b920-c50a90c90b04/ZhiDa
-
-[Segment] 42cabeb1e92641ba95fb5a9725f9c89f.111.17168038031300000
-GET:/api/v1/stationservice/stations/id/{stationNameForId}
-Mysql/JDBC/PreparedStatement/executeQuery
-
-[Segment] 42cabeb1e92641ba95fb5a9725f9c89f.112.17168038031480000
-GET:/api/v1/stationservice/stations/id/{stationNameForId}
-Mysql/JDBC/PreparedStatement/executeQuery
-
-[Segment] 48d573ecd52349a6be64e069695f9e7c.106.17168038031830000
-GET:/api/v1/trainservice/trains/byName/{name}
-Mysql/JDBC/PreparedStatement/executeQuery
-
-[Segment] 5a17a4214cad4016bdcabbb9e94980e0.111.17168038032000000
-GET:/api/v1/routeservice/routes/{routeId}
-Mysql/JDBC/PreparedStatement/executeQuery
-Mysql/JDBC/PreparedStatement/executeQuery
-Mysql/JDBC/PreparedStatement/executeQuery
-
-[Segment] 63e279e9174b4ef0b3fea5cdedae96c4.107.17168038032180000
-GET:/api/v1/priceservice/prices/{routeId}/{trainType}
-Mysql/JDBC/PreparedStatement/executeQuery
-
-[Segment] 688a09a5f0e1427fafe69499a10897f4.112.17168038032670000
-POST:/api/v1/seatservice/seats/left_tickets
-/api/v1/orderOtherService/orderOther/tickets
-/api/v1/configservice/configs/DirectTicketAllocationProportion
-
-[Segment] d42845e688a346559ef265ae273b6e06.111.17168038032740002
-POST:/api/v1/orderOtherService/orderOther/tickets
-Mysql/JDBC/PreparedStatement/executeQuery
-
-[Segment] 7974cf6417e849ccb0c7855b2869b880.111.17168038032870000
-GET:/api/v1/configservice/configs/{configName}
-Mysql/JDBC/PreparedStatement/executeQuery
-
-[Segment] 688a09a5f0e1427fafe69499a10897f4.103.17168038033390002
-POST:/api/v1/seatservice/seats/left_tickets
-/api/v1/orderOtherService/orderOther/tickets
-/api/v1/configservice/configs/DirectTicketAllocationProportion
-
-[Segment] d42845e688a346559ef265ae273b6e06.106.17168038033920002
-POST:/api/v1/orderOtherService/orderOther/tickets
-Mysql/JDBC/PreparedStatement/executeQuery
-
-[Segment] 7974cf6417e849ccb0c7855b2869b880.112.17168038034080000
-GET:/api/v1/configservice/configs/{configName}
-Mysql/JDBC/PreparedStatement/executeQuery
-
-[Segment] 85071118bf6745c48f563d112b2d39c2.110.17168038034380000
-POST:/api/v1/basicservice/basic/travel
-/api/v1/stationservice/stations/id/shanghai
-/api/v1/stationservice/stations/id/nanjing
-/api/v1/trainservice/trains/byName/ZhiDa
-/api/v1/routeservice/routes/0b23bd3e-876a-4af3-b920-c50a90c90b04
-/api/v1/priceservice/prices/0b23bd3e-876a-4af3-b920-c50a90c90b04/ZhiDa
-
-[Segment] 42cabeb1e92641ba95fb5a9725f9c89f.113.17168038034490000
-GET:/api/v1/stationservice/stations/id/{stationNameForId}
-Mysql/JDBC/PreparedStatement/executeQuery
-
-[Segment] 42cabeb1e92641ba95fb5a9725f9c89f.104.17168038034590002
-GET:/api/v1/stationservice/stations/id/{stationNameForId}
-Mysql/JDBC/PreparedStatement/executeQuery
-
-[Segment] 48d573ecd52349a6be64e069695f9e7c.107.17168038034720000
-GET:/api/v1/trainservice/trains/byName/{name}
-Mysql/JDBC/PreparedStatement/executeQuery
-
-[Segment] 5a17a4214cad4016bdcabbb9e94980e0.112.17168038034850000
-GET:/api/v1/routeservice/routes/{routeId}
-Mysql/JDBC/PreparedStatement/executeQuery
-Mysql/JDBC/PreparedStatement/executeQuery
-Mysql/JDBC/PreparedStatement/executeQuery
-
-[Segment] 63e279e9174b4ef0b3fea5cdedae96c4.108.17168038035040000
-GET:/api/v1/priceservice/prices/{routeId}/{trainType}
-Mysql/JDBC/PreparedStatement/executeQuery
-
-[Segment] 688a09a5f0e1427fafe69499a10897f4.104.17168038035250002
-POST:/api/v1/seatservice/seats
-/api/v1/orderOtherService/orderOther/tickets
-
-[Segment] d42845e688a346559ef265ae273b6e06.112.17168038035340004
-POST:/api/v1/orderOtherService/orderOther/tickets
-Mysql/JDBC/PreparedStatement/executeQuery
-
-[Segment] d42845e688a346559ef265ae273b6e06.103.17168038035530006
-POST:/api/v1/orderOtherService/orderOther
-Mysql/JDBC/PreparedStatement/executeQuery
-Mysql/JDBC/PreparedStatement/executeQuery
-Mysql/JDBC/PreparedStatement/executeUpdate
-
-[Segment] d5516438448a4ca5a95515b8f39366d7.108.17168038035770000
-POST:/api/v1/foodservice/orders
-Mysql/JDBC/PreparedStatement/executeQuery
-Mysql/JDBC/PreparedStatement/executeQuery
-Mysql/JDBC/PreparedStatement/executeUpdate
-
-[Segment] 92af6f44f4494d0399126e9119b01aee.104.17168038070810000
-GET:/api/v1/userservice/users/id/{userId}
-Mysql/JDBC/PreparedStatement/executeQuery
-
-[Segment] ff9d6fa07182467fa0cb9478f906f8c4.96.17168038073410002
-GET:/api/v1/cancelservice/cancel/006cc0d3-4baa-4fad-bf36-c57911099b9a/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f
-
-[Segment] 3925cb55b25f499a959e04fcbac1408f.107.17168038096090000
-PUT:/api/v1/consignservice/consigns
-Mysql/JDBC/PreparedStatement/executeQuery
-/api/v1/consignpriceservice/consignprice/32.0/false
-
-[Segment] ff9d6fa07182467fa0cb9478f906f8c4.101.17168038012530000
-POST:/api/v1/users/login
-
-[Segment] ff9d6fa07182467fa0cb9478f906f8c4.98.17168038095360002
-POST:/api/v1/orderOtherService/orderOther/refresh
 

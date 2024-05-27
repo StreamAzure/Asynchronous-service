@@ -93,4 +93,44 @@ def save_segments(segments:dict, output_file):
             for span in spans:
                 f.write(span.endpointName + "\n")
             f.write("\n")
+
+def print_request_flows(segments, segment_tree, parent_segment_id=None, path=None, level=0, output_file=None):
+    
+    def _print_request_flow(result, nodes, childs, node_id, depth, visited_asny:list, visited_node:list):
+        if node_id != None:
+            leaderSpan = nodes[node_id][0]
+            if "SpringAsync" in leaderSpan.endpointName and depth in visited_asny:
+                return
+            if leaderSpan.segmentID+str(leaderSpan.spanID) not in visited_node:
+                result.append(leaderSpan.endpointName)
+                visited_node.append(leaderSpan.segmentID+str(leaderSpan.spanID))
+            else:
+                return
+        if childs[node_id]:
+            # 优先遍历子节点
+            for child in childs[node_id]:
+                _print_request_flow(result, nodes, childs, child, depth+1, visited_asny, visited_node)
+        else:
+            parent_node = None
+            for k, v in childs.items():
+                if node_id in v:
+                    parent_node = k
+                break
+            # 如果没有子节点，则下一个节点是父节点的兄弟节点
+            siblings = childs[parent_node]
+            sibling_index = siblings.index(node_id)
+            for sibling in siblings[sibling_index+1:]:
+                if "SpringAsync" in nodes[sibling][0].endpointName:
+                    if depth not in visited_asny:
+                        visited_asny.append(depth)
+                        _print_request_flow(result, nodes, childs, sibling, depth-1, visited_asny, visited_node)
+                    else:
+                        continue
+                else:
+                    _print_request_flow(result, nodes, childs, sibling, depth-1, visited_asny, visited_node)
+    
+    result = []
+    _print_request_flow(result, segments, segment_tree, None, 0, [], [])
+    result_string = "->".join(result)
+    print(result_string)
     

@@ -1,5 +1,4 @@
 import sqlparse
-import sql_metadata
 import re
 
 def get_operation(sql) -> str:
