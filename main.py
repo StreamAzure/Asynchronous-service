@@ -261,14 +261,12 @@ def main(trace_dir, output_dir):
 
 
 if __name__ == "__main__":
-    data_dir = 'data-0520-f1'
-    output_dir = data_dir + '/res'
+    data_dir = 'data/f1'
+    output_dir = 'output' + '/f1_res'
     try:
         os.makedirs(output_dir, exist_ok=True)
         print(f"Output dir '{output_dir}' created or existed.")
     except OSError as error:
         print(f"error when creating output dir: {error}")
 
-    trace_dir = data_dir + '/trace'
-
-    main(trace_dir, output_dir)
+    main(data_dir, output_dir)
