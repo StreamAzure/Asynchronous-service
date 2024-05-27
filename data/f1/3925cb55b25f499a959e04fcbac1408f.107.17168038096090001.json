@@ -1,0 +1,252 @@
+{
+  "data": {
+    "trace": {
+      "spans": [
+        {
+          "traceId": "3925cb55b25f499a959e04fcbac1408f.107.17168038096090001",
+          "segmentId": "3925cb55b25f499a959e04fcbac1408f.107.17168038096090000",
+          "spanId": 0,
+          "parentSpanId": -1,
+          "refs": [],
+          "serviceCode": "ts-consign-service",
+          "serviceInstanceName": "7a6b62f4dc4f4d3795503087e12b003d@172.22.0.80",
+          "startTime": 1716803809609,
+          "endTime": 1716803809637,
+          "endpointName": "PUT:/api/v1/consignservice/consigns",
+          "type": "Entry",
+          "peer": "",
+          "component": "SpringMVC",
+          "isError": true,
+          "layer": "Http",
+          "tags": [
+            {
+              "key": "url",
+              "value": "http://172.22.0.80:16111/api/v1/consignservice/consigns"
+            },
+            {
+              "key": "http.method",
+              "value": "PUT"
+            },
+            {
+              "key": "http.param",
+              "value": "{\"id\":\"\",\"orderId\":\"89ffb464-7e3f-42c2-af4d-d57dd70ca140\",\"accountId\":\"4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f\",\"handleDate\":\"2024-05-27\",\"targetDate\":\"2024-05-27 17:56:49\",\"from\":\"shanghai\",\"to\":\"nanjing\",\"consignee\":\"32\",\"phone\":\"12345677654\",\"weight\":32.0,\"isWithin\":false}"
+            },
+            {
+              "key": "http.status_code",
+              "value": "500"
+            }
+          ],
+          "logs": [
+            {
+              "time": 1716803809629,
+              "data": [
+                {
+                  "key": "event",
+                  "value": "error"
+                },
+                {
+                  "key": "error.kind",
+                  "value": "java.lang.IllegalStateException"
+                },
+                {
+                  "key": "message",
+                  "value": "No instances available for ts-consign-price-service"
+                },
+                {
+                  "key": "stack",
+                  "value": "java.lang.IllegalStateException: No instances available for ts-consign-price-service\nat org.springframework.cloud.netflix.ribbon.RibbonLoadBalancerClient.execute(RibbonLoadBalancerClient.java:136)\nat org.springframework.cloud.client.loadbalancer.RetryLoadBalancerInterceptor.lambda$intercept$0(RetryLoadBalancerInterceptor.java:100)\nat org.springframework.retry.support.RetryTemplate.doExecute(RetryTemplate.java:287)\nat org.springframework.retry.support.RetryTemplate.execute(RetryTemplate.java:180)\nat org.springframework.cloud.client.loadbalancer.RetryLoadBalancerInterceptor.intercept(RetryLoadBalancerInterceptor.java:77)\nat org.springframework.http.client.InterceptingClientHttpRequest$InterceptingRequestExecution.execute(InterceptingClientHttpRequest.java:93)\nat org.springframework.boot.actuate.metrics.web.client.MetricsClientHttpRequestInterceptor.intercept(MetricsClientHttpRequestInterceptor.java:86)\nat org.springframework.http.client.InterceptingClientHttpRequest$InterceptingRequestExecution.execute(InterceptingClientHttpRequest.java:93)\nat org.springframework.http.client.InterceptingClientHttpRequest.executeInternal(InterceptingClientHttpRequest.java:77)\nat org.springframework.http.client.AbstractBufferingClientHttpRequest.executeInternal(AbstractBufferingClientHttpRequest.java:48)\nat org.springframework.http.client.AbstractClientHttpRequest.execute(AbstractClientHttpRequest.java:53)\nat org.springframework.web.client.RestTemplate.$sw$original$doExecute$pu71rc0(RestTemplate.java:737)\nat org.springframework.web.client.RestTemplate.$sw$original$doExecute$pu71rc0$accessor$$sw$gm7t4l2(RestTemplate.java)\nat org.springframework.web.client.RestTemplate$$sw$auxiliary$e8i1u62.call(Unknown Source)\nat org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.InstMethodsInter.intercept(InstMethodsInter.java:86)\nat org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java)\nat org.springframework.web.client.RestTemplate.execute(RestTemplate.java:672)\nat org.springframework.web.client.RestTemplate.exchange(RestTemplate.java:610)\nat consign.service.ConsignServiceImpl.insertConsignRecord(ConsignServiceImpl.java:67)\nat consign.service.ConsignServiceImpl.updateConsignRecord(ConsignServiceImpl.java:86)\nat consign.controller.ConsignController.$sw$original$updateConsign$sdigg63(ConsignController.java:43)\nat consign.controller.ConsignController.$sw$original$updateConsign$sdigg63$accessor$$sw$oknpj01(ConsignController.java)\nat consign.controller.ConsignController$$sw$auxiliary$ojd89e0.call(Unknown Source)\nat org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.InstMethodsInter.intercept(InstMethodsInter.java:86)\nat consign.controller.ConsignController.updateConsign(ConsignController.java)\nat sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\nat sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\nat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\nat java.lang.reflect.Method.invoke(Method.java:498)\nat org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:190)\nat org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:138)\nat org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:105)\nat org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:878)\nat org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:792)\nat org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)\nat org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1040)\nat org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:943)\nat org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006)\n"
+                }
+              ]
+            },
+            {
+              "time": 1716803809633,
+              "data": [
+                {
+                  "key": "event",
+                  "value": "error"
+                },
+                {
+                  "key": "error.kind",
+                  "value": "org.springframework.web.util.NestedServletException"
+                },
+                {
+                  "key": "message",
+                  "value": "Request processing failed; nested exception is java.lang.IllegalStateException: No instances available for ts-consign-price-service"
+                },
+                {
+                  "key": "stack",
+                  "value": "org.springframework.web.util.NestedServletException: Request processing failed; nested exception is java.lang.IllegalStateException: No instances available for ts-consign-price-service\nat org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)\nat org.springframework.web.servlet.FrameworkServlet.doPut(FrameworkServlet.java:920)\nat javax.servlet.http.HttpServlet.service(HttpServlet.java:655)\nat org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883)\nat javax.servlet.http.HttpServlet.service(HttpServlet.java:733)\nat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:227)\nat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)\nat org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)\nat org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)\nat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)\nat org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:320)\nat org.springframework.security.web.access.intercept.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:126)\nat org.springframework.security.web.access.intercept.FilterSecurityInterceptor.doFilter(FilterSecurityInterceptor.java:90)\nat org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)\nat org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:118)\nat org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)\nat org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:137)\nat org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)\nat org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:111)\nat org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)\nat org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:158)\nat org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)\nat org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)\nat org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)\nat edu.fudan.common.security.jwt.JWTFilter.doFilterInternal(JWTFilter.java:27)\nat org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)\nat org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)\nat org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:116)\nat org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)\nat org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:92)\nat org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:77)\nat org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)\nat org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)\nat org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:105)\nat org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:334)\nat org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:56)\nat org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)\n"
+                }
+              ]
+            },
+            {
+              "time": 1716803809634,
+              "data": [
+                {
+                  "key": "forward-url",
+                  "value": "/error"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "traceId": "3925cb55b25f499a959e04fcbac1408f.107.17168038096090001",
+          "segmentId": "3925cb55b25f499a959e04fcbac1408f.107.17168038096090000",
+          "spanId": 1,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "ts-consign-service",
+          "serviceInstanceName": "7a6b62f4dc4f4d3795503087e12b003d@172.22.0.80",
+          "startTime": 1716803809619,
+          "endTime": 1716803809621,
+          "endpointName": "HikariCP/Connection/getConnection",
+          "type": "Local",
+          "peer": "",
+          "component": "HikariCP",
+          "isError": false,
+          "layer": "Unknown",
+          "tags": [],
+          "logs": []
+        },
+        {
+          "traceId": "3925cb55b25f499a959e04fcbac1408f.107.17168038096090001",
+          "segmentId": "3925cb55b25f499a959e04fcbac1408f.107.17168038096090000",
+          "spanId": 2,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "ts-consign-service",
+          "serviceInstanceName": "7a6b62f4dc4f4d3795503087e12b003d@172.22.0.80",
+          "startTime": 1716803809622,
+          "endTime": 1716803809623,
+          "endpointName": "Mysql/JDBC/PreparedStatement/executeQuery",
+          "type": "Exit",
+          "peer": "ts-consign-mysql:3306",
+          "component": "mysql-connector-java",
+          "isError": false,
+          "layer": "Database",
+          "tags": [
+            {
+              "key": "db.type",
+              "value": "Mysql"
+            },
+            {
+              "key": "db.instance",
+              "value": "ts"
+            },
+            {
+              "key": "db.statement",
+              "value": "select consignrec0_.consign_record_id as consign_1_0_0_, consignrec0_.user_id as user_id2_0_0_, consignrec0_.consignee as consigne3_0_0_, consignrec0_.from_place as from_pla4_0_0_, consignrec0_.handle_date as handle_d5_0_0_, consignrec0_.order_id as order_id6_0_0_, consignrec0_.consign_record_phone as consign_7_0_0_, consignrec0_.consign_record_price as consign_8_0_0_, consignrec0_.target_date as target_d9_0_0_, consignrec0_.to_place as to_plac10_0_0_, consignrec0_.weight as weight11_0_0_ from consign_record consignrec0_ where consignrec0_.consign_record_id=?"
+            },
+            {
+              "key": "db.sql.parameters",
+              "value": "[]"
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "3925cb55b25f499a959e04fcbac1408f.107.17168038096090001",
+          "segmentId": "3925cb55b25f499a959e04fcbac1408f.107.17168038096090000",
+          "spanId": 3,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "ts-consign-service",
+          "serviceInstanceName": "7a6b62f4dc4f4d3795503087e12b003d@172.22.0.80",
+          "startTime": 1716803809623,
+          "endTime": 1716803809623,
+          "endpointName": "Mysql/JDBC/Connection/commit",
+          "type": "Exit",
+          "peer": "ts-consign-mysql:3306",
+          "component": "mysql-connector-java",
+          "isError": false,
+          "layer": "Database",
+          "tags": [
+            {
+              "key": "db.type",
+              "value": "Mysql"
+            },
+            {
+              "key": "db.instance",
+              "value": "ts"
+            },
+            {
+              "key": "db.statement",
+              "value": ""
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "3925cb55b25f499a959e04fcbac1408f.107.17168038096090001",
+          "segmentId": "3925cb55b25f499a959e04fcbac1408f.107.17168038096090000",
+          "spanId": 4,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "ts-consign-service",
+          "serviceInstanceName": "7a6b62f4dc4f4d3795503087e12b003d@172.22.0.80",
+          "startTime": 1716803809626,
+          "endTime": 1716803809629,
+          "endpointName": "/api/v1/consignpriceservice/consignprice/32.0/false",
+          "type": "Exit",
+          "peer": "ts-consign-price-service:80",
+          "component": "SpringRestTemplate",
+          "isError": true,
+          "layer": "Http",
+          "tags": [
+            {
+              "key": "url",
+              "value": "http://ts-consign-price-service/api/v1/consignpriceservice/consignprice/32.0/false"
+            },
+            {
+              "key": "http.method",
+              "value": "GET"
+            }
+          ],
+          "logs": [
+            {
+              "time": 1716803809629,
+              "data": [
+                {
+                  "key": "event",
+                  "value": "error"
+                },
+                {
+                  "key": "error.kind",
+                  "value": "java.lang.IllegalStateException"
+                },
+                {
+                  "key": "message",
+                  "value": "No instances available for ts-consign-price-service"
+                },
+                {
+                  "key": "stack",
+                  "value": "java.lang.IllegalStateException: No instances available for ts-consign-price-service\nat org.springframework.cloud.netflix.ribbon.RibbonLoadBalancerClient.execute(RibbonLoadBalancerClient.java:136)\nat org.springframework.cloud.client.loadbalancer.RetryLoadBalancerInterceptor.lambda$intercept$0(RetryLoadBalancerInterceptor.java:100)\nat org.springframework.retry.support.RetryTemplate.doExecute(RetryTemplate.java:287)\nat org.springframework.retry.support.RetryTemplate.execute(RetryTemplate.java:180)\nat org.springframework.cloud.client.loadbalancer.RetryLoadBalancerInterceptor.intercept(RetryLoadBalancerInterceptor.java:77)\nat org.springframework.http.client.InterceptingClientHttpRequest$InterceptingRequestExecution.execute(InterceptingClientHttpRequest.java:93)\nat org.springframework.boot.actuate.metrics.web.client.MetricsClientHttpRequestInterceptor.intercept(MetricsClientHttpRequestInterceptor.java:86)\nat org.springframework.http.client.InterceptingClientHttpRequest$InterceptingRequestExecution.execute(InterceptingClientHttpRequest.java:93)\nat org.springframework.http.client.InterceptingClientHttpRequest.executeInternal(InterceptingClientHttpRequest.java:77)\nat org.springframework.http.client.AbstractBufferingClientHttpRequest.executeInternal(AbstractBufferingClientHttpRequest.java:48)\nat org.springframework.http.client.AbstractClientHttpRequest.execute(AbstractClientHttpRequest.java:53)\nat org.springframework.web.client.RestTemplate.$sw$original$doExecute$pu71rc0(RestTemplate.java:737)\nat org.springframework.web.client.RestTemplate.$sw$original$doExecute$pu71rc0$accessor$$sw$gm7t4l2(RestTemplate.java)\nat org.springframework.web.client.RestTemplate$$sw$auxiliary$e8i1u62.call(Unknown Source)\nat org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.InstMethodsInter.intercept(InstMethodsInter.java:86)\nat org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java)\nat org.springframework.web.client.RestTemplate.execute(RestTemplate.java:672)\nat org.springframework.web.client.RestTemplate.exchange(RestTemplate.java:610)\nat consign.service.ConsignServiceImpl.insertConsignRecord(ConsignServiceImpl.java:67)\nat consign.service.ConsignServiceImpl.updateConsignRecord(ConsignServiceImpl.java:86)\nat consign.controller.ConsignController.$sw$original$updateConsign$sdigg63(ConsignController.java:43)\nat consign.controller.ConsignController.$sw$original$updateConsign$sdigg63$accessor$$sw$oknpj01(ConsignController.java)\nat consign.controller.ConsignController$$sw$auxiliary$ojd89e0.call(Unknown Source)\nat org.apache.skywalking.apm.agent.core.plugin.interceptor.enhance.InstMethodsInter.intercept(InstMethodsInter.java:86)\nat consign.controller.ConsignController.updateConsign(ConsignController.java)\nat sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)\nat sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)\nat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\nat java.lang.reflect.Method.invoke(Method.java:498)\nat org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:190)\nat org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:138)\nat org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:105)\nat org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:878)\nat org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:792)\nat org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)\nat org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1040)\nat org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:943)\nat org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006)\n"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "traceId": "3925cb55b25f499a959e04fcbac1408f.107.17168038096090001",
+          "segmentId": "3925cb55b25f499a959e04fcbac1408f.107.17168038096090000",
+          "spanId": 5,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "ts-consign-service",
+          "serviceInstanceName": "7a6b62f4dc4f4d3795503087e12b003d@172.22.0.80",
+          "startTime": 1716803809630,
+          "endTime": 1716803809630,
+          "endpointName": "HikariCP/Connection/close",
+          "type": "Local",
+          "peer": "",
+          "component": "HikariCP",
+          "isError": false,
+          "layer": "Unknown",
+          "tags": [],
+          "logs": []
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "data": {
+    "trace": {
+      "spans": [
+        {
+          "traceId": "d13edc41184a44fcb7f463121dbbf2c0.105.17168038011570005",
+          "segmentId": "d13edc41184a44fcb7f463121dbbf2c0.105.17168038011570004",
+          "spanId": 0,
+          "parentSpanId": -1,
+          "refs": [],
+          "serviceCode": "ts-verification-code-service",
+          "serviceInstanceName": "60c6b7d7036549a7b0c75137c3106f5c@172.22.0.81",
+          "startTime": 1716803801157,
+          "endTime": 1716803801198,
+          "endpointName": "GET:/api/v1/verifycode/generate",
+          "type": "Entry",
+          "peer": "",
+          "component": "SpringMVC",
+          "isError": false,
+          "layer": "Http",
+          "tags": [
+            {
+              "key": "url",
+              "value": "http://172.22.0.81:15678/api/v1/verifycode/generate"
+            },
+            {
+              "key": "http.method",
+              "value": "GET"
+            },
+            {
+              "key": "http.status_code",
+              "value": "200"
+            }
+          ],
+          "logs": []
+        }
+      ]
+    }
+  }
+}
