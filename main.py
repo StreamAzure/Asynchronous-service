@@ -2,7 +2,6 @@ import json
 from utils.file_helper import *
 from utils.sql_parse import *
 from object import Span, Req, Bundle
-from prune import trace_based_filter
 from output import mask_parameters_output, save_segments, origin_output
 import os
 import itertools
@@ -100,7 +99,7 @@ def trace_analyze(spans, output_dir):
 def _get_correspond_request_span(span, segments) -> Span:
     """
     segments: 将span按segment分组构成的字典
-    输入一个 SQL span，溯源到它的 entry_span
+    输入一个 Data Span，找到它的对应 Request Span
     """
     if span.sqlStmt is None :
         raise Exception(f"span {span.spanID} is not a valid SQL span!")
@@ -111,7 +110,7 @@ def _get_correspond_request_span(span, segments) -> Span:
         print(f"WARNING: segment[0] 不是 entrySpan, entrySpan.type: {entrySpan.type}")
     
     if "http.method" not in entrySpan.tags.keys():
-        raise Exception(f"Not a HTTP span! Span: {entrySpan.spanID} {entrySpan.tags}")
+        raise Exception(f"Not a Request span! Span: {entrySpan.spanID} {entrySpan.tags}")
     
     return entrySpan
 
@@ -158,9 +157,10 @@ def create_request_ids_map(spans, segments):
     """
     request_ids_map = []
     for span in spans:
-        if span.sqlStmt is not None : # a span containing SQL statements
+        if span.sqlStmt is not None : # Data Span
             sql_operation = get_operation(span.sqlStmt)
             reqSpan = _get_correspond_request_span(span, segments)
+            print(span.sqlStmt_with_param)
             ids = get_ids(span)
 
             if sql_operation == 'select': 
@@ -170,7 +170,7 @@ def create_request_ids_map(spans, segments):
 
 
             if len(ids) > 0:
-                request_ids_map.append(Bundle(reqSpan, ids, span.peer,span.tags["db.instance"]))
+                request_ids_map.append(Bundle(reqSpan, ids, span.peer, span.tags["db.instance"]))
     
     seen = set()
     unique_list = []
@@ -206,7 +206,7 @@ def formulate_candidate_pairs(request_ids_map : list) -> dict:
 
     candidate_pairs = {}
 
-    # 进行两两匹配
+    # 进行两两匹配（random）
     for bundle1, bundle2 in itertools.combinations(request_ids_map, 2):
         if bundle1.reqSpan.x_operation_type == 'read' and bundle2.reqSpan.x_operation_type == 'read': 
             # 排除双 read
@@ -254,7 +254,7 @@ def main(trace_dir, output_dir):
     candidate_pairs = formulate_candidate_pairs(request_ids_map)
 
     ### step 5: 剪枝
-    candidate_pairs = trace_based_filter(candidate_pairs, segments, segment_tree)
+    # candidate_pairs = trace_based_filter(candidate_pairs, segments, segment_tree)
 
     ### output: 输出，内有去重
     origin_output(candidate_pairs, output_dir)

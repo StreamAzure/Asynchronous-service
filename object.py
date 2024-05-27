@@ -117,8 +117,8 @@ class Bundle:
     def __init__(self, reqSpan:Span, ids:list, peer:str, db:str) -> None:
         self.reqSpan = reqSpan
         self.ids = ids
-        self.peer = peer
-        self.db = db
+        self.peer = peer # 数据库实例IP
+        self.db = db # 数据库名
     
     def __hash__(self):
         return hash((self.reqSpan, tuple(self.ids), self.peer, self.db))
