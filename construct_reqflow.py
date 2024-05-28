@@ -70,18 +70,27 @@ def trace_analyze(spans):
     return segments, segment_tree
 
 def find_span(spanId, segments):
-        segID = spanId.split('-')[0]
-        spanID = int(spanId.split('-')[1])
-        span = None
-        for s in segments[segID]:
-            if s.spanID == spanID:
-                span = s
-                break
-        if span is None:
-            raise Exception(f"span {spanId} not found")
-        return span
+    segID = spanId.split('-')[0]
+    spanID = int(spanId.split('-')[1])
+    span = None
+    for s in segments[segID]:
+        if s.spanID == spanID:
+            span = s
+            break
+    if span is None:
+        raise Exception(f"span {spanId} not found")
+    return span
 
-def construct_flow(segments):
+def find_entry_span_param(exitSpanID, segments, segment_tree):
+    exitSpan = find_span(exitSpanID, segments)
+    for child_segment in segment_tree[exitSpan.segmentID]:
+        for span in segments[child_segment]:
+            if span.type == 'Entry' and span.refs[0]["parentSpanId"] == exitSpan.spanID:
+                if "http.param" in span.tags:
+                    return span.tags["http.param"]
+    return None
+
+def construct_flow(segments, segment_tree):
     def _print_flow(flow, req_data_map):
         for req_span_id in flow:
             span = find_span(req_span_id, segments)
@@ -121,11 +130,18 @@ def construct_flow(segments):
     flow1_spans = []
     for span_id in flow1:
         span = find_span(span_id, segments)
+        if span.type == 'Exit':
+            param = find_entry_span_param(span_id, segments, segment_tree)
+            if param is not None:
+                span.tags["http.param"] = param
         flow1_spans.append(span)
     
     flow2_spans = []
     for span_id in flow2:
         span = find_span(span_id, segments)
+        if span.type == 'Exit':
+            param = find_entry_span_param(span_id, segments, segment_tree)
+            span.tags["http.param"] = param if param is not None else ""
         flow2_spans.append(span)
 
     req_data_map_spans = {}
@@ -272,7 +288,8 @@ def prune_by_database(candidate_pairs, req_data_map):
 
 def prune_by_flow(candidate_pairs, flows):
     """
-    根据请求流进行剪枝，排除位于同一条请求流中的
+    根据请求流进行剪枝
+    请求流有多条，不能同在任意一条请求流中
     """
     candidate_pairs_pruned = {}
     for id, pairs in candidate_pairs.items():
@@ -298,13 +315,40 @@ def prune_by_flow(candidate_pairs, flows):
 
     return candidate_pairs_pruned
 
+def origin_output(candidate_pairs:dict, output_dir):
+    """
+    不处理路径中的参数
+    """
+    for id, pairs in candidate_pairs.items():
+        output_file = './test_output' + f"_{id}" + ".json"
+        res = {}
+        for i, pair in enumerate(pairs):
+            reqSpan1, reqSpan2 = pair
+            res[i] = [
+                {
+                    "url": reqSpan1.tags["url"],
+                    "http.method": reqSpan1.tags["http.method"],
+                    "http.param": json.loads(reqSpan2.tags["http.param"]) if reqSpan2.tags["http.param"] != "" else {}
+                },
+                {
+                    "url": reqSpan2.tags["url"],
+                    "http.method": reqSpan2.tags["http.method"],
+                    "http.param": json.loads(reqSpan2.tags["http.param"]) if reqSpan2.tags["http.param"] != "" else {}
+                }
+            ]
+        json_data = json.dumps(res, indent=4)
+        print(f"{output_file}: total {len(res)} pairs")
+        with open(output_file, 'w') as f:
+            f.write(json_data)
+
 if __name__ == "__main__":
     file =  'data/f1/93f908fdd3104df98304b5494af96ea2.108.17168038073480001.json'
     spans = load_spans_from_file(file)
     segments, segment_tree = trace_analyze(spans)
-    flows, req_data_map = construct_flow(segments)
+    flows, req_data_map = construct_flow(segments, segment_tree)
     candidate_pairs = formulate_candidate_pairs_origin(flows, req_data_map)
     print("\n=====")
     candidate_pairs = prune_by_database(candidate_pairs, req_data_map)
     print("\n=====")
     candidate_pairs = prune_by_flow(candidate_pairs, flows)
+    origin_output(candidate_pairs, './test_output')

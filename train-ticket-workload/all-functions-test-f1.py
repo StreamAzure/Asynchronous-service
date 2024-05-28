@@ -116,7 +116,7 @@ def query_one_and_put_consign():
 
     pairs = _query_orders_all_info(query_other=True)
     pair = random.choice(pairs)
-    print(f"{pair["orderId"]} queried and put consign")
+    print(f"{pair['orderId']} queried and put consign")
 
     url = f"{address}/api/v1/consignservice/consigns"
     consignload = {
