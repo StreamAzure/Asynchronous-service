@@ -82,6 +82,16 @@ class Flow:
         self.id = id
         self.requestSpans = []
         self.child_flow_ids = []
+        self.db_infos = [] # 请求流路径上影响的 数据库实例-数据库名
+
+    def have_child_flow(self):
+        return len(self.child_flow_ids) != 0
+    
+    def get_original_requestSpan(self):
+        """
+        获取原始用户请求的RequestSpan
+        """
+        return self.requestSpans[0]
     
     def __str__(self):
         result = ""
@@ -95,8 +105,9 @@ class Flow:
         return result
 
 class RequestSpan:
-    def __init__(self, flowID, span):
+    def __init__(self, flowID, flowSpanID, span):
         self.flowID = flowID # 所属请求流
+        self.flowSpanID = flowSpanID # 请求流中的第几个span
         self.span = span
         self.corresponding_entrySpan_unique_id = ""
 

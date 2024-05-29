@@ -1,9 +1,9 @@
 from utils.sql_parse import *
 import copy
-from utils.file_helper import *
 from trace_preprocess import pre_process
 from object import Flow, RequestSpan, DataSpan
 from utils.io import print_red
+import os
 
 flowID = 0
 flows = {}
@@ -64,7 +64,9 @@ def construct_flow(segments, segment_tree):
                 if len(segments[now_segment_id][0].refs) == 0:
                     # 用户请求，以EntrySpan开始创建新的请求流
                     flow = Flow(flowID)
-                    flow.requestSpans.append(RequestSpan(flowID, entrySpan))
+                    flowSpanId = len(flow.requestSpans)
+                    flow.requestSpans.append(RequestSpan(flowID, flowSpanId, entrySpan))
+                    
                     flows[flowID] = flow
                     now_flow_id = flowID
                     flowID += 1
@@ -101,12 +103,14 @@ def construct_flow(segments, segment_tree):
 
                     # 非用户请求，继续当前请求流
                     flow = flows[now_flow_id]
-                    requestSpan = RequestSpan(now_flow_id, span)
-                    requestSpan.corresponding_entrySpan_unique_id = corresponding_entrySpan.segmentID + '-' + str(corresponding_entrySpan.spanID)
+                    flowSpanId = len(flow.requestSpans)
+                    requestSpan = RequestSpan(now_flow_id, flowSpanId, span)
                     flow.requestSpans.append(requestSpan)
-
+                    requestSpan.corresponding_entrySpan_unique_id = corresponding_entrySpan.segmentID + '-' + str(corresponding_entrySpan.spanID)
+                    
                     for child_flow_id in flow.child_flow_ids:
-                        flows[child_flow_id].requestSpans.append(RequestSpan(now_flow_id, span))
+                        flowSpanId = len(flows[child_flow_id].requestSpans)
+                        flows[child_flow_id].requestSpans.append(RequestSpan(now_flow_id, flowSpanId, span))
                         # 是子流共有的RequestSpan，该Span的flowID应该是parent flow的ID，避免baseline算法重复配对
 
                     _construct_flow(segments, segment_tree, corresponding_entrySpan.segmentID, now_flow_id)
@@ -135,6 +139,21 @@ def construct_flow(segments, segment_tree):
                 new_req_data_map[unique_id] = dataSpans
 
         return new_req_data_map
+    
+    def _get_dbinfo_in_flow(flow, req_data_map):
+        """
+        获取请求流上的数据库信息
+        """
+        db_infos = []
+        for reqSpan in flow.requestSpans:
+            unique_id = reqSpan.span.segmentID + '-' + str(reqSpan.span.spanID)
+            if unique_id in req_data_map:
+                for dataSpan in req_data_map[unique_id]:
+                    db_info = dataSpan.span.peer + ":" + dataSpan.span.tags["db.instance"]
+                    db_infos.append(db_info)
+        # 去重
+        db_infos = list(set(db_infos))
+        return db_infos
 
     # 一个 trace 文件只会有一条请求流，除非trace中有Async分叉
     root_segment_id = None
@@ -153,6 +172,9 @@ def construct_flow(segments, segment_tree):
 
     # 整理 req_data_map
     req_data_map = _get_req_data_map(flows, req_data_map)
+
+    for flow_id, flow in flows.items():
+        flow.db_infos = _get_dbinfo_in_flow(flow, req_data_map)
 
     return new_flows, flows, req_data_map
 
