@@ -1,0 +1,40 @@
+{
+  "data": {
+    "trace": {
+      "spans": [
+        {
+          "traceId": "ddc2d9ca6b234a1fa0dc73cbd32f4537.107.17169468510820001",
+          "segmentId": "ddc2d9ca6b234a1fa0dc73cbd32f4537.107.17169468510820000",
+          "spanId": 0,
+          "parentSpanId": -1,
+          "refs": [],
+          "serviceCode": "ts-gateway-service",
+          "serviceInstanceName": "b5027cd1b1ae487ab41c98623e362810@172.22.0.50",
+          "startTime": 1716946851082,
+          "endTime": 1716946851162,
+          "endpointName": "GET:/api/v1/cancelservice/cancel/a7e15b90-2481-401e-ab59-baf13a9dfd56/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+          "type": "Entry",
+          "peer": "",
+          "component": "Tomcat",
+          "isError": false,
+          "layer": "Http",
+          "tags": [
+            {
+              "key": "url",
+              "value": "http://ts-gateway-service:18888/api/v1/cancelservice/cancel/a7e15b90-2481-401e-ab59-baf13a9dfd56/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f"
+            },
+            {
+              "key": "http.method",
+              "value": "GET"
+            },
+            {
+              "key": "http.status_code",
+              "value": "200"
+            }
+          ],
+          "logs": []
+        }
+      ]
+    }
+  }
+}
