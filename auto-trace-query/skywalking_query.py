@@ -56,7 +56,6 @@ def system_get_all_spans(output_dir, startTime, endTime):
 
     try:
         os.makedirs(output_dir, exist_ok=True)
-        print(f"Output dir '{output_dir}' created or existed.")
     except OSError as error:
         print(f"error when creating output dir: {error}")
 

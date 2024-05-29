@@ -1,9 +1,23 @@
 from trace_preprocess import pre_process, pre_process_single_trace
 from reqflow_construct import construct_flow
 from reqflow_analyze import formulate_candidate_pairs_origin, prune_by_database, prune_by_flow, classify_by_ids
-from utils.io import print_candidate_pairs, print_flow_by_id, origin_output, save_request_flows
+from utils.io import print_candidate_pairs, print_flow_by_id, origin_output, save_request_flows, print_blue, print_red
 
-if __name__ == "__main__":
+def output_all_sql_statemnts(req_data_map):
+    sqls = []
+    for dataSpans in req_data_map.values():
+        for dataSpan in dataSpans:
+            ids = dataSpan._get_ids(dataSpan.span)
+            print_blue(dataSpan.span.sqlStmt_with_param + "\n")
+            print_red(ids)
+    #         sqls.append(dataSpan.span.sqlStmt_with_param)
+
+    # # 去重
+    # sqls = list(set(sqls))
+    # for sql in sqls:
+    #     print(sql)
+
+def main():
     trace_dir = './data/f1-response'
     output_dir = './output'
 
@@ -21,14 +35,19 @@ if __name__ == "__main__":
 
     res = classify_by_ids(candidate_pairs)
 
-    # 打印结果
-    print_candidate_pairs(candidate_pairs, origin_flows)
+    # # 打印结果
+    # print_candidate_pairs(candidate_pairs, origin_flows)
 
-    # 打印所有独立请求流
+    # # 打印所有独立请求流
     for flow_id, flow in flows.items():
         print_flow_by_id(origin_flows, flow_id)
+    # output_all_sql_statemnts(req_data_map)
 
     origin_output(res, output_dir)
 
     save_request_flows(origin_flows, output_dir)
+
+if __name__ == "__main__":
+    main()
+    
     
