@@ -2,6 +2,16 @@ import json
 import pickle
 import os
 
+def get_all_files(directory):
+    """
+    递归遍历指定目录，并返回所有json文件名
+    使用：all_files = list(get_all_files(dir))
+    """
+    for root, dirs, files in os.walk(directory):
+        for file in files:
+            if file.endswith('json'):
+                yield os.path.relpath(os.path.join(root, file), directory)
+
 def print_red(text):
     print(f"\033[91m{text}\033[0m")
 
@@ -14,16 +24,17 @@ def print_green(text):
 
 def print_flow_by_id(origin_flows, flow_id):
     flow = origin_flows[flow_id]
-    print_blue(f"[FlowID: {flow_id}] ")
+    print_blue(f"[FlowID: {flow_id}] [Lenth: {len(flow.requestSpans)}] ")
     print_green(flow)
+    print_red(f"[DB info] {flow.db_infos}")
     print()
     
 def print_candidate_pairs(candidate_pairs, flows):
     for reqPair, dataSpanPairs in candidate_pairs.items():
         reqSpan1, reqSpan2 = reqPair
-        print_blue(f"[FlowID: {reqSpan1.flowID}] ")
+        print_blue(f"[FlowID: {reqSpan1.flowID}] [FlowSpanID: {reqSpan1.flowSpanID}]")
         print(f"[{reqSpan1.span.segmentID}-{reqSpan1.span.spanID}] {reqSpan1.span.tags['http.method']} {reqSpan1.span.tags['url']}")
-        print_blue(f"[FlowID: {reqSpan2.flowID}] ")
+        print_blue(f"[FlowID: {reqSpan2.flowID}] [FlowSpanID: {reqSpan2.flowSpanID}]")
         print(f"[{reqSpan2.span.segmentID}-{reqSpan2.span.spanID}] {reqSpan2.span.tags['http.method']} {reqSpan2.span.tags['url']}")
 
         print_green(f"[origin user request] {flows[reqSpan1.flowID].requestSpans[0].span.tags['http.method']} {flows[reqSpan1.flowID].requestSpans[0].span.tags['url']}")
@@ -72,6 +83,7 @@ def create_http_req(reqSpan):
 
     return {
         "flow_id": reqSpan.flowID,
+        "flow_span_id": reqSpan.flowSpanID,
         "http_method": http_method,
         "http_url": url,
         "http_body": http_body,
@@ -82,9 +94,9 @@ def create_http_req(reqSpan):
 def origin_output(res:dict, output_dir):
     try:
         os.makedirs(output_dir, exist_ok=True)
-        print(f"Output dir '{output_dir}' created or existed.")
     except OSError as error:
         print(f"error when creating output dir: {error}")
+
     for id, pair_list in res.items():
         output_file = output_dir + "/candidatePairs" + "_" + id + ".json"
         res_json = {}
@@ -107,7 +119,6 @@ def save_request_flows(flows, output_dir):
     """
     try:
         os.makedirs(output_dir, exist_ok=True)
-        print(f"Output dir '{output_dir}' created or existed.")
     except OSError as error:
         print(f"error when creating output dir: {error}")
 

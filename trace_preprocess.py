@@ -1,6 +1,6 @@
-from utils.file_helper import *
 from object import Span
 from utils.sql_parse import *
+from utils.io import get_all_files
 import json
 import os
 
