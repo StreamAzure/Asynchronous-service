@@ -1,6 +1,6 @@
 import json
 from utils.sql_parse import *
-from output import print_red, print_blue, print_green, print_flow_by_id, print_candidate_pairs, print_res
+from utils.io import print_red, print_blue, print_green, print_flow_by_id, print_candidate_pairs, print_res
 import itertools
 from reqflow_construct import construct_flow
 from trace_preprocess import pre_process, pre_process_single_trace

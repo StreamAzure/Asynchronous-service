@@ -3,7 +3,7 @@ import copy
 from utils.file_helper import *
 from trace_preprocess import pre_process
 from object import Flow, RequestSpan, DataSpan
-from output import print_red
+from utils.io import print_red
 
 flowID = 0
 flows = {}
