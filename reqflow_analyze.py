@@ -1,254 +1,62 @@
 import json
-from object import Span
 from utils.sql_parse import *
+from output import print_red, print_blue, print_green, print_flow_by_id, print_candidate_pairs, print_res
 import itertools
+from reqflow_construct import construct_flow
+from trace_preprocess import pre_process, pre_process_single_trace
+import os
 
-
-def load_spans_from_file(file_path):
-    """
-    从 trace 文件中加载所有span
-    return : span 对象列表
-    """
-    with open(file_path, 'r') as file:
-        trace_data = json.load(file)
-
-    data = trace_data["data"]["trace"]["spans"]
-    spans = []
-    for span in data:
-        spans.append(Span(span))
-    return spans
-
-
-def trace_analyze(spans):
-    def _print_trace(segments, segment_tree, parent_segment_id, level=0):
-        if(level == 0):
-            print('Root')
-        for child_segment_id in segment_tree[parent_segment_id]:
-            format = "   " * (level+1)
-            print(f"{format} -------------------------------------")
-            print(f"{format} {child_segment_id}")
-            # 该 child_segment 的 span
-            for span in segments[child_segment_id]:
-                print(f"{format} [{span.spanID}] [{str(span.startTime)[8:]}] [{span.type:<5}] {span.tags['http.method']} {span.tags['url']}")
-            _print_trace(segments, segment_tree, child_segment_id, level + 1)
-
-    segments = {}
-    for span in spans:
-        if span.segmentID not in segments:
-            segments[span.segmentID] = []
-        segments[span.segmentID].append(span)
-
-    new_segments = {}
-    for segmentID, spanlist in segments.items():
-        # 去除无用 span 和 segment
-        if len(spanlist) == 1 and spanlist[0].endpointName == 'Mysql/JDBC/Connection/close':
-            continue
-        spanlist = sorted(spanlist, key = lambda span: span.spanID)
-        spanlist = [span for span in spanlist if "HikariCP" not in span.endpointName and "Mysql/JDBC/Connection/commit" not in span.endpointName]
-
-        new_segments[segmentID] = spanlist
-
-    segments = new_segments
-
-    segment_tree = {}
-    for segmentID, spanlist in segments.items():
-        if len(spanlist[0].refs) > 0 :
-            parentSegmentID = spanlist[0].refs[0]["parentSegmentId"]
-        else: 
-            parentSegmentID = None
-        if parentSegmentID not in segment_tree:
-            segment_tree[parentSegmentID] = []
-        segment_tree[parentSegmentID].append(segmentID)
-    
-    for span in spans:
-        segID = span.segmentID
-        if segID not in segment_tree.keys():
-            segment_tree[segID] = []
-
-    # _print_trace(segments, segment_tree, None, 0)
-
-    return segments, segment_tree
-
-def find_span(spanId, segments):
-    segID = spanId.split('-')[0]
-    spanID = int(spanId.split('-')[1])
-    span = None
-    for s in segments[segID]:
-        if s.spanID == spanID:
-            span = s
-            break
-    if span is None:
-        raise Exception(f"span {spanId} not found")
-    return span
-
-def find_entry_span_param(exitSpanID, segments, segment_tree):
-    exitSpan = find_span(exitSpanID, segments)
-    for child_segment in segment_tree[exitSpan.segmentID]:
-        for span in segments[child_segment]:
-            if span.type == 'Entry' and span.refs[0]["parentSpanId"] == exitSpan.spanID:
-                if "http.param" in span.tags:
-                    return span.tags["http.param"]
-    return None
-
-def construct_flow(segments, segment_tree):
-    def _print_flow(flow, req_data_map):
-        for req_span_id in flow:
-            span = find_span(req_span_id, segments)
-            print(f"[{span.spanID}][{str(span.startTime)[8:]}][{span.type:<5}] {span.tags['http.method']} {span.tags['url']}")
-            
-            data_span_id = req_data_map.get(req_span_id)
-            if data_span_id is not None:
-                data_span = find_span(data_span_id, segments)
-                ids = get_ids(data_span)
-                print(f"\t[{data_span.peer}] [{data_span.tags['db.instance']}] {ids}")
-
-    flow1 = [
-        '93f908fdd3104df98304b5494af96ea2.108.17168038073480000-0',
-        '93f908fdd3104df98304b5494af96ea2.108.17168038073480000-2',
-        '93f908fdd3104df98304b5494af96ea2.843.17168038074110000-1',
-    ]
-    flow2 = [
-        '93f908fdd3104df98304b5494af96ea2.108.17168038073480000-0',
-        '93f908fdd3104df98304b5494af96ea2.108.17168038073480000-2',
-        '93f908fdd3104df98304b5494af96ea2.842.17168038074110000-1',
-        '93f908fdd3104df98304b5494af96ea2.842.17168038074110000-2',
-        '93f908fdd3104df98304b5494af96ea2.842.17168038074110000-3'
-    ]
-
-    req_data_map = {
-        '93f908fdd3104df98304b5494af96ea2.108.17168038073480000-2': 'd42845e688a346559ef265ae273b6e06.107.17168038073990004-2',
-        '93f908fdd3104df98304b5494af96ea2.843.17168038074110000-1': 'd42845e688a346559ef265ae273b6e06.108.17168038084250004-4',
-        '93f908fdd3104df98304b5494af96ea2.842.17168038074110000-1': 'd42845e688a346559ef265ae273b6e06.109.17168038094150004-2',
-        '93f908fdd3104df98304b5494af96ea2.842.17168038074110000-2': 'd42845e688a346559ef265ae273b6e06.110.17168038094270004-4',
-        '93f908fdd3104df98304b5494af96ea2.842.17168038074110000-3': 'f6ef5a63bf7b4332ae1ba198d16a7816.107.17168038094480000-3'
-    }
-
-    # _print_flow(flow1, req_data_map)
-    # print()
-    # _print_flow(flow2, req_data_map)
-
-    flow1_spans = []
-    for span_id in flow1:
-        span = find_span(span_id, segments)
-        if span.type == 'Exit':
-            param = find_entry_span_param(span_id, segments, segment_tree)
-            if param is not None:
-                span.tags["http.param"] = param
-        flow1_spans.append(span)
-    
-    flow2_spans = []
-    for span_id in flow2:
-        span = find_span(span_id, segments)
-        if span.type == 'Exit':
-            param = find_entry_span_param(span_id, segments, segment_tree)
-            span.tags["http.param"] = param if param is not None else ""
-        flow2_spans.append(span)
-
-    req_data_map_spans = {}
-    for req_span_id, data_span_id in req_data_map.items():
-        req_span = find_span(req_span_id, segments)
-        data_span = find_span(data_span_id, segments)
-        req_data_map_spans[req_span] = data_span
-    
-    return [flow1_spans, flow2_spans], req_data_map_spans
-
-def get_ids(sqlSpan: Span):
-    if sqlSpan is None:
-        return set()
-    if sqlSpan.sqlStmt is None :
-        raise Exception(f"span {sqlSpan.spanID} is not a valid SQL span!")
-    
-    KEYWORDS = ["id", "ID", "Id"]
-
-    fields, _ = get_sql_keys(sqlSpan.sqlStmt)
-    values = []
-    if "db.sql.parameters" in sqlSpan.tags.keys():
-        values = sqlSpan.tags["db.sql.parameters"].strip("[]").split(",") # SQL字段值
-    
-    # 还无法解析的：
-    # SELECT * from route where id in (d693a2c5-ef87-4a3c-bef8-600b43f62c68, 1367db1f-461e-4ab7-87ad-2bcc05fd9cb7, 9fc9c261-3263-4bfa-82f8-bb44e06b2f52, 20eb7122-3a11-423f-b10a-be0dc5bce7db, 0b23bd3e-876a-4af3-b920-c50a90c90b04)
-
-    # 捆绑字段名和值
-    if get_operation(sqlSpan.sqlStmt) == 'insert':
-        # 对于 insert，SQL语句中 fields 直接为一个列表，直接使用
-        data_dict = dict(zip(fields, values))
-    else:
-        # 对于其他SQL语句，筛选含有 ? 的token，如 document_type=?
-        fields = [field for field in fields if "?" in field]
-        data_dict = dict(zip(fields, values))
-
-    ids = []
-    
-    # 启发式识别其中的ID字段，并找到对应值
-    # 记录含有ID值的span
-    for field, value in data_dict.items():
-        if any(keyword in field for keyword in KEYWORDS): # 字段名中包含关键字
-            ids.append(value) # 记录值
-
-    return ids
-
-def get_operation_type(reqSpan, req_data_map):
-    data_span = req_data_map.get(reqSpan)
-    if data_span == None:
-        return None
-    
-    sql_operation = get_operation(data_span.sqlStmt)
-    if sql_operation == 'select': 
-        return 'read'
-    else:
-        return 'write'
-    
-def print_red(text):
-    print(f"\033[91m{text}\033[0m")
-    
-def print_candidate_pairs(candidate_pairs):
-    # 打印每个 pair 的 data Span
-    for id, pairs in candidate_pairs.items():
-        print(f"[{id}]")
-        for pair in pairs:
-            reqSpan1, reqSpan2 = pair
-            dataSpan1 = req_data_map.get(reqSpan1)
-            dataSpan2 = req_data_map.get(reqSpan2)
-            print_red(f"\t{dataSpan1.spanID} {dataSpan1.peer} {get_operation(dataSpan1.sqlStmt)} {get_ids(dataSpan1)}")
-            print(f"\t{dataSpan1.sqlStmt_with_param}")
-            print_red(f"\t{dataSpan2.spanID} {dataSpan2.peer} {get_operation(dataSpan2.sqlStmt)} {get_ids(dataSpan2)}")
-            print(f"\t{dataSpan2.sqlStmt_with_param}")
-            print()
-
-def formulate_candidate_pairs_origin(flows, req_data_map) -> dict:
+def formulate_candidate_pairs_origin(flows:dict, req_data_map:dict) -> dict:
     """
     原始的随机测试，不管请求流，所有请求混在一起两两匹配，只排除双写的情况
     """
-    spans = []
-    for flow in flows:
-        for span in flow:
-            spans.append(span)
-            # print(f"[{span.spanID}][{str(span.startTime)[8:]}][{span.type:<5}] {span.tags['http.method']} {span.tags['url']}")
-    
-    spans = list(set(spans))
-    candidate_pairs = {}
+    reqSpans = []
+    for flow_id, flow in flows.items():
+        for reqSpan in flow.requestSpans:
+            reqSpans.append(reqSpan)
+            # print(f"[{span.spanID}][{str(span.startTime)[8:]}][{span.type:<5}] {span.tags['http.method']} {span.tags['url']}") 
 
-    for reqSpan1, reqSpan2 in itertools.combinations(spans, 2):
-        if get_operation_type(reqSpan1, req_data_map) == 'read' and get_operation_type(reqSpan2, req_data_map) == 'read':
-            continue
+    # 去除分叉请求流中共有的重复Span
+    reqSpans = list(set(reqSpans))
+
+    candidate_pairs = {}    
+
+    """
+    每个请求有多个 dataSpan，每个 dataSpan 有多个 id 及访问操作
+    """
+    for reqSpan1, reqSpan2 in itertools.combinations(reqSpans, 2):
         
-        dataSpan1 = req_data_map.get(reqSpan1)
-        dataSpan2 = req_data_map.get(reqSpan2)
+        reqSpan1_id = reqSpan1.span.segmentID + '-' + str(reqSpan1.span.spanID)
+        reqSpan2_id = reqSpan2.span.segmentID + '-' + str(reqSpan2.span.spanID)
 
-        intersection = set(get_ids(dataSpan1)) & set(get_ids(dataSpan2))
-                                                     
-        for id in intersection:
-            if id not in candidate_pairs.keys():
-                candidate_pairs[id] = []
-            candidate_pairs[id].append((reqSpan1, reqSpan2))
+        confict_dataspan_pairs = []
 
-    cnt = 0
-    for id, pairs in candidate_pairs.items():
-        cnt += len(pairs)
+        for ds_i in req_data_map[reqSpan1_id]:
+            for ds_j in req_data_map[reqSpan2_id]:
+                # 排除双 read
+                if ds_i.operation == 'read' and ds_j.operation == 'read':
+                    continue
+                # 存在冲突访问的 ID 值
+                intersection = set(ds_i.ids) & set(ds_j.ids)
+                if len(intersection) > 0:
+                    # 记录冲突的 data span 对
+                    data_span_pair = (ds_i, ds_j)
+                    confict_dataspan_pairs.append(data_span_pair)
+
+        # 知道这一对请求有冲突 & 在哪些 data span pair 上冲突
+        # 但未分析具体在哪些ID上冲突
+        if len(confict_dataspan_pairs) > 0:
+            candidate_pairs[(reqSpan1, reqSpan2)] = confict_dataspan_pairs
+
+        # if len(intersection) > 0:                                       
+        #     for id in intersection:
+        #         if id not in candidate_pairs.keys():
+        #             candidate_pairs[id] = []
+        #         candidate_pairs[id].append((reqSpan1, reqSpan2))
 
     # print_candidate_pairs(candidate_pairs)
 
-    print(f"[baseline random test] pair 数: {cnt}")
+    print(f"[baseline random test] pair 数: {len(candidate_pairs)}")
 
     return candidate_pairs
 
@@ -259,59 +67,47 @@ def prune_by_database(candidate_pairs, req_data_map):
     def _check(dataSpan1, dataSpan2):
         if dataSpan1.peer != dataSpan2.peer:
             return False
-        if dataSpan1.tags['db.instance'] != dataSpan2.tags['db.instance']:
+        if dataSpan1.db != dataSpan2.db:
             return False
-        if get_table_names(dataSpan1.sqlStmt) != get_table_names(dataSpan2.sqlStmt):
-            return False
+        # if get_table_names(dataSpan1.span.sqlStmt) != get_table_names(dataSpan2.span.sqlStmt):
+            # return False
         return True
 
     candidate_pairs_pruned = {}
-    for id, pairs in candidate_pairs.items():
-        for pair in pairs:
-            reqSpan1, reqSpan2 = pair
-            dataSpan1 = req_data_map.get(reqSpan1)
-            dataSpan2 = req_data_map.get(reqSpan2)
+    for reqPair, dataSpanPairs in candidate_pairs.items():
+        for dataSpanPair in dataSpanPairs:
+            dataSpan1, dataSpan2 = dataSpanPair
             if _check(dataSpan1, dataSpan2):
-                if id not in candidate_pairs_pruned.keys():
-                    candidate_pairs_pruned[id] = []
-                candidate_pairs_pruned[id].append(pair)
-
-    cnt = 0
-    for id, pairs in candidate_pairs_pruned.items():
-        cnt += len(pairs)
+                if reqPair not in candidate_pairs_pruned.keys():
+                    candidate_pairs_pruned[reqPair] = []
+                candidate_pairs_pruned[reqPair].append(dataSpanPair)
 
     # print_candidate_pairs(candidate_pairs_pruned)
 
-    print(f"[prune_by_database] pair 数: {cnt}")
+    print(f"[prune_by_database_info] pair 数: {len(candidate_pairs_pruned)}")
 
     return candidate_pairs_pruned
 
-def prune_by_flow(candidate_pairs, flows):
+def prune_by_flow(candidate_pairs, flows, origin_flows):
     """
     根据请求流进行剪枝
-    请求流有多条，不能同在任意一条请求流中
     """
     candidate_pairs_pruned = {}
-    for id, pairs in candidate_pairs.items():
-        for pair in pairs:
-            reqSpan1, reqSpan2 = pair
-            in_same_flow = False
-            for flow in flows:
-                if reqSpan1 in flow and reqSpan2 in flow:
-                    in_same_flow = True
-                    break
-            if not in_same_flow:
-                if id not in candidate_pairs_pruned.keys():
-                    candidate_pairs_pruned[id] = []
-                candidate_pairs_pruned[id].append(pair)
+    for reqPair in candidate_pairs.keys():
+        reqSpan1, reqSpan2 = reqPair
+        if reqSpan1.flowID == reqSpan2.flowID:
+            continue
+        # 或者一个请求位于另一个请求的子流中
+        if reqSpan2.flowID in origin_flows[reqSpan1.flowID].child_flow_ids:
+            continue
+        if reqSpan1.flowID in origin_flows[reqSpan2.flowID].child_flow_ids:
+            continue
+        if reqPair not in candidate_pairs_pruned.keys():
+            candidate_pairs_pruned[reqPair] = candidate_pairs[reqPair]
 
-    cnt = 0
-    for id, pairs in candidate_pairs_pruned.items():
-        cnt += len(pairs)
+    # print_candidate_pairs(candidate_pairs_pruned)
 
-    print_candidate_pairs(candidate_pairs_pruned)
-
-    print(f"[prune_by_flow] pair 数: {cnt}")
+    print(f"[prune_by_flow] pair 数: {len(candidate_pairs_pruned)}")
 
     return candidate_pairs_pruned
 
@@ -341,14 +137,50 @@ def origin_output(candidate_pairs:dict, output_dir):
         with open(output_file, 'w') as f:
             f.write(json_data)
 
+def classify_by_ids(candidate_pairs):
+    """
+    根据冲突的ID进行分类
+    """
+    classified_pairs = {}
+    for reqPair, dataSpanPairs in candidate_pairs.items():
+        for dataSpanPair in dataSpanPairs:
+            intersection = set(dataSpanPair[0].ids) & set(dataSpanPair[1].ids)
+            for id in intersection:
+                if id not in classified_pairs.keys():
+                    classified_pairs[id] = []
+                classified_pairs[id].append(reqPair)
+
+    # 去重
+    for id, pairs in classified_pairs.items():
+        classified_pairs[id] = list(set(pairs))
+
+    # debug
+    if os.environ.get('DEBUG') == '1':
+        print_res(classified_pairs)
+
+    return classified_pairs
+
 if __name__ == "__main__":
-    file =  'data/f1/93f908fdd3104df98304b5494af96ea2.108.17168038073480001.json'
-    spans = load_spans_from_file(file)
-    segments, segment_tree = trace_analyze(spans)
-    flows, req_data_map = construct_flow(segments, segment_tree)
+    trace_dir = './data/f1-response'
+    segments, segment_tree = pre_process(trace_dir)
+    # segments, segment_tree = pre_process_single_trace('data/f1-response/d6dcf0452c2f44f0b903443fb6470601.120.17169468514030001.json')
+
+    # flows: 独立请求流的集合; origin_flows: 含子流的请求流集合（用于 flow_prune）, req_data_map: reqSpan与dataSpan的映射
+    flows, origin_flows, req_data_map = construct_flow(segments, segment_tree)
     candidate_pairs = formulate_candidate_pairs_origin(flows, req_data_map)
-    print("\n=====")
+    print("=====")
     candidate_pairs = prune_by_database(candidate_pairs, req_data_map)
-    print("\n=====")
-    candidate_pairs = prune_by_flow(candidate_pairs, flows)
-    origin_output(candidate_pairs, './test_output')
+    print("=====")
+    candidate_pairs = prune_by_flow(candidate_pairs, flows, origin_flows)
+    print("=====")
+
+    res = classify_by_ids(candidate_pairs)
+
+    # 打印结果
+    print_candidate_pairs(candidate_pairs, origin_flows)
+
+    # 打印所有独立请求流
+    for flow_id, flow in flows.items():
+        print_flow_by_id(origin_flows, flow_id)
+
+    # origin_output(candidate_pairs, './test_output')

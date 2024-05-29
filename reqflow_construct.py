@@ -2,7 +2,8 @@ from utils.sql_parse import *
 import copy
 from utils.file_helper import *
 from trace_preprocess import pre_process
-from object import Flow, RequestSpan
+from object import Flow, RequestSpan, DataSpan
+from output import print_red
 
 flowID = 0
 flows = {}
@@ -100,36 +101,60 @@ def construct_flow(segments, segment_tree):
 
                     # 非用户请求，继续当前请求流
                     flow = flows[now_flow_id]
-                    flow.requestSpans.append(RequestSpan(now_flow_id, span))
+                    requestSpan = RequestSpan(now_flow_id, span)
+                    requestSpan.corresponding_entrySpan_unique_id = corresponding_entrySpan.segmentID + '-' + str(corresponding_entrySpan.spanID)
+                    flow.requestSpans.append(requestSpan)
 
                     for child_flow_id in flow.child_flow_ids:
-                        flows[child_flow_id].requestSpans.append(RequestSpan(child_flow_id, span))
+                        flows[child_flow_id].requestSpans.append(RequestSpan(now_flow_id, span))
+                        # 是子流共有的RequestSpan，该Span的flowID应该是parent flow的ID，避免baseline算法重复配对
 
                     _construct_flow(segments, segment_tree, corresponding_entrySpan.segmentID, now_flow_id)
+
                 elif span.layer == 'Database':
                     if entrySpan_unique_id is None:
                         raise Exception(f"entrySpan_unique_id is None")
-                    req_data_map[entrySpan_unique_id].append(span)
+                    req_data_map[entrySpan_unique_id].append(DataSpan(span))
 
+    def _get_req_data_map(flow, req_data_map):
+        """
+        将对应 EntrySpan 的 DataSpan 全部挂到 RequestSpan 上
+        """
+        new_req_data_map = {}
+        for flow_id, flow in flows.items():
+            for reqSpan in flow.requestSpans:
+                unique_id = reqSpan.span.segmentID + '-' + str(reqSpan.span.spanID)
+                dataSpans = []
+                if unique_id in req_data_map:
+                    for dataSpan in req_data_map[unique_id]:
+                        dataSpans.append(dataSpan)
+                if reqSpan.corresponding_entrySpan_unique_id in req_data_map:
+                    for dataSpan in req_data_map[reqSpan.corresponding_entrySpan_unique_id]:
+                        dataSpans.append(dataSpan)
+                
+                new_req_data_map[unique_id] = dataSpans
+
+        return new_req_data_map
 
     # 一个 trace 文件只会有一条请求流，除非trace中有Async分叉
     root_segment_id = None
     for segment_id in segment_tree[root_segment_id]:
         _construct_flow(segments, segment_tree, segment_id, -1)
 
-    # 只保留没有子流的请求流
+    # 没有子流的请求流
     new_flows = {}
     for flow_id, flow in flows.items():
         if len(flow.child_flow_ids) == 0:
             new_flows[flow_id] = flow
-
-    flows = new_flows
     
     if os.environ.get('DEBUG') == '1':
         for flow_id, flow in flows.items():
             print(f"{flow_id}: {flow}\n")
 
-    return flows, req_data_map
+    # 整理 req_data_map
+    req_data_map = _get_req_data_map(flows, req_data_map)
+
+    return new_flows, flows, req_data_map
 
 if __name__ == '__main__':
     
@@ -140,13 +165,20 @@ if __name__ == '__main__':
 
     for flow_id, flow in flows.items():
         if len(flow.child_flow_ids) == 0:
+            print_red(flow_id)
             print(flow)
+            print()
 
+    # print("============\n")
     # # 关联DataSpan
     # for flow_id, flow in flows.items():
     #     for reqSpan in flow.requestSpans:
-    #         print(reqSpan.span.endpointName)
-    #         for dataSpan in req_data_map[reqSpan.span.segmentID + '-' + str(reqSpan.span.spanID)]:
-    #             print(f"\t{dataSpan.endpointName}")
+    #         http_str = f"[{reqSpan.span.tags['http.method']}] {reqSpan.span.tags['url']}"
+    #         print(http_str)
+    #         unique_id = reqSpan.span.segmentID + '-' + str(reqSpan.span.spanID)
+    #         if unique_id in req_data_map:
+    #             for dataSpan in req_data_map[unique_id]:
+    #                 # print(f"\t[{dataSpan.operation}] [{dataSpan.peer}] [{dataSpan.db}] {dataSpan.span.endpointName} {dataSpan.ids}")
+    #                 print(f"\t[{dataSpan.operation}] [{dataSpan.span.endpointName}] {dataSpan.ids} {dataSpan.span.sqlStmt_with_param}")
 
     # print(len(req_data_map))

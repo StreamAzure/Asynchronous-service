@@ -1,5 +1,6 @@
 import json
 import re
+from utils.sql_parse import *
 
 class Span:
     def __init__(self, span):
@@ -97,49 +98,70 @@ class RequestSpan:
     def __init__(self, flowID, span):
         self.flowID = flowID # 所属请求流
         self.span = span
+        self.corresponding_entrySpan_unique_id = ""
 
-class Req:
-    def __init__(self, method, url, body, endpointName, type) -> None:
-        self.method = method # 'GET','PUT', etc.
-        self.url = url
-        self.body = json.loads(body) if body != "" else {}
-        self.type = type # 'read' or 'write'
-        self.endpointName = endpointName
-
-    def __str__(self) -> str:
-        if self.body != "":
-            return f"[{self.type}] {self.method} {self.url} {self.body}"
-        else:
-            return f"[{self.type}] {self.method} {self.url}"
-    
-    def __dict__(self) -> dict:
-        return {
-            "type":self.type,
-            "url":self.url,
-            "body":self.body,
-            "method":self.method
-        }
-    
     def __eq__(self, other):
-        if isinstance(other, Req):
-            if self.method != other.method or self.url != other.url:
-                return False
-            if self.endpointName != other.endpointName or self.type != other.type:
-                return False
-            if self.body != other.body:
-                return False
-            return True
+        if isinstance(other, RequestSpan):
+            unique_id = self.span.segmentID + '-' + str(self.span.spanID)
+            other_unique_id = other.span.segmentID + '-' + str(other.span.spanID)
+            if self.flowID == other.flowID and unique_id == other_unique_id:
+                return True
         return False
     
-    def __json__(self):
-        return self.__dict__()
-    
-class Bundle:
-    def __init__(self, reqSpan:Span, ids:list, peer:str, db:str) -> None:
-        self.reqSpan = reqSpan
-        self.ids = ids
-        self.peer = peer # 数据库实例IP
-        self.db = db # 数据库名
-    
     def __hash__(self):
-        return hash((self.reqSpan, tuple(self.ids), self.peer, self.db))
+        unique_id = self.span.segmentID + '-' + str(self.span.spanID)
+        return hash((self.flowID, unique_id))
+
+class DataSpan:
+    def __init__(self, span):
+        self.span = span
+        self.operation = self._get_opertaion(self.span)
+        self.ids = self._get_ids(self.span) # 涉及的疑似主键值
+        self.peer = span.peer
+        self.db = span.tags["db.instance"]
+    
+    def _get_opertaion(self, span):
+        """
+        如果为 SELECT，返回 read
+        否则返回 write
+        """
+        stmt = span.sqlStmt
+        if stmt is None:
+            raise Exception(f"DataSpan {span.segmentID + '-' + str(span.spanID)}  is not a valid SQL span!")
+        if get_operation(stmt).lower() == 'select':
+            return 'read'
+        else:
+            return 'write'
+    
+    def _get_ids(self, span):
+        if span.sqlStmt is None :
+            raise Exception(f"DataSpan {span.segmentID + '-' + str(span.spanID)} is not a valid SQL span!")
+        
+        KEYWORDS = ["id", "ID", "Id"]
+
+        fields, _ = get_sql_keys(span.sqlStmt)
+        values = []
+        if "db.sql.parameters" in span.tags.keys():
+            values = span.tags["db.sql.parameters"].strip("[]").split(",") # SQL字段值
+        
+        # 还无法解析的：
+        # SELECT * from route where id in (d693a2c5-ef87-4a3c-bef8-600b43f62c68, 1367db1f-461e-4ab7-87ad-2bcc05fd9cb7, 9fc9c261-3263-4bfa-82f8-bb44e06b2f52, 20eb7122-3a11-423f-b10a-be0dc5bce7db, 0b23bd3e-876a-4af3-b920-c50a90c90b04)
+
+        # 捆绑字段名和值
+        if get_operation(span.sqlStmt) == 'insert':
+            # 对于 insert，SQL语句中 fields 直接为一个列表，直接使用
+            data_dict = dict(zip(fields, values))
+        else:
+            # 对于其他SQL语句，筛选含有 ? 的token，如 document_type=?
+            fields = [field for field in fields if "?" in field]
+            data_dict = dict(zip(fields, values))
+
+        ids = []
+        
+        # 启发式识别其中的ID字段，并找到对应值
+        # 记录含有ID值的span
+        for field, value in data_dict.items():
+            if any(keyword in field for keyword in KEYWORDS): # 字段名中包含关键字
+                ids.append(value) # 记录值
+
+        return ids

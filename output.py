@@ -1,90 +1,46 @@
-import json
-import re
-from object import Span, Req
+def print_red(text):
+    print(f"\033[91m{text}\033[0m")
 
-def create_http_req(httpSpan:Span) -> Req:
-    """
-    提取 HTTP span 中的相关信息构成 HTTP 报文
-    """
-    if "http.method" not in httpSpan.tags.keys():
-        raise Exception(f"span {httpSpan} is not a valid HTTP span!")
+def print_blue(text):
+    # 取消换行
+    print(f"\033[94m{text}\033[0m", end='')
+
+def print_green(text):
+    print(f"\033[92m{text}\033[0m")
+
+def print_flow_by_id(origin_flows, flow_id):
+    flow = origin_flows[flow_id]
+    print_blue(f"[FlowID: {flow_id}] ")
+    print_green(flow)
+    print()
     
-    http_method = httpSpan.tags["http.method"]
-    url = httpSpan.tags["url"]
-    http_body = ""
-    if "http.param" in httpSpan.tags.keys():
-        http_body = httpSpan.tags["http.param"]
+def print_candidate_pairs(candidate_pairs, flows):
+    for reqPair, dataSpanPairs in candidate_pairs.items():
+        reqSpan1, reqSpan2 = reqPair
+        print_blue(f"[FlowID: {reqSpan1.flowID}] ")
+        print(f"[{reqSpan1.span.segmentID}-{reqSpan1.span.spanID}] {reqSpan1.span.tags['http.method']} {reqSpan1.span.tags['url']}")
+        print_blue(f"[FlowID: {reqSpan2.flowID}] ")
+        print(f"[{reqSpan2.span.segmentID}-{reqSpan2.span.spanID}] {reqSpan2.span.tags['http.method']} {reqSpan2.span.tags['url']}")
 
-    if httpSpan.x_operation_type == "":
-        raise Exception(f"httpSpan.x_operation_type is empty, something wrong! \n {httpSpan}")
+        print_green(f"[origin user request] {flows[reqSpan1.flowID].requestSpans[0].span.tags['http.method']} {flows[reqSpan1.flowID].requestSpans[0].span.tags['url']}")
+        print_green(f"[origin user request] {flows[reqSpan2.flowID].requestSpans[0].span.tags['http.method']} {flows[reqSpan2.flowID].requestSpans[0].span.tags['url']}")
 
-    return Req(http_method, url, http_body, httpSpan.endpointName, httpSpan.x_operation_type)
+        for dataSpanPair in dataSpanPairs:
+            dataSpan1, dataSpan2 = dataSpanPair
+            print_red(f"\t{dataSpan1.peer} {dataSpan1.db} {dataSpan1.ids}")
+            print_red(f"\t{dataSpan2.peer} {dataSpan2.db} {dataSpan2.ids}")
+            print()
 
-def origin_output(candidate_pairs:dict, output_dir):
-    """
-    不处理路径中的参数
-    """
-    for id, pair_list in candidate_pairs.items():
-        output_file = output_dir + "/candidatePairs" + "_" + id + ".json"
-        res = {}
-        for i, reqPair in enumerate(pair_list):
-            req1 = create_http_req(reqPair[0])
-            req2 = create_http_req(reqPair[1])
-            if(req1 == req2):
-                continue
-            
-            res[i] = [
-                req1.__dict__(),
-                req2.__dict__()
-            ]
-        if len(res) == 0:
-            continue
-        json_data = json.dumps(res, indent=4)
-        print(f"{output_file}: total {len(res)} pairs")
-        with open(output_file, 'w') as f:
-            f.write(json_data)
-
-def mask_parameters_output(candidate_pairs:dict, output_dir):
-    """
-    将路径中的参数模糊处理为通配符 ?
-    再输出
-    """
-    def _mask_parameters(req: Req):
-        """
-        input: GET:/api/v1/cancelservice/cancel/{orderId}/{loginId}
-        output: /api/v1/cancelservice/cancel/?/?
-        """
-        endpoint_url = req.endpointName
-        # 正则表达式匹配一个或多个大写字母后跟冒号和空格
-        # 去除匹配的前缀
-        endpoint_url = re.sub(r'^[A-Z]+:', '', endpoint_url)
-        # 将变量部分替换为问号
-        endpoint_url = re.sub(r'\{[^\}]+\}', '?', endpoint_url)
-        # print(endpoint_url)
-        req.url = endpoint_url
-
-    for id, pair_list in candidate_pairs.items():
-        output_file = output_dir + "/candidatePairs" + "_" + id
-        res = {}
-        for i, reqPair in enumerate(pair_list):
-            req1 = create_http_req(reqPair[0])
-            req2 = create_http_req(reqPair[1])
-            if(req1 == req2):
-                continue
-
-            _mask_parameters(req1)
-            _mask_parameters(req2)
-            
-            res[i] = [
-                req1.__dict__(),
-                req2.__dict__()
-            ]
-        if len(res) == 0:
-            continue
-        json_data = json.dumps(res, indent=4)
-        print(f"{output_file}: total {len(res)} pairs")
-        with open(output_file, 'w') as f:
-            f.write(json_data)
+def print_res(res):
+    for id, pairs in res.items():
+        print_red(f"[ID: {id}] pair 数: {len(pairs)}")
+        for pair in pairs:
+            reqSpan1, reqSpan2 = pair
+            print_blue(f"[FlowID: {reqSpan1.flowID}] ")
+            print(f"[{reqSpan1.span.segmentID}-{reqSpan1.span.spanID}] {reqSpan1.span.tags['http.method']} {reqSpan1.span.tags['url']}")
+            print_blue(f"[FlowID: {reqSpan2.flowID}] ")
+            print(f"[{reqSpan2.span.segmentID}-{reqSpan2.span.spanID}] {reqSpan2.span.tags['http.method']} {reqSpan2.span.tags['url']}")
+            print()
 
 def save_segments(segments:dict, output_file):
     with open(output_file, 'w') as f:
@@ -93,44 +49,3 @@ def save_segments(segments:dict, output_file):
             for span in spans:
                 f.write(span.endpointName + "\n")
             f.write("\n")
-
-def print_request_flows(segments, segment_tree, parent_segment_id=None, path=None, level=0, output_file=None):
-    
-    def _print_request_flow(result, nodes, childs, node_id, depth, visited_asny:list, visited_node:list):
-        if node_id != None:
-            leaderSpan = nodes[node_id][0]
-            if "SpringAsync" in leaderSpan.endpointName and depth in visited_asny:
-                return
-            if leaderSpan.segmentID+str(leaderSpan.spanID) not in visited_node:
-                result.append(leaderSpan.endpointName)
-                visited_node.append(leaderSpan.segmentID+str(leaderSpan.spanID))
-            else:
-                return
-        if childs[node_id]:
-            # 优先遍历子节点
-            for child in childs[node_id]:
-                _print_request_flow(result, nodes, childs, child, depth+1, visited_asny, visited_node)
-        else:
-            parent_node = None
-            for k, v in childs.items():
-                if node_id in v:
-                    parent_node = k
-                break
-            # 如果没有子节点，则下一个节点是父节点的兄弟节点
-            siblings = childs[parent_node]
-            sibling_index = siblings.index(node_id)
-            for sibling in siblings[sibling_index+1:]:
-                if "SpringAsync" in nodes[sibling][0].endpointName:
-                    if depth not in visited_asny:
-                        visited_asny.append(depth)
-                        _print_request_flow(result, nodes, childs, sibling, depth-1, visited_asny, visited_node)
-                    else:
-                        continue
-                else:
-                    _print_request_flow(result, nodes, childs, sibling, depth-1, visited_asny, visited_node)
-    
-    result = []
-    _print_request_flow(result, segments, segment_tree, None, 0, [], [])
-    result_string = "->".join(result)
-    print(result_string)
-    

@@ -89,6 +89,16 @@ def trace_analyze(spans):
 
     return segments, segment_tree
 
+def pre_process_single_trace(trace_file):
+    """
+    只分析一条trace
+    """
+    spans = load_spans_from_file(trace_file)
+        
+    segments, segment_tree = trace_analyze(spans)
+
+    return segments, segment_tree
+
 def pre_process(trace_dir):
     """
     trace_dir: trace 文件目录
