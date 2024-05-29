@@ -1,7 +1,6 @@
 import json
 import re
 
-
 class Span:
     def __init__(self, span):
         self.traceID = span["traceId"]
@@ -76,6 +75,28 @@ class Span:
             return completed_stat
         else:
             return None
+        
+class Flow:
+    def __init__(self, id):
+        self.id = id
+        self.requestSpans = []
+        self.child_flow_ids = []
+    
+    def __str__(self):
+        result = ""
+        for i, reqSpan in enumerate(self.requestSpans):
+            http_str = f"[{reqSpan.span.tags['http.method']}] {reqSpan.span.tags['url']}"
+            # http_str = f"{reqSpan.span.endpointName}"
+            if i == 0:
+                result += f"{http_str}"
+            else:
+                result += f" -> {http_str}"
+        return result
+
+class RequestSpan:
+    def __init__(self, flowID, span):
+        self.flowID = flowID # 所属请求流
+        self.span = span
 
 class Req:
     def __init__(self, method, url, body, endpointName, type) -> None:
