@@ -84,6 +84,7 @@ def create_http_req(reqSpan):
     return {
         "flow_id": reqSpan.flowID,
         "flow_span_id": reqSpan.flowSpanID,
+        "sqls": reqSpan.sqls,
         "http_method": http_method,
         "http_url": url,
         "http_body": http_body,

@@ -111,32 +111,6 @@ def prune_by_flow(candidate_pairs, flows, origin_flows):
 
     return candidate_pairs_pruned
 
-def origin_output(candidate_pairs:dict, output_dir):
-    """
-    不处理路径中的参数
-    """
-    for id, pairs in candidate_pairs.items():
-        output_file = './test_output' + f"_{id}" + ".json"
-        res = {}
-        for i, pair in enumerate(pairs):
-            reqSpan1, reqSpan2 = pair
-            res[i] = [
-                {
-                    "url": reqSpan1.tags["url"],
-                    "http.method": reqSpan1.tags["http.method"],
-                    "http.param": json.loads(reqSpan2.tags["http.param"]) if reqSpan2.tags["http.param"] != "" else {}
-                },
-                {
-                    "url": reqSpan2.tags["url"],
-                    "http.method": reqSpan2.tags["http.method"],
-                    "http.param": json.loads(reqSpan2.tags["http.param"]) if reqSpan2.tags["http.param"] != "" else {}
-                }
-            ]
-        json_data = json.dumps(res, indent=4)
-        print(f"{output_file}: total {len(res)} pairs")
-        with open(output_file, 'w') as f:
-            f.write(json_data)
-
 def classify_by_ids(candidate_pairs):
     """
     根据冲突的ID进行分类

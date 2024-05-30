@@ -39,8 +39,8 @@ def main():
     # print_candidate_pairs(candidate_pairs, origin_flows)
 
     # # 打印所有独立请求流
-    for flow_id, flow in flows.items():
-        print_flow_by_id(origin_flows, flow_id)
+    # for flow_id, flow in flows.items():
+    #     print_flow_by_id(origin_flows, flow_id)
     # output_all_sql_statemnts(req_data_map)
 
     origin_output(res, output_dir)

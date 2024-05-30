@@ -123,6 +123,7 @@ def construct_flow(segments, segment_tree):
     def _get_req_data_map(flow, req_data_map):
         """
         将对应 EntrySpan 的 DataSpan 全部挂到 RequestSpan 上
+        并把对应 dataSpan 的 SQL 语句挂到 requestSpan 对象上
         """
         new_req_data_map = {}
         for flow_id, flow in flows.items():
@@ -137,6 +138,9 @@ def construct_flow(segments, segment_tree):
                         dataSpans.append(dataSpan)
                 
                 new_req_data_map[unique_id] = dataSpans
+
+                for dataSpan in dataSpans:
+                    reqSpan.sqls.append(dataSpan.span.sqlStmt_with_param)
 
         return new_req_data_map
     

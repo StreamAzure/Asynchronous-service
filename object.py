@@ -110,6 +110,7 @@ class RequestSpan:
         self.flowSpanID = flowSpanID # 请求流中的第几个span
         self.span = span
         self.corresponding_entrySpan_unique_id = ""
+        self.sqls = []
 
     def __eq__(self, other):
         if isinstance(other, RequestSpan):
