@@ -127,20 +127,27 @@ class RequestSpan:
 class DataSpan:
     def __init__(self, span):
         self.span = span
-        self.operation = self._get_opertaion(self.span)
+        self.operation = self._get_opertaion(self.span) # 'write' or 'read'
+        self.db_operation = self._get_db_operation(self.span) # 数据库操作类型
         self.ids = self._get_ids(self.span) # 涉及的疑似主键值
         self.peer = span.peer
         self.db = span.tags["db.instance"]
+    
+    def _get_db_operation(self, span):
+        """
+        获取数据库操作类型
+        """
+        stmt = span.sqlStmt
+        if stmt is None:
+            raise Exception(f"DataSpan {span.segmentID + '-' + str(span.spanID)}  is not a valid SQL span!")
+        return get_operation(stmt).lower()
     
     def _get_opertaion(self, span):
         """
         如果为 SELECT，返回 read
         否则返回 write
         """
-        stmt = span.sqlStmt
-        if stmt is None:
-            raise Exception(f"DataSpan {span.segmentID + '-' + str(span.spanID)}  is not a valid SQL span!")
-        if get_operation(stmt).lower() == 'select':
+        if self._get_db_operation(span) == 'select':
             return 'read'
         else:
             return 'write'

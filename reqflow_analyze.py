@@ -134,6 +134,51 @@ def classify_by_ids(candidate_pairs):
 
     return classified_pairs
 
+def pre_validate(candidate_pairs, flows, bug_report_file):
+    # 有些请求对不用强制交错也知道有问题
+    # 如请求1的update依赖于请求2的insert
+    # 先把这些请求对挑出来
+
+    candidate_pairs_pruned = {}
+
+    with open(bug_report_file, 'w') as f:
+        for reqPair, dataSpanPairs in candidate_pairs.items():
+            req1, req2 = reqPair
+            print_blue(f"{req1.span.tags['http.method']} {req1.span.tags['url']}\n")
+            print_blue(f"{req2.span.tags['http.method']} {req2.span.tags['url']}\n")
+            had_write_reqPair = False
+            for dataSpanPair in dataSpanPairs:
+                dataSpan1, dataSpan2 = dataSpanPair
+                print_green(f"\t{dataSpan1.db_operation} {dataSpan1.ids}")
+                print_green(f"\t{dataSpan2.db_operation} {dataSpan2.ids}")
+                if dataSpan1.db_operation == 'insert' or dataSpan2.db_operation == 'insert':
+                    if not had_write_reqPair:
+                        f.write("=====\n")
+                        f.write(f"{req1.span.tags['http.method']} {req1.span.tags['url']}\n")
+                        f.write(f"{req2.span.tags['http.method']} {req2.span.tags['url']}\n")
+                        # 写入请求流
+                        flow1 = flows[req1.flowID]
+                        flow2 = flows[req2.flowID]
+                        f.write(f"[FlowID: {flow1.id}] [Lenth: {len(flow1.requestSpans)}] ")
+                        f.write(str(flow1) + "\n")
+                        f.write(f"[FlowID: {flow2.id}] [Lenth: {len(flow2.requestSpans)}] ")
+                        f.write(str(flow2) + "\n")
+                        had_write_reqPair = True
+                    f.write(f"\t{dataSpan1.db_operation} {dataSpan1.ids}\n")
+                    f.write(f"\t{dataSpan2.db_operation} {dataSpan2.ids}\n")
+                    f.write("\t该 dataSpanPair 有问题!\n\n")
+                    
+                    print_red(f"该 dataSpanPair 有问题!")
+                    continue
+                print()
+            print()
+            if not had_write_reqPair:
+                candidate_pairs_pruned[reqPair] = dataSpanPairs
+    
+    print("============= pre_validate done=============\n\n")
+    return candidate_pairs_pruned
+
+
 if __name__ == "__main__":
     trace_dir = './data/f1-response'
     segments, segment_tree = pre_process(trace_dir)
@@ -148,13 +193,15 @@ if __name__ == "__main__":
     candidate_pairs = prune_by_flow(candidate_pairs, flows, origin_flows)
     print("=====")
 
-    res = classify_by_ids(candidate_pairs)
+    candidate_pairs = pre_validate(candidate_pairs, origin_flows, "./bug_report.txt")
 
     # 打印结果
     print_candidate_pairs(candidate_pairs, origin_flows)
 
-    # 打印所有独立请求流
-    for flow_id, flow in flows.items():
-        print_flow_by_id(origin_flows, flow_id)
+    # # 打印所有独立请求流
+    # for flow_id, flow in flows.items():
+    #     print_flow_by_id(origin_flows, flow_id)
+
+    # res = classify_by_ids(candidate_pairs)
 
     # origin_output(candidate_pairs, './test_output')

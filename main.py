@@ -1,6 +1,6 @@
 from trace_preprocess import pre_process, pre_process_single_trace
 from reqflow_construct import construct_flow
-from reqflow_analyze import formulate_candidate_pairs_origin, prune_by_database, prune_by_flow, classify_by_ids
+from reqflow_analyze import formulate_candidate_pairs_origin, prune_by_database, prune_by_flow, classify_by_ids, pre_validate
 from utils.io import print_candidate_pairs, print_flow_by_id, origin_output, save_request_flows, print_blue, print_red
 
 def output_all_sql_statemnts(req_data_map):
@@ -32,6 +32,8 @@ def main():
     print("=====")
     candidate_pairs = prune_by_flow(candidate_pairs, flows, origin_flows)
     print("=====")
+
+    candidate_pairs = pre_validate(candidate_pairs, origin_flows, "./bug_report.txt")
 
     res = classify_by_ids(candidate_pairs)
 
