@@ -40,10 +40,10 @@ def find_entry_span_by_segment_id(segmentID, segments):
 
 def construct_flow(segments, segment_tree):
     """
-    1. 从根segment开始，找到其所有 exit Span
-    2. 若exit Span为 request Span，找到对应的 entry Span
-    3. 对于该 entry Span 所在的segment，重复1
-    4. 若exit Span 为 data Span, 挂到其 entry Span 的req_data_map上
+    1. Start from the root segment, find all exit Spans
+    2. If the exit Span is a request Span, find the corresponding entry Span
+    3. Repeat step 1 for the segment where the entry Span is located
+    4. If the exit Span is a data Span, attach it to the req_data_map of its entry Span
     """
     global flowID, flows, req_data_map
     def _construct_flow(segments, segment_tree, now_segment_id, now_flow_id):
@@ -52,7 +52,7 @@ def construct_flow(segments, segment_tree):
         entrySpan = None
         entrySpan_unique_id = None
         for span in segments[now_segment_id]:
-            # 遍历本segment的所有span
+            # Traverse all spans in this segment
             if span.type == 'Entry':
                 if span.layer != 'Http':
                     raise Exception(f"entry span is not Http span")
@@ -62,7 +62,7 @@ def construct_flow(segments, segment_tree):
                     req_data_map[entrySpan_unique_id] = []
                 
                 if len(segments[now_segment_id][0].refs) == 0:
-                    # 用户请求，以EntrySpan开始创建新的请求流
+                    # User request, start a new request flow with EntrySpan
                     flow = Flow(flowID)
                     flowSpanId = len(flow.requestSpans)
                     flow.requestSpans.append(RequestSpan(flowID, flowSpanId, entrySpan))
@@ -73,13 +73,13 @@ def construct_flow(segments, segment_tree):
 
             if span.type == 'Local' and span.component == 'SpringAsync':
                 if now_segment_id == span.segmentID:
-                    # 已经位于以该异步Local为起始span的segment中
+                    # Already in the segment starting with this asynchronous Local span
                     entrySpan = span
                     entrySpan_unique_id = f"{entrySpan.segmentID}-{entrySpan.spanID}"
                     if entrySpan_unique_id not in req_data_map:
                         req_data_map[entrySpan_unique_id] = []
                 else:
-                    # 产生分叉，分叉时要创建新的请求流(并复制之前的ReqSpan)
+                    # Forking, when forking, create a new request flow (and copy the previous ReqSpan)
 
                     async_flow = Flow(flowID)
                     async_flow.requestSpans = copy.deepcopy(flows[now_flow_id].requestSpans)
@@ -89,10 +89,9 @@ def construct_flow(segments, segment_tree):
                     
                     flowID += 1
 
-                    # 进入以该异步Local为起始span的segment中
+                    # Enter the segment starting with this asynchronous Local span
                     _construct_flow(segments, segment_tree, span.segmentID, async_flow.id)
                     
-
             if span.type == 'Exit':
                 if span.layer == 'Http':
                     corresponding_entrySpan = find_entry_span_by_exit_span(span, segments, segment_tree)
@@ -101,7 +100,7 @@ def construct_flow(segments, segment_tree):
                         if key not in span.tags:
                             span.tags[key] = value
 
-                    # 非用户请求，继续当前请求流
+                    # Not a user request, continue the current request flow
                     flow = flows[now_flow_id]
                     flowSpanId = len(flow.requestSpans)
                     requestSpan = RequestSpan(now_flow_id, flowSpanId, span)
@@ -111,7 +110,7 @@ def construct_flow(segments, segment_tree):
                     for child_flow_id in flow.child_flow_ids:
                         flowSpanId = len(flows[child_flow_id].requestSpans)
                         flows[child_flow_id].requestSpans.append(RequestSpan(now_flow_id, flowSpanId, span))
-                        # 是子流共有的RequestSpan，该Span的flowID应该是parent flow的ID，避免baseline算法重复配对
+                        # It is a shared RequestSpan of the child flow, the flowID of this Span should be the ID of the parent flow to avoid duplicate pairing in the baseline algorithm
 
                     _construct_flow(segments, segment_tree, corresponding_entrySpan.segmentID, now_flow_id)
 
@@ -125,8 +124,8 @@ def construct_flow(segments, segment_tree):
 
     def _get_req_data_map(flow, req_data_map):
         """
-        将对应 EntrySpan 的 DataSpan 全部挂到 RequestSpan 上
-        并把对应 dataSpan 的 SQL 语句挂到 requestSpan 对象上
+        Attach all DataSpans corresponding to the EntrySpan to the RequestSpan
+        And attach the SQL statements of the corresponding dataSpan to the requestSpan object
         """
         new_req_data_map = {}
         for flow_id, flow in flows.items():
@@ -149,7 +148,7 @@ def construct_flow(segments, segment_tree):
     
     def _get_dbinfo_in_flow(flow, req_data_map):
         """
-        获取请求流上的数据库信息
+        Obtain the database information on the request flow
         """
         db_infos = []
         for reqSpan in flow.requestSpans:
@@ -158,16 +157,16 @@ def construct_flow(segments, segment_tree):
                 for dataSpan in req_data_map[unique_id]:
                     db_info = dataSpan.span.peer + ":" + dataSpan.span.tags["db.instance"]
                     db_infos.append(db_info)
-        # 去重
+        # Remove duplicates
         db_infos = list(set(db_infos))
         return db_infos
 
-    # 一个 trace 文件只会有一条请求流，除非trace中有Async分叉
+    # A trace file will only have one request flow, unless there is an Async fork in the trace
     root_segment_id = None
     for segment_id in segment_tree[root_segment_id]:
         _construct_flow(segments, segment_tree, segment_id, -1)
 
-    # 没有子流的请求流
+    # Request flows without child flows
     new_flows = {}
     for flow_id, flow in flows.items():
         if len(flow.child_flow_ids) == 0:
@@ -177,7 +176,7 @@ def construct_flow(segments, segment_tree):
         for flow_id, flow in flows.items():
             print(f"{flow_id}: {flow}\n")
 
-    # 整理 req_data_map
+    # Organize req_data_map
     req_data_map = _get_req_data_map(flows, req_data_map)
 
     for flow_id, flow in flows.items():
@@ -199,7 +198,7 @@ if __name__ == '__main__':
             print()
 
     # print("============\n")
-    # # 关联DataSpan
+    # # Associate DataSpan
     # for flow_id, flow in flows.items():
     #     for reqSpan in flow.requestSpans:
     #         http_str = f"[{reqSpan.span.tags['http.method']}] {reqSpan.span.tags['url']}"
