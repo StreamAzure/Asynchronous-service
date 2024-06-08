@@ -1,0 +1,9 @@
+=====
+POST http://172.22.0.59:14569/api/v1/preserveotherservice/preserveOther
+{"accountId":"4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f","contactsId":"8627dad2-e8dc-4a32-b946-2aa0bc1a748a","tripId":"Z1234","seatType":9,"date":"2024-06-08","from":"Shang Hai","to":"Nan Jing","assurance":0,"foodType":2,"stationName":"Su Zhou","storeName":"Roman Holiday","foodName":"Soup","foodPrice":3.7,"consigneeWeight":0.0,"isWithin":false}
+POST http://172.22.0.59:14569/api/v1/preserveotherservice/preserveOther
+{"accountId":"4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f","contactsId":"9fca6f0d-7bf1-4d26-8b1b-4a068113483a","tripId":"Z1234","seatType":9,"date":"2024-06-08","from":"Shang Hai","to":"Nan Jing","assurance":0,"foodType":2,"stationName":"Su Zhou","storeName":"Roman Holiday","foodName":"Soup","foodPrice":3.7,"consigneeWeight":0.0,"isWithin":false}
+	insert ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'c8b9bf1f-3158-4e77-bd11-9c4353377a5b']
+	select ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f']
+	该 dataSpanPair 有问题!
+

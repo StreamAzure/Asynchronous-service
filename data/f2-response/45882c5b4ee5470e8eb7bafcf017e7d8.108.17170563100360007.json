@@ -1,0 +1,40 @@
+{
+  "data": {
+    "trace": {
+      "spans": [
+        {
+          "traceId": "45882c5b4ee5470e8eb7bafcf017e7d8.108.17170563100360007",
+          "segmentId": "45882c5b4ee5470e8eb7bafcf017e7d8.108.17170563100360006",
+          "spanId": 0,
+          "parentSpanId": -1,
+          "refs": [],
+          "serviceCode": "ts-gateway-service",
+          "serviceInstanceName": "e307be7950444cccba7ae71153d648e5@172.24.0.56",
+          "startTime": 1717056310036,
+          "endTime": 1717056310040,
+          "endpointName": "POST:/api/v1/inside_pay_service/inside_payment",
+          "type": "Entry",
+          "peer": "",
+          "component": "Tomcat",
+          "isError": false,
+          "layer": "Http",
+          "tags": [
+            {
+              "key": "url",
+              "value": "http://ts-gateway-service:18888/api/v1/inside_pay_service/inside_payment"
+            },
+            {
+              "key": "http.method",
+              "value": "POST"
+            },
+            {
+              "key": "http.status_code",
+              "value": "200"
+            }
+          ],
+          "logs": []
+        }
+      ]
+    }
+  }
+}

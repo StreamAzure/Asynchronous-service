@@ -1,0 +1,19 @@
+{
+  "ts-order-other-mysql:3306": [
+    "insert into orders_other (account_id, bought_date, coach_number, contacts_document_number, contacts_name, document_type, from_station, price, seat_class, seat_number, status, to_station, train_number, travel_date, travel_time, id) values (4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f, 2024-06-06 19:18:38, 5, DocumentNumber_Two, Contacts_Two, 1, shanghai, 122.49999999999999, 3, 1052009425, 0, nanjing, Z1234, 2024-06-06, 2013-05-04 09:51:52, b16501e0-de1f-40f1-a699-66ee9e13ddb6)"
+  ],
+  "ts-food-mysql:3306": [
+    "insert into food_order (food_name, food_type, order_id, price, station_name, store_name, id) values (Soup, 2, b16501e0-de1f-40f1-a699-66ee9e13ddb6, 3.7, Su Zhou, Roman Holiday, 39a2532d-c9ee-4649-ac00-5690862616ef)"
+  ],
+  "ts-consign-mysql:3306": [
+    "insert into consign_record (user_id, consignee, from_place, handle_date, order_id, consign_record_phone, consign_record_price, target_date, to_place, weight, consign_record_id) values (4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f, 32, shanghai, 2024-06-06, b16501e0-de1f-40f1-a699-66ee9e13ddb6, 12345677654, 132.0, 2024-06-06 19:18:41, nanjing, 32.0, b16501e0-de1f-40f1-a699-66ee9e13ddb6)",
+    "insert into consign_record (user_id, consignee, from_place, handle_date, order_id, consign_record_phone, consign_record_price, target_date, to_place, weight, consign_record_id) values (4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f, 32, shanghai, 2024-06-06, b16501e0-de1f-40f1-a699-66ee9e13ddb6, 12345677654, 132.0, 2024-06-06 19:18:41, nanjing, 32.0, b16501e0-de1f-40f1-a699-66ee9e13ddb6)"
+  ],
+  "ts-inside-payment-mysql:3306": [
+    "insert into inside_payment (order_id, price, type, user_id, id) values (b16501e0-de1f-40f1-a699-66ee9e13ddb6, 122.49999999999999, O, NULL, 620c3832-5781-433e-a7f5-b6396bd6ec9f)",
+    "insert into inside_money (money, type, user_id, id) values (98.00, D, 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f, d0ddd2a2-5b1a-4545-a4a7-3c46980e5f9f)"
+  ],
+  "ts-payment-mysql:3306": [
+    "insert into payment (order_id, payment_price, user_id, id) values (b16501e0-de1f-40f1-a699-66ee9e13ddb6, 122.49999999999999, NULL, 529e39ec-9881-43e5-b1e3-0649d7dd41cf)"
+  ]
+}

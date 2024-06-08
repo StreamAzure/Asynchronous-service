@@ -1,0 +1,87 @@
+=====
+POST http://172.22.0.41:16111/api/v1/consignservice/consigns/fault/b16501e0-de1f-40f1-a699-66ee9e13ddb6
+"b16501e0-de1f-40f1-a699-66ee9e13ddb6"
+POST http://172.22.0.41:16111/api/v1/consignservice/consigns/fault/b16501e0-de1f-40f1-a699-66ee9e13ddb6
+"b16501e0-de1f-40f1-a699-66ee9e13ddb6"
+	select ['b16501e0-de1f-40f1-a699-66ee9e13ddb6']
+	insert ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'b16501e0-de1f-40f1-a699-66ee9e13ddb6', 'b16501e0-de1f-40f1-a699-66ee9e13ddb6']
+	该 dataSpanPair 有问题!
+
+	select ['b16501e0-de1f-40f1-a699-66ee9e13ddb6']
+	insert ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'b16501e0-de1f-40f1-a699-66ee9e13ddb6', 'b16501e0-de1f-40f1-a699-66ee9e13ddb6']
+	该 dataSpanPair 有问题!
+
+	insert ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'b16501e0-de1f-40f1-a699-66ee9e13ddb6', 'b16501e0-de1f-40f1-a699-66ee9e13ddb6']
+	select ['b16501e0-de1f-40f1-a699-66ee9e13ddb6']
+	该 dataSpanPair 有问题!
+
+	insert ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'b16501e0-de1f-40f1-a699-66ee9e13ddb6', 'b16501e0-de1f-40f1-a699-66ee9e13ddb6']
+	select ['b16501e0-de1f-40f1-a699-66ee9e13ddb6']
+	该 dataSpanPair 有问题!
+
+	insert ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'b16501e0-de1f-40f1-a699-66ee9e13ddb6', 'b16501e0-de1f-40f1-a699-66ee9e13ddb6']
+	insert ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'b16501e0-de1f-40f1-a699-66ee9e13ddb6', 'b16501e0-de1f-40f1-a699-66ee9e13ddb6']
+	该 dataSpanPair 有问题!
+
+=====
+POST http://172.22.0.76:18673/api/v1/inside_pay_service/inside_payment
+{"orderId":"b16501e0-de1f-40f1-a699-66ee9e13ddb6","tripId":"Z1234"}
+POST http://172.22.0.78:14569/api/v1/preserveotherservice/preserveOther
+{"accountId":"4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f","contactsId":"229dd099-174f-48c6-b9a0-403610555543","tripId":"Z1234","seatType":0,"date":"2024-06-06","from":"Shang Hai","to":"Nan Jing","assurance":0,"foodType":2,"stationName":"Su Zhou","storeName":"Roman Holiday","foodName":"Soup","foodPrice":3.7,"consigneeWeight":0.0,"isWithin":false}
+	select ['b16501e0-de1f-40f1-a699-66ee9e13ddb6']
+	insert ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'b16501e0-de1f-40f1-a699-66ee9e13ddb6']
+	该 dataSpanPair 有问题!
+
+=====
+POST http://172.22.0.78:14569/api/v1/preserveotherservice/preserveOther
+{"accountId":"4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f","contactsId":"229dd099-174f-48c6-b9a0-403610555543","tripId":"Z1234","seatType":0,"date":"2024-06-06","from":"Shang Hai","to":"Nan Jing","assurance":0,"foodType":2,"stationName":"Su Zhou","storeName":"Roman Holiday","foodName":"Soup","foodPrice":3.7,"consigneeWeight":0.0,"isWithin":false}
+POST http://172.22.0.62:12032/api/v1/orderOtherService/orderOther/refresh
+{"loginId":"4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f","state":0,"enableTravelDateQuery":false,"enableBoughtDateQuery":false,"enableStateQuery":false}
+	insert ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'b16501e0-de1f-40f1-a699-66ee9e13ddb6']
+	select ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f']
+	该 dataSpanPair 有问题!
+
+=====
+POST http://172.22.0.78:14569/api/v1/preserveotherservice/preserveOther
+{"accountId":"4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f","contactsId":"229dd099-174f-48c6-b9a0-403610555543","tripId":"Z1234","seatType":0,"date":"2024-06-06","from":"Shang Hai","to":"Nan Jing","assurance":0,"foodType":2,"stationName":"Su Zhou","storeName":"Roman Holiday","foodName":"Soup","foodPrice":3.7,"consigneeWeight":0.0,"isWithin":false}
+GET http://172.22.0.70:18885/api/v1/cancelservice/cancel/b16501e0-de1f-40f1-a699-66ee9e13ddb6/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f
+"b16501e0-de1f-40f1-a699-66ee9e13ddb6"
+	insert ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'b16501e0-de1f-40f1-a699-66ee9e13ddb6']
+	select ['b16501e0-de1f-40f1-a699-66ee9e13ddb6']
+	该 dataSpanPair 有问题!
+
+=====
+POST http://172.22.0.78:14569/api/v1/preserveotherservice/preserveOther
+{"accountId":"4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f","contactsId":"229dd099-174f-48c6-b9a0-403610555543","tripId":"Z1234","seatType":0,"date":"2024-06-06","from":"Shang Hai","to":"Nan Jing","assurance":0,"foodType":2,"stationName":"Su Zhou","storeName":"Roman Holiday","foodName":"Soup","foodPrice":3.7,"consigneeWeight":0.0,"isWithin":false}
+POST http://172.22.0.62:12032/api/v1/orderOtherService/orderOther/refresh
+{"loginId":"4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f","state":0,"enableTravelDateQuery":false,"enableBoughtDateQuery":false,"enableStateQuery":false}
+	insert ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'b16501e0-de1f-40f1-a699-66ee9e13ddb6']
+	select ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f']
+	该 dataSpanPair 有问题!
+
+=====
+POST http://172.22.0.78:14569/api/v1/preserveotherservice/preserveOther
+{"accountId":"4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f","contactsId":"229dd099-174f-48c6-b9a0-403610555543","tripId":"Z1234","seatType":0,"date":"2024-06-06","from":"Shang Hai","to":"Nan Jing","assurance":0,"foodType":2,"stationName":"Su Zhou","storeName":"Roman Holiday","foodName":"Soup","foodPrice":3.7,"consigneeWeight":0.0,"isWithin":false}
+GET http://172.22.0.70:18885/api/v1/cancelservice/cancel/b16501e0-de1f-40f1-a699-66ee9e13ddb6/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f
+"b16501e0-de1f-40f1-a699-66ee9e13ddb6"
+	insert ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'b16501e0-de1f-40f1-a699-66ee9e13ddb6']
+	select ['b16501e0-de1f-40f1-a699-66ee9e13ddb6']
+	该 dataSpanPair 有问题!
+
+	insert ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'b16501e0-de1f-40f1-a699-66ee9e13ddb6']
+	update ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'b16501e0-de1f-40f1-a699-66ee9e13ddb6']
+	该 dataSpanPair 有问题!
+
+=====
+POST http://172.22.0.78:14569/api/v1/preserveotherservice/preserveOther
+{"accountId":"4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f","contactsId":"229dd099-174f-48c6-b9a0-403610555543","tripId":"Z1234","seatType":0,"date":"2024-06-06","from":"Shang Hai","to":"Nan Jing","assurance":0,"foodType":2,"stationName":"Su Zhou","storeName":"Roman Holiday","foodName":"Soup","foodPrice":3.7,"consigneeWeight":0.0,"isWithin":false}
+POST http://172.22.0.76:18673/api/v1/inside_pay_service/inside_payment
+{"orderId":"b16501e0-de1f-40f1-a699-66ee9e13ddb6","tripId":"Z1234"}
+	insert ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'b16501e0-de1f-40f1-a699-66ee9e13ddb6']
+	select ['b16501e0-de1f-40f1-a699-66ee9e13ddb6']
+	该 dataSpanPair 有问题!
+
+	insert ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'b16501e0-de1f-40f1-a699-66ee9e13ddb6']
+	update ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'b16501e0-de1f-40f1-a699-66ee9e13ddb6']
+	该 dataSpanPair 有问题!
+

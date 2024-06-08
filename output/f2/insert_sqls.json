@@ -1,0 +1,18 @@
+{
+  "ts-order-other-mysql:3306": [
+    "insert into orders_other (account_id, bought_date, coach_number, contacts_document_number, contacts_name, document_type, from_station, price, seat_class, seat_number, status, to_station, train_number, travel_date, travel_time, id) values (4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f, 2024-05-30 16:05:06, 5, DocumentNumber_One, Contacts_One, 1, shanghai, 122.49999999999999, 3, 2034346653, 0, nanjing, Z1234, 2024-05-30, 2013-05-04 09:51:52, 0652c28e-e9bb-4b10-ab41-8e74a9fdacf0)"
+  ],
+  "ts-food-mysql:3306": [
+    "insert into food_order (food_name, food_type, order_id, price, station_name, store_name, id) values (Soup, 2, 0652c28e-e9bb-4b10-ab41-8e74a9fdacf0, 3.7, Su Zhou, Roman Holiday, e4fb2631-bc4b-44f6-b99a-ca5758713a04)"
+  ],
+  "ts-inside-payment-mysql:3306": [
+    "insert into inside_payment (order_id, price, type, user_id, id) values (0652c28e-e9bb-4b10-ab41-8e74a9fdacf0, 122.49999999999999, O, NULL, 3a5691f3-5b00-4bfb-9107-7beb8206373f)",
+    "insert into inside_money (money, type, user_id, id) values (98.00, D, 4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f, c7912e52-a7ac-44e4-9b4e-65290c03b804)"
+  ],
+  "ts-payment-mysql:3306": [
+    "insert into payment (order_id, payment_price, user_id, id) values (0652c28e-e9bb-4b10-ab41-8e74a9fdacf0, 122.49999999999999, NULL, 373aca93-9a1b-4433-bc7d-2fafe94fb326)"
+  ],
+  "ts-consign-mysql:3306": [
+    "insert into consign_record (user_id, consignee, from_place, handle_date, order_id, consign_record_phone, consign_record_price, target_date, to_place, weight, consign_record_id) values (4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f, 32, shanghai, 2024-05-30, 0652c28e-e9bb-4b10-ab41-8e74a9fdacf0, 12345677654, 132.0, 2024-05-30 16:05:12, nanjing, 32.0, 3dba290c-ab2d-4878-bb49-8621810617a8)"
+  ]
+}

@@ -87,7 +87,7 @@ def system_get_all_spans(output_dir, startTime, endTime):
         print(f"save file success: {trace_id}")
         
 if __name__ == "__main__":
-    system_get_all_spans('./data/f1-response', "2024-05-29 0940", "2024-05-29 0941")
+    system_get_all_spans('./data/f4-response', "2024-06-08 0949", "2024-06-08 0950")
 
 
 

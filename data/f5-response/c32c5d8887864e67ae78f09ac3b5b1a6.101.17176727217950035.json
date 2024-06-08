@@ -1,0 +1,40 @@
+{
+  "data": {
+    "trace": {
+      "spans": [
+        {
+          "traceId": "c32c5d8887864e67ae78f09ac3b5b1a6.101.17176727217950035",
+          "segmentId": "c32c5d8887864e67ae78f09ac3b5b1a6.101.17176727217950034",
+          "spanId": 0,
+          "parentSpanId": -1,
+          "refs": [],
+          "serviceCode": "ts-gateway-service",
+          "serviceInstanceName": "77e0ac5e55fd4947a38406bc6635cebd@172.22.0.61",
+          "startTime": 1717672721795,
+          "endTime": 1717672721796,
+          "endpointName": "POST:/api/v1/consignservice/consigns/fault/b16501e0-de1f-40f1-a699-66ee9e13ddb6",
+          "type": "Entry",
+          "peer": "",
+          "component": "Tomcat",
+          "isError": false,
+          "layer": "Http",
+          "tags": [
+            {
+              "key": "url",
+              "value": "http://ts-gateway-service:18888/api/v1/consignservice/consigns/fault/b16501e0-de1f-40f1-a699-66ee9e13ddb6"
+            },
+            {
+              "key": "http.method",
+              "value": "POST"
+            },
+            {
+              "key": "http.status_code",
+              "value": "200"
+            }
+          ],
+          "logs": []
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "data": {
+    "trace": {
+      "spans": [
+        {
+          "traceId": "45882c5b4ee5470e8eb7bafcf017e7d8.110.17170563058240011",
+          "segmentId": "45882c5b4ee5470e8eb7bafcf017e7d8.110.17170563058240010",
+          "spanId": 0,
+          "parentSpanId": -1,
+          "refs": [],
+          "serviceCode": "ts-gateway-service",
+          "serviceInstanceName": "e307be7950444cccba7ae71153d648e5@172.24.0.56",
+          "startTime": 1717056305824,
+          "endTime": 1717056305827,
+          "endpointName": "GET:/api/v1/foodservice/foods/2021-07-14/Shang%20Hai/Su%20Zhou/D1345",
+          "type": "Entry",
+          "peer": "",
+          "component": "Tomcat",
+          "isError": false,
+          "layer": "Http",
+          "tags": [
+            {
+              "key": "url",
+              "value": "http://ts-gateway-service:18888/api/v1/foodservice/foods/2021-07-14/Shang%20Hai/Su%20Zhou/D1345"
+            },
+            {
+              "key": "http.method",
+              "value": "GET"
+            },
+            {
+              "key": "http.status_code",
+              "value": "200"
+            }
+          ],
+          "logs": []
+        }
+      ]
+    }
+  }
+}

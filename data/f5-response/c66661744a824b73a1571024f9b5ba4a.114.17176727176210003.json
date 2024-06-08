@@ -1,0 +1,269 @@
+{
+  "data": {
+    "trace": {
+      "spans": [
+        {
+          "traceId": "c66661744a824b73a1571024f9b5ba4a.114.17176727176210003",
+          "segmentId": "c66661744a824b73a1571024f9b5ba4a.114.17176727176210002",
+          "spanId": 0,
+          "parentSpanId": -1,
+          "refs": [],
+          "serviceCode": "ts-auth-service",
+          "serviceInstanceName": "1c5386436d8242f68b330923921a3a45@172.22.0.48",
+          "startTime": 1717672717621,
+          "endTime": 1717672717710,
+          "endpointName": "POST:/api/v1/users/login",
+          "type": "Entry",
+          "peer": "",
+          "component": "SpringMVC",
+          "isError": false,
+          "layer": "Http",
+          "tags": [
+            {
+              "key": "url",
+              "value": "http://172.22.0.48:12340/api/v1/users/login"
+            },
+            {
+              "key": "http.method",
+              "value": "POST"
+            },
+            {
+              "key": "http.param",
+              "value": "{\"username\":\"fdse_microservice\",\"password\":\"111111\",\"verificationCode\":\"1234\"}"
+            },
+            {
+              "key": "http.response",
+              "value": "{\"status\":1,\"msg\":\"login success\",\"data\":{\"userId\":\"4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f\",\"username\":\"fdse_microservice\",\"token\":\"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZHNlX21pY3Jvc2VydmljZSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpZCI6IjRkMmE0NmM3LTcxY2ItNGNmMS1iNWJiLWI2ODQwNmQ5ZGE2ZiIsImlhdCI6MTcxNzY3MjcxNywiZXhwIjoxNzE3Njc2MzE3fQ.wPaQQ9GNWnFy_a1pJXi0_qWvj1VocjF1r5wKjUbS6Bk\"}}"
+            },
+            {
+              "key": "http.status_code",
+              "value": "200"
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "c66661744a824b73a1571024f9b5ba4a.114.17176727176210003",
+          "segmentId": "c66661744a824b73a1571024f9b5ba4a.114.17176727176210002",
+          "spanId": 1,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "ts-auth-service",
+          "serviceInstanceName": "1c5386436d8242f68b330923921a3a45@172.22.0.48",
+          "startTime": 1717672717625,
+          "endTime": 1717672717638,
+          "endpointName": "/api/v1/verifycode/verify/1234",
+          "type": "Exit",
+          "peer": "ts-verification-code-service:80",
+          "component": "SpringRestTemplate",
+          "isError": false,
+          "layer": "Http",
+          "tags": [
+            {
+              "key": "url",
+              "value": "http://ts-verification-code-service/api/v1/verifycode/verify/1234"
+            },
+            {
+              "key": "http.method",
+              "value": "GET"
+            },
+            {
+              "key": "http.status_code",
+              "value": "200"
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "c66661744a824b73a1571024f9b5ba4a.114.17176727176210003",
+          "segmentId": "0ac6dfc7a51c4a16b0d1ee512e8b4f18.99.17176727176320008",
+          "spanId": 0,
+          "parentSpanId": -1,
+          "refs": [
+            {
+              "traceId": "c66661744a824b73a1571024f9b5ba4a.114.17176727176210003",
+              "parentSegmentId": "c66661744a824b73a1571024f9b5ba4a.114.17176727176210002",
+              "parentSpanId": 1,
+              "type": "CROSS_PROCESS"
+            }
+          ],
+          "serviceCode": "ts-verification-code-service",
+          "serviceInstanceName": "eeb1adbfccce4949b4411663c2758f35@172.22.0.59",
+          "startTime": 1717672717632,
+          "endTime": 1717672717635,
+          "endpointName": "GET:/api/v1/verifycode/verify/{verifyCode}",
+          "type": "Entry",
+          "peer": "",
+          "component": "SpringMVC",
+          "isError": false,
+          "layer": "Http",
+          "tags": [
+            {
+              "key": "url",
+              "value": "http://172.22.0.48:12340/api/v1/verifycode/verify/1234"
+            },
+            {
+              "key": "http.method",
+              "value": "GET"
+            },
+            {
+              "key": "http.param",
+              "value": "\"1234\""
+            },
+            {
+              "key": "http.status_code",
+              "value": "200"
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "c66661744a824b73a1571024f9b5ba4a.114.17176727176210003",
+          "segmentId": "c66661744a824b73a1571024f9b5ba4a.114.17176727176210002",
+          "spanId": 2,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "ts-auth-service",
+          "serviceInstanceName": "1c5386436d8242f68b330923921a3a45@172.22.0.48",
+          "startTime": 1717672717639,
+          "endTime": 1717672717641,
+          "endpointName": "HikariCP/Connection/getConnection",
+          "type": "Local",
+          "peer": "",
+          "component": "HikariCP",
+          "isError": false,
+          "layer": "Unknown",
+          "tags": [],
+          "logs": []
+        },
+        {
+          "traceId": "c66661744a824b73a1571024f9b5ba4a.114.17176727176210003",
+          "segmentId": "c66661744a824b73a1571024f9b5ba4a.114.17176727176210002",
+          "spanId": 3,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "ts-auth-service",
+          "serviceInstanceName": "1c5386436d8242f68b330923921a3a45@172.22.0.48",
+          "startTime": 1717672717641,
+          "endTime": 1717672717642,
+          "endpointName": "Mysql/JDBC/PreparedStatement/executeQuery",
+          "type": "Exit",
+          "peer": "ts-auth-mysql:3306",
+          "component": "mysql-connector-java",
+          "isError": false,
+          "layer": "Database",
+          "tags": [
+            {
+              "key": "db.type",
+              "value": "Mysql"
+            },
+            {
+              "key": "db.instance",
+              "value": "ts"
+            },
+            {
+              "key": "db.statement",
+              "value": "select user0_.user_id as user_id1_0_, user0_.password as password2_0_, user0_.user_name as user_nam3_0_ from auth_user user0_ where user0_.user_name=?"
+            },
+            {
+              "key": "db.sql.parameters",
+              "value": "[fdse_microservice]"
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "c66661744a824b73a1571024f9b5ba4a.114.17176727176210003",
+          "segmentId": "c66661744a824b73a1571024f9b5ba4a.114.17176727176210002",
+          "spanId": 4,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "ts-auth-service",
+          "serviceInstanceName": "1c5386436d8242f68b330923921a3a45@172.22.0.48",
+          "startTime": 1717672717704,
+          "endTime": 1717672717704,
+          "endpointName": "Mysql/JDBC/PreparedStatement/executeQuery",
+          "type": "Exit",
+          "peer": "ts-auth-mysql:3306",
+          "component": "mysql-connector-java",
+          "isError": false,
+          "layer": "Database",
+          "tags": [
+            {
+              "key": "db.type",
+              "value": "Mysql"
+            },
+            {
+              "key": "db.instance",
+              "value": "ts"
+            },
+            {
+              "key": "db.statement",
+              "value": "select roles0_.user_id as user_id1_1_0_, roles0_.roles as roles2_1_0_ from user_roles roles0_ where roles0_.user_id=?"
+            },
+            {
+              "key": "db.sql.parameters",
+              "value": "[4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f]"
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "c66661744a824b73a1571024f9b5ba4a.114.17176727176210003",
+          "segmentId": "c66661744a824b73a1571024f9b5ba4a.114.17176727176210002",
+          "spanId": 5,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "ts-auth-service",
+          "serviceInstanceName": "1c5386436d8242f68b330923921a3a45@172.22.0.48",
+          "startTime": 1717672717706,
+          "endTime": 1717672717707,
+          "endpointName": "Mysql/JDBC/PreparedStatement/executeQuery",
+          "type": "Exit",
+          "peer": "ts-auth-mysql:3306",
+          "component": "mysql-connector-java",
+          "isError": false,
+          "layer": "Database",
+          "tags": [
+            {
+              "key": "db.type",
+              "value": "Mysql"
+            },
+            {
+              "key": "db.instance",
+              "value": "ts"
+            },
+            {
+              "key": "db.statement",
+              "value": "select user0_.user_id as user_id1_0_, user0_.password as password2_0_, user0_.user_name as user_nam3_0_ from auth_user user0_ where user0_.user_name=?"
+            },
+            {
+              "key": "db.sql.parameters",
+              "value": "[fdse_microservice]"
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "c66661744a824b73a1571024f9b5ba4a.114.17176727176210003",
+          "segmentId": "c66661744a824b73a1571024f9b5ba4a.114.17176727176210002",
+          "spanId": 6,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "ts-auth-service",
+          "serviceInstanceName": "1c5386436d8242f68b330923921a3a45@172.22.0.48",
+          "startTime": 1717672717710,
+          "endTime": 1717672717710,
+          "endpointName": "HikariCP/Connection/close",
+          "type": "Local",
+          "peer": "",
+          "component": "HikariCP",
+          "isError": false,
+          "layer": "Unknown",
+          "tags": [],
+          "logs": []
+        }
+      ]
+    }
+  }
+}

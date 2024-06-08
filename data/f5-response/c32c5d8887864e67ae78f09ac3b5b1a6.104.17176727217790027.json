@@ -1,0 +1,40 @@
+{
+  "data": {
+    "trace": {
+      "spans": [
+        {
+          "traceId": "c32c5d8887864e67ae78f09ac3b5b1a6.104.17176727217790027",
+          "segmentId": "c32c5d8887864e67ae78f09ac3b5b1a6.104.17176727217790026",
+          "spanId": 0,
+          "parentSpanId": -1,
+          "refs": [],
+          "serviceCode": "ts-gateway-service",
+          "serviceInstanceName": "77e0ac5e55fd4947a38406bc6635cebd@172.22.0.61",
+          "startTime": 1717672721779,
+          "endTime": 1717672721781,
+          "endpointName": "POST:/api/v1/orderOtherService/orderOther/refresh",
+          "type": "Entry",
+          "peer": "",
+          "component": "Tomcat",
+          "isError": false,
+          "layer": "Http",
+          "tags": [
+            {
+              "key": "url",
+              "value": "http://ts-gateway-service:18888/api/v1/orderOtherService/orderOther/refresh"
+            },
+            {
+              "key": "http.method",
+              "value": "POST"
+            },
+            {
+              "key": "http.status_code",
+              "value": "200"
+            }
+          ],
+          "logs": []
+        }
+      ]
+    }
+  }
+}

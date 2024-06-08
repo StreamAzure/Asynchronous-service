@@ -1,0 +1,62 @@
+=====
+GET http://172.22.0.81:12032/api/v1/orderOtherService/orderOther/e6aa5a4a-ff99-4cd0-9d30-82c25dab7b53
+"e6aa5a4a-ff99-4cd0-9d30-82c25dab7b53"
+POST http://172.22.0.77:14569/api/v1/preserveotherservice/preserveOther
+{"accountId":"4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f","contactsId":"de680eeb-4ad0-4a70-9120-422c3195a232","tripId":"Z1234","seatType":0,"date":"2024-06-06","from":"Shang Hai","to":"Nan Jing","assurance":0,"foodType":2,"stationName":"Su Zhou","storeName":"Roman Holiday","foodName":"Soup","foodPrice":3.7,"consigneeWeight":0.0,"isWithin":false}
+	select ['e6aa5a4a-ff99-4cd0-9d30-82c25dab7b53']
+	insert ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'e6aa5a4a-ff99-4cd0-9d30-82c25dab7b53']
+	该 dataSpanPair 有问题!
+
+=====
+POST http://172.22.0.64:18673/api/v1/inside_pay_service/inside_payment
+{"orderId":"e6aa5a4a-ff99-4cd0-9d30-82c25dab7b53","tripId":"Z1234"}
+POST http://172.22.0.77:14569/api/v1/preserveotherservice/preserveOther
+{"accountId":"4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f","contactsId":"de680eeb-4ad0-4a70-9120-422c3195a232","tripId":"Z1234","seatType":0,"date":"2024-06-06","from":"Shang Hai","to":"Nan Jing","assurance":0,"foodType":2,"stationName":"Su Zhou","storeName":"Roman Holiday","foodName":"Soup","foodPrice":3.7,"consigneeWeight":0.0,"isWithin":false}
+	select ['e6aa5a4a-ff99-4cd0-9d30-82c25dab7b53']
+	insert ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'e6aa5a4a-ff99-4cd0-9d30-82c25dab7b53']
+	该 dataSpanPair 有问题!
+
+	update ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'e6aa5a4a-ff99-4cd0-9d30-82c25dab7b53']
+	insert ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'e6aa5a4a-ff99-4cd0-9d30-82c25dab7b53']
+	该 dataSpanPair 有问题!
+
+=====
+GET http://172.22.0.46:18885/api/v1/cancelservice/cancel/e6aa5a4a-ff99-4cd0-9d30-82c25dab7b53/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f
+"e6aa5a4a-ff99-4cd0-9d30-82c25dab7b53"
+POST http://172.22.0.77:14569/api/v1/preserveotherservice/preserveOther
+{"accountId":"4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f","contactsId":"de680eeb-4ad0-4a70-9120-422c3195a232","tripId":"Z1234","seatType":0,"date":"2024-06-06","from":"Shang Hai","to":"Nan Jing","assurance":0,"foodType":2,"stationName":"Su Zhou","storeName":"Roman Holiday","foodName":"Soup","foodPrice":3.7,"consigneeWeight":0.0,"isWithin":false}
+	select ['e6aa5a4a-ff99-4cd0-9d30-82c25dab7b53']
+	insert ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'e6aa5a4a-ff99-4cd0-9d30-82c25dab7b53']
+	该 dataSpanPair 有问题!
+
+=====
+POST http://172.22.0.77:14569/api/v1/preserveotherservice/preserveOther
+{"accountId":"4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f","contactsId":"de680eeb-4ad0-4a70-9120-422c3195a232","tripId":"Z1234","seatType":0,"date":"2024-06-06","from":"Shang Hai","to":"Nan Jing","assurance":0,"foodType":2,"stationName":"Su Zhou","storeName":"Roman Holiday","foodName":"Soup","foodPrice":3.7,"consigneeWeight":0.0,"isWithin":false}
+GET http://172.22.0.76:12033/api/v1/orderOtherService2/orderOther/e6aa5a4a-ff99-4cd0-9d30-82c25dab7b53
+"e6aa5a4a-ff99-4cd0-9d30-82c25dab7b53"
+	insert ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'e6aa5a4a-ff99-4cd0-9d30-82c25dab7b53']
+	select ['e6aa5a4a-ff99-4cd0-9d30-82c25dab7b53']
+	该 dataSpanPair 有问题!
+
+=====
+POST http://172.22.0.77:14569/api/v1/preserveotherservice/preserveOther
+{"accountId":"4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f","contactsId":"de680eeb-4ad0-4a70-9120-422c3195a232","tripId":"Z1234","seatType":0,"date":"2024-06-06","from":"Shang Hai","to":"Nan Jing","assurance":0,"foodType":2,"stationName":"Su Zhou","storeName":"Roman Holiday","foodName":"Soup","foodPrice":3.7,"consigneeWeight":0.0,"isWithin":false}
+POST http://172.22.0.64:18673/api/v1/inside_pay_service/inside_payment
+{"orderId":"e6aa5a4a-ff99-4cd0-9d30-82c25dab7b53","tripId":"Z1234"}
+	insert ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'e6aa5a4a-ff99-4cd0-9d30-82c25dab7b53']
+	select ['e6aa5a4a-ff99-4cd0-9d30-82c25dab7b53']
+	该 dataSpanPair 有问题!
+
+=====
+POST http://172.22.0.77:14569/api/v1/preserveotherservice/preserveOther
+{"accountId":"4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f","contactsId":"de680eeb-4ad0-4a70-9120-422c3195a232","tripId":"Z1234","seatType":0,"date":"2024-06-06","from":"Shang Hai","to":"Nan Jing","assurance":0,"foodType":2,"stationName":"Su Zhou","storeName":"Roman Holiday","foodName":"Soup","foodPrice":3.7,"consigneeWeight":0.0,"isWithin":false}
+GET http://172.22.0.46:18885/api/v1/cancelservice/cancel/e6aa5a4a-ff99-4cd0-9d30-82c25dab7b53/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f
+"e6aa5a4a-ff99-4cd0-9d30-82c25dab7b53"
+	insert ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'e6aa5a4a-ff99-4cd0-9d30-82c25dab7b53']
+	select ['e6aa5a4a-ff99-4cd0-9d30-82c25dab7b53']
+	该 dataSpanPair 有问题!
+
+	insert ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'e6aa5a4a-ff99-4cd0-9d30-82c25dab7b53']
+	update ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'e6aa5a4a-ff99-4cd0-9d30-82c25dab7b53']
+	该 dataSpanPair 有问题!
+

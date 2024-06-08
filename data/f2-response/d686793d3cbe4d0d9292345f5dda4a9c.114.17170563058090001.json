@@ -1,0 +1,48 @@
+{
+  "data": {
+    "trace": {
+      "spans": [
+        {
+          "traceId": "d686793d3cbe4d0d9292345f5dda4a9c.114.17170563058090001",
+          "segmentId": "d686793d3cbe4d0d9292345f5dda4a9c.114.17170563058090000",
+          "spanId": 0,
+          "parentSpanId": -1,
+          "refs": [],
+          "serviceCode": "ts-assurance-service",
+          "serviceInstanceName": "58092dd943884094b22a0e40dd7cc9d3@172.24.0.58",
+          "startTime": 1717056305809,
+          "endTime": 1717056305818,
+          "endpointName": "GET:/api/v1/assuranceservice/assurances/types",
+          "type": "Entry",
+          "peer": "",
+          "component": "SpringMVC",
+          "isError": false,
+          "layer": "Http",
+          "tags": [
+            {
+              "key": "url",
+              "value": "http://172.24.0.58:18890/api/v1/assuranceservice/assurances/types"
+            },
+            {
+              "key": "http.method",
+              "value": "GET"
+            },
+            {
+              "key": "http.param",
+              "value": "{\"user-agent\":[\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36\"],\"accept\":[\"application/json\"],\"accept-encoding\":[\"gzip, deflate\"],\"accept-language\":[\"zh-CN,zh;q\\u003d0.9,en;q\\u003d0.8\"],\"authorization\":[\"Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmZHNlX21pY3Jvc2VydmljZSIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpZCI6IjRkMmE0NmM3LTcxY2ItNGNmMS1iNWJiLWI2ODQwNmQ5ZGE2ZiIsImlhdCI6MTcxNzA1NjMwNSwiZXhwIjoxNzE3MDU5OTA1fQ.YkXBhxh1g8j-QMArvsO4IG43RQoD3z_qcBDNC7Hh92E\"],\"content-type\":[\"application/json\"],\"x-requested-with\":[\"XMLHttpRequest\"],\"forwarded\":[\"proto\\u003dhttp;host\\u003d\\\"ts-gateway-service:18888\\\";for\\u003d\\\"172.24.0.82:56354\\\"\"],\"x-forwarded-for\":[\"172.24.0.82\"],\"x-forwarded-proto\":[\"http\"],\"x-forwarded-port\":[\"18888\"],\"x-forwarded-host\":[\"ts-gateway-service:18888\"],\"host\":[\"172.24.0.58:18890\"],\"content-length\":[\"0\"]}"
+            },
+            {
+              "key": "http.response",
+              "value": "{\"status\":1,\"msg\":\"Find All Assurance\",\"data\":[{\"index\":1,\"name\":\"Traffic Accident Assurance\",\"price\":3.0}]}"
+            },
+            {
+              "key": "http.status_code",
+              "value": "200"
+            }
+          ],
+          "logs": []
+        }
+      ]
+    }
+  }
+}

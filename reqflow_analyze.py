@@ -56,16 +56,23 @@ def formulate_candidate_pairs_origin(flows:dict, req_data_map:dict) -> dict:
 
     # print_candidate_pairs(candidate_pairs)
 
-    print(f"[baseline random test] pair 数: {len(candidate_pairs)}")
+    print_green(f"[baseline random test] pair 数: {len(candidate_pairs)}\n")
 
     return candidate_pairs
 
-def prune_by_database(candidate_pairs, req_data_map):
+def prune_by_database(candidate_pairs, req_data_map, customize_db=None):
     """
+    对于 customize_db，其元素都是列表，在同一列表中的db实例视为同一数据库实例
     根据数据库实例进行剪枝，只有相同数据库实例的才能匹配
     """
     def _check(dataSpan1, dataSpan2):
         if dataSpan1.peer != dataSpan2.peer:
+            # print(f"peer: {dataSpan1.peer} {dataSpan2.peer}")
+            if customize_db is None:
+                return False
+            for same_peers in customize_db:
+                if dataSpan1.peer in same_peers and dataSpan2.peer in same_peers:
+                    return True
             return False
         if dataSpan1.db != dataSpan2.db:
             return False
@@ -84,7 +91,7 @@ def prune_by_database(candidate_pairs, req_data_map):
 
     # print_candidate_pairs(candidate_pairs_pruned)
 
-    print(f"[prune_by_database_info] pair 数: {len(candidate_pairs_pruned)}")
+    print_green(f"[prune_by_database_info] pair 数: {len(candidate_pairs_pruned)}\n")
 
     return candidate_pairs_pruned
 
@@ -107,7 +114,7 @@ def prune_by_flow(candidate_pairs, flows, origin_flows):
 
     # print_candidate_pairs(candidate_pairs_pruned)
 
-    print(f"[prune_by_flow] pair 数: {len(candidate_pairs_pruned)}")
+    print_green(f"[prune_by_flow] pair 数: {len(candidate_pairs_pruned)}\n")
 
     return candidate_pairs_pruned
 
@@ -144,38 +151,44 @@ def pre_validate(candidate_pairs, flows, bug_report_file):
     with open(bug_report_file, 'w') as f:
         for reqPair, dataSpanPairs in candidate_pairs.items():
             req1, req2 = reqPair
-            print_blue(f"{req1.span.tags['http.method']} {req1.span.tags['url']}\n")
-            print_blue(f"{req2.span.tags['http.method']} {req2.span.tags['url']}\n")
+            # print_blue(f"{req1.span.tags['http.method']} {req1.span.tags['url']}\n")
+            # print_blue(f"{req2.span.tags['http.method']} {req2.span.tags['url']}\n")
             had_write_reqPair = False
             for dataSpanPair in dataSpanPairs:
                 dataSpan1, dataSpan2 = dataSpanPair
-                print_green(f"\t{dataSpan1.db_operation} {dataSpan1.ids}")
-                print_green(f"\t{dataSpan2.db_operation} {dataSpan2.ids}")
+                # print_green(f"\t{dataSpan1.db_operation} {dataSpan1.ids}")
+                # print_green(f"\t{dataSpan2.db_operation} {dataSpan2.ids}")
                 if dataSpan1.db_operation == 'insert' or dataSpan2.db_operation == 'insert':
                     if not had_write_reqPair:
                         f.write("=====\n")
-                        f.write(f"{req1.span.tags['http.method']} {req1.span.tags['url']}\n")
-                        f.write(f"{req2.span.tags['http.method']} {req2.span.tags['url']}\n")
+                        # f.write(f"{req1.span.tags['http.method']} {req1.span.tags['url']}\n")
+                        # f.write(f"{req2.span.tags['http.method']} {req2.span.tags['url']}\n")
                         # 写入请求流
                         flow1 = flows[req1.flowID]
                         flow2 = flows[req2.flowID]
-                        f.write(f"[FlowID: {flow1.id}] [Lenth: {len(flow1.requestSpans)}] ")
-                        f.write(str(flow1) + "\n")
-                        f.write(f"[FlowID: {flow2.id}] [Lenth: {len(flow2.requestSpans)}] ")
-                        f.write(str(flow2) + "\n")
+                        f.write(f"{flow1.requestSpans[0].span.tags['http.method']} {flow1.requestSpans[0].span.tags['url']}\n")
+                        f.write(f"{flow1.requestSpans[0].span.tags['http.param']}\n")
+                        f.write(f"{flow2.requestSpans[0].span.tags['http.method']} {flow2.requestSpans[0].span.tags['url']}\n")
+                        f.write(f"{flow2.requestSpans[0].span.tags['http.param']}\n")
+                        # f.write(f"[FlowID: {flow1.id}] [Lenth: {len(flow1.requestSpans)}] ")
+                        # f.write(str(flow1) + "\n")
+                        # f.write(f"[FlowID: {flow2.id}] [Lenth: {len(flow2.requestSpans)}] ")
+                        # f.write(str(flow2) + "\n")
                         had_write_reqPair = True
                     f.write(f"\t{dataSpan1.db_operation} {dataSpan1.ids}\n")
                     f.write(f"\t{dataSpan2.db_operation} {dataSpan2.ids}\n")
                     f.write("\t该 dataSpanPair 有问题!\n\n")
                     
-                    print_red(f"该 dataSpanPair 有问题!")
+                    # print_red(f"该 dataSpanPair 有问题!")
                     continue
-                print()
-            print()
+                # print()
+            # print()
             if not had_write_reqPair:
                 candidate_pairs_pruned[reqPair] = dataSpanPairs
-    
+   
+    print_green(f"[prune by pre_validate] pair 数: {len(candidate_pairs_pruned)}\n")
     print("============= pre_validate done=============\n\n")
+    
     return candidate_pairs_pruned
 
 

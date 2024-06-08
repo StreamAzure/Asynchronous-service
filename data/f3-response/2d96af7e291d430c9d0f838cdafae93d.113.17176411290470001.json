@@ -1,0 +1,1048 @@
+{
+  "data": {
+    "trace": {
+      "spans": [
+        {
+          "traceId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470001",
+          "segmentId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470000",
+          "spanId": 0,
+          "parentSpanId": -1,
+          "refs": [],
+          "serviceCode": "ts-travel-service",
+          "serviceInstanceName": "afa58a9c7bb947c28ed2639c6036a74b@172.22.0.56",
+          "startTime": 1717641129047,
+          "endTime": 1717641129305,
+          "endpointName": "POST:/api/v1/travelservice/trips/left",
+          "type": "Entry",
+          "peer": "",
+          "component": "SpringMVC",
+          "isError": false,
+          "layer": "Http",
+          "tags": [
+            {
+              "key": "url",
+              "value": "http://172.22.0.56:12346/api/v1/travelservice/trips/left"
+            },
+            {
+              "key": "http.method",
+              "value": "POST"
+            },
+            {
+              "key": "http.param",
+              "value": "{\"startPlace\":\"Shang Hai\",\"endPlace\":\"Nan Jing\",\"departureTime\":\"2024-06-06\"}"
+            },
+            {
+              "key": "http.response",
+              "value": "{\"status\":1,\"msg\":\"Success\",\"data\":[]}"
+            },
+            {
+              "key": "http.status_code",
+              "value": "200"
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470001",
+          "segmentId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470000",
+          "spanId": 1,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "ts-travel-service",
+          "serviceInstanceName": "afa58a9c7bb947c28ed2639c6036a74b@172.22.0.56",
+          "startTime": 1717641129053,
+          "endTime": 1717641129053,
+          "endpointName": "HikariCP/Connection/getConnection",
+          "type": "Local",
+          "peer": "",
+          "component": "HikariCP",
+          "isError": false,
+          "layer": "Unknown",
+          "tags": [],
+          "logs": []
+        },
+        {
+          "traceId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470001",
+          "segmentId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470000",
+          "spanId": 2,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "ts-travel-service",
+          "serviceInstanceName": "afa58a9c7bb947c28ed2639c6036a74b@172.22.0.56",
+          "startTime": 1717641129054,
+          "endTime": 1717641129054,
+          "endpointName": "Mysql/JDBC/PreparedStatement/executeQuery",
+          "type": "Exit",
+          "peer": "ts-travel-mysql:3306",
+          "component": "mysql-connector-java",
+          "isError": false,
+          "layer": "Database",
+          "tags": [
+            {
+              "key": "db.type",
+              "value": "Mysql"
+            },
+            {
+              "key": "db.instance",
+              "value": "ts"
+            },
+            {
+              "key": "db.statement",
+              "value": "select trip0_.id as id1_0_, trip0_.end_time as end_time2_0_, trip0_.route_id as route_id3_0_, trip0_.start_station_name as start_st4_0_, trip0_.start_time as start_ti5_0_, trip0_.stations_name as stations6_0_, trip0_.terminal_station_name as terminal7_0_, trip0_.train_type_name as train_ty8_0_, trip0_.number as number9_0_, trip0_.type as type10_0_ from trip trip0_"
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470001",
+          "segmentId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470000",
+          "spanId": 3,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "ts-travel-service",
+          "serviceInstanceName": "afa58a9c7bb947c28ed2639c6036a74b@172.22.0.56",
+          "startTime": 1717641129056,
+          "endTime": 1717641129056,
+          "endpointName": "Mysql/JDBC/Connection/commit",
+          "type": "Exit",
+          "peer": "ts-travel-mysql:3306",
+          "component": "mysql-connector-java",
+          "isError": false,
+          "layer": "Database",
+          "tags": [
+            {
+              "key": "db.type",
+              "value": "Mysql"
+            },
+            {
+              "key": "db.instance",
+              "value": "ts"
+            },
+            {
+              "key": "db.statement",
+              "value": ""
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470001",
+          "segmentId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470000",
+          "spanId": 4,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "ts-travel-service",
+          "serviceInstanceName": "afa58a9c7bb947c28ed2639c6036a74b@172.22.0.56",
+          "startTime": 1717641129057,
+          "endTime": 1717641129302,
+          "endpointName": "/api/v1/basicservice/basic/travels",
+          "type": "Exit",
+          "peer": "ts-basic-service:80",
+          "component": "SpringRestTemplate",
+          "isError": false,
+          "layer": "Http",
+          "tags": [
+            {
+              "key": "url",
+              "value": "http://ts-basic-service/api/v1/basicservice/basic/travels"
+            },
+            {
+              "key": "http.method",
+              "value": "POST"
+            },
+            {
+              "key": "http.status_code",
+              "value": "200"
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470001",
+          "segmentId": "2bc0b4bc692d4c91bc14008c6b4494f3.119.17176411290900002",
+          "spanId": 0,
+          "parentSpanId": -1,
+          "refs": [
+            {
+              "traceId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470001",
+              "parentSegmentId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470000",
+              "parentSpanId": 4,
+              "type": "CROSS_PROCESS"
+            }
+          ],
+          "serviceCode": "ts-basic-service",
+          "serviceInstanceName": "692e4d3ae2ef49748cd1a7cf6b2e2f07@172.22.0.79",
+          "startTime": 1717641129090,
+          "endTime": 1717641129300,
+          "endpointName": "POST:/api/v1/basicservice/basic/travels",
+          "type": "Entry",
+          "peer": "",
+          "component": "SpringMVC",
+          "isError": false,
+          "layer": "Http",
+          "tags": [
+            {
+              "key": "url",
+              "value": "http://172.22.0.79:15680/api/v1/basicservice/basic/travels"
+            },
+            {
+              "key": "http.method",
+              "value": "POST"
+            },
+            {
+              "key": "http.param",
+              "value": "[{\"trip\":{\"id\":\"65bd5abe-506e-4e76-a7b8-4e020e7736fc\",\"tripId\":{\"type\":\"G\",\"number\":\"1234\"},\"trainTypeName\":\"GaoTieOne\",\"routeId\":\"92708982-77af-4318-be25-57ccb0ff69ad\",\"startStationName\":\"shanghai\",\"stationsName\":\"suzhou\",\"terminalStationName\":\"taiyuan\",\"startTime\":\"2013-05-04 09:00:00\",\"endTime\":\"2013-05-04 15:51:52\"},\"startPlace\":\"shanghai\",\"endPlace\":\"nanjing\",\"departureTime\":\"2024-06-06\"},{\"trip\":{\"id\":\"c4ca1f9c-4435-49c9-af6a-ba85b014fd95\",\"tripId\":{\"type\":\"G\",\"number\":\"1235\"},\"trainTypeName\":\"GaoTieOne\",\"routeId\":\"aefcef3f-3f42-46e8-afd7-6cb2a928bd3d\",\"startStationName\":\"shanghai\",\"stationsName\":\"suzhou\",\"terminalStationName\":\"taiyuan\",\"startTime\":\"2013-05-04 12:00:00\",\"endTime\":\"2013-05-04 17:51:52\"},\"startPlace\":\"shanghai\",\"endPlace\":\"nanjing\",\"departureTime\":\"2024-06-06\"},{\"trip\":{\"id\":\"53e0766e-43d4-436a-8b8e-798f5bfd5bfd\",\"tripId\":{\"type\":\"G\",\"number\":\"1236\"},\"trainTypeName\":\"GaoTieOne\",\"routeId\":\"a3f256c1-0e43-4f7d-9c21-121bf258101f\",\"startStationName\":\"shanghai\",\"stationsName\":\"suzhou\",\"terminalStationName\":\"taiyuan\",\"startTime\":\"2013-05-04 14:00:00\",\"endTime\":\"2013-05-04 20:51:52\"},\"startPlace\":\"shanghai\",\"endPlace\":\"nanjing\",\"departureTime\":\"2024-06-06\"},{\"trip\":{\"id\":\"eb2ea2ed-bb67-4ff4-8018-e26b176f61c7\",\"tripId\":{\"type\":\"G\",\"number\":\"1237\"},\"trainTypeName\":\"GaoTieTwo\",\"routeId\":\"084837bb-53c8-4438-87c8-0321a4d09917\",\"startStationName\":\"shanghai\",\"stationsName\":\"suzhou\",\"terminalStationName\":\"taiyuan\",\"startTime\":\"2013-05-04 08:00:00\",\"endTime\":\"2013-05-04 17:21:52\"},\"startPlace\":\"shanghai\",\"endPlace\":\"nanjing\",\"departureTime\":\"2024-06-06\"},{\"trip\":{\"id\":\"18bdba3a-ac7a-4a10-a401-70e4315a22ee\",\"tripId\":{\"type\":\"D\",\"number\":\"1345\"},\"trainTypeName\":\"DongCheOne\",\"routeId\":\"f3d4d4ef-693b-4456-8eed-59c0d717dd08\",\"startStationName\":\"shanghai\",\"stationsName\":\"suzhou\",\"terminalStationName\":\"taiyuan\",\"startTime\":\"2013-05-04 07:00:00\",\"endTime\":\"2013-05-04 19:59:52\"},\"startPlace\":\"shanghai\",\"endPlace\":\"nanjing\",\"departureTime\":\"2024-06-06\"}]"
+            },
+            {
+              "key": "http.response",
+              "value": "{\"status\":0,\"msg\":\"no travel info available\"}"
+            },
+            {
+              "key": "http.status_code",
+              "value": "200"
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470001",
+          "segmentId": "2bc0b4bc692d4c91bc14008c6b4494f3.119.17176411290900002",
+          "spanId": 1,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "ts-basic-service",
+          "serviceInstanceName": "692e4d3ae2ef49748cd1a7cf6b2e2f07@172.22.0.79",
+          "startTime": 1717641129093,
+          "endTime": 1717641129179,
+          "endpointName": "/api/v1/stationservice/stations/idlist",
+          "type": "Exit",
+          "peer": "ts-station-service:80",
+          "component": "SpringRestTemplate",
+          "isError": false,
+          "layer": "Http",
+          "tags": [
+            {
+              "key": "url",
+              "value": "http://ts-station-service/api/v1/stationservice/stations/idlist"
+            },
+            {
+              "key": "http.method",
+              "value": "POST"
+            },
+            {
+              "key": "http.status_code",
+              "value": "200"
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470001",
+          "segmentId": "db6b2f34807c44d1b069b1ece5363276.113.17176411291170002",
+          "spanId": 0,
+          "parentSpanId": -1,
+          "refs": [
+            {
+              "traceId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470001",
+              "parentSegmentId": "2bc0b4bc692d4c91bc14008c6b4494f3.119.17176411290900002",
+              "parentSpanId": 1,
+              "type": "CROSS_PROCESS"
+            }
+          ],
+          "serviceCode": "ts-station-service",
+          "serviceInstanceName": "6c9e283d5a7c451599830a3e29c40b9f@172.22.0.42",
+          "startTime": 1717641129117,
+          "endTime": 1717641129127,
+          "endpointName": "POST:/api/v1/stationservice/stations/idlist",
+          "type": "Entry",
+          "peer": "",
+          "component": "SpringMVC",
+          "isError": false,
+          "layer": "Http",
+          "tags": [
+            {
+              "key": "url",
+              "value": "http://172.22.0.42:12345/api/v1/stationservice/stations/idlist"
+            },
+            {
+              "key": "http.method",
+              "value": "POST"
+            },
+            {
+              "key": "http.param",
+              "value": "[\"nanjing\",\"shanghai\"]"
+            },
+            {
+              "key": "http.response",
+              "value": "{\"status\":1,\"msg\":\"Success\",\"data\":{\"nanjing\":\"44c10764-92eb-4a39-ba88-690aafa8a5f5\",\"shanghai\":\"b618bf4b-8739-4e02-9234-e4de2e72e8c9\"}}"
+            },
+            {
+              "key": "http.status_code",
+              "value": "200"
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470001",
+          "segmentId": "db6b2f34807c44d1b069b1ece5363276.113.17176411291170002",
+          "spanId": 1,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "ts-station-service",
+          "serviceInstanceName": "6c9e283d5a7c451599830a3e29c40b9f@172.22.0.42",
+          "startTime": 1717641129120,
+          "endTime": 1717641129122,
+          "endpointName": "HikariCP/Connection/getConnection",
+          "type": "Local",
+          "peer": "",
+          "component": "HikariCP",
+          "isError": false,
+          "layer": "Unknown",
+          "tags": [],
+          "logs": []
+        },
+        {
+          "traceId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470001",
+          "segmentId": "db6b2f34807c44d1b069b1ece5363276.113.17176411291170002",
+          "spanId": 2,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "ts-station-service",
+          "serviceInstanceName": "6c9e283d5a7c451599830a3e29c40b9f@172.22.0.42",
+          "startTime": 1717641129123,
+          "endTime": 1717641129124,
+          "endpointName": "Mysql/JDBC/PreparedStatement/executeQuery",
+          "type": "Exit",
+          "peer": "ts-station-mysql:3306",
+          "component": "mysql-connector-java",
+          "isError": false,
+          "layer": "Database",
+          "tags": [
+            {
+              "key": "db.type",
+              "value": "Mysql"
+            },
+            {
+              "key": "db.instance",
+              "value": "ts"
+            },
+            {
+              "key": "db.statement",
+              "value": "SELECT * from station where name in (?, ?)"
+            },
+            {
+              "key": "db.sql.parameters",
+              "value": "[nanjing,shanghai]"
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470001",
+          "segmentId": "db6b2f34807c44d1b069b1ece5363276.113.17176411291170002",
+          "spanId": 3,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "ts-station-service",
+          "serviceInstanceName": "6c9e283d5a7c451599830a3e29c40b9f@172.22.0.42",
+          "startTime": 1717641129126,
+          "endTime": 1717641129126,
+          "endpointName": "HikariCP/Connection/close",
+          "type": "Local",
+          "peer": "",
+          "component": "HikariCP",
+          "isError": false,
+          "layer": "Unknown",
+          "tags": [],
+          "logs": []
+        },
+        {
+          "traceId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470001",
+          "segmentId": "2bc0b4bc692d4c91bc14008c6b4494f3.119.17176411290900002",
+          "spanId": 2,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "ts-basic-service",
+          "serviceInstanceName": "692e4d3ae2ef49748cd1a7cf6b2e2f07@172.22.0.79",
+          "startTime": 1717641129180,
+          "endTime": 1717641129272,
+          "endpointName": "/api/v1/trainservice/trains/byNames",
+          "type": "Exit",
+          "peer": "ts-train-service:80",
+          "component": "SpringRestTemplate",
+          "isError": false,
+          "layer": "Http",
+          "tags": [
+            {
+              "key": "url",
+              "value": "http://ts-train-service/api/v1/trainservice/trains/byNames"
+            },
+            {
+              "key": "http.method",
+              "value": "POST"
+            },
+            {
+              "key": "http.status_code",
+              "value": "200"
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470001",
+          "segmentId": "13fc634a646a47beb7848810505adfc4.121.17176411292610002",
+          "spanId": 0,
+          "parentSpanId": -1,
+          "refs": [
+            {
+              "traceId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470001",
+              "parentSegmentId": "2bc0b4bc692d4c91bc14008c6b4494f3.119.17176411290900002",
+              "parentSpanId": 2,
+              "type": "CROSS_PROCESS"
+            }
+          ],
+          "serviceCode": "ts-train-service",
+          "serviceInstanceName": "f6cf46a27665421688867f9496f5aef8@172.22.0.61",
+          "startTime": 1717641129261,
+          "endTime": 1717641129270,
+          "endpointName": "POST:/api/v1/trainservice/trains/byNames",
+          "type": "Entry",
+          "peer": "",
+          "component": "SpringMVC",
+          "isError": false,
+          "layer": "Http",
+          "tags": [
+            {
+              "key": "url",
+              "value": "http://172.22.0.61:14567/api/v1/trainservice/trains/byNames"
+            },
+            {
+              "key": "http.method",
+              "value": "POST"
+            },
+            {
+              "key": "http.param",
+              "value": "[\"DongCheOne\",\"GaoTieOne\",\"GaoTieTwo\"]"
+            },
+            {
+              "key": "http.response",
+              "value": "{\"status\":1,\"msg\":\"success\",\"data\":[{\"id\":\"075f849a-7034-4ddf-b32d-d1e7f504a06c\",\"name\":\"GaoTieOne\",\"economyClass\":2147483647,\"confortClass\":2147483647,\"averageSpeed\":250},{\"id\":\"30da74c4-0d09-47ba-a42e-4f907c4ec206\",\"name\":\"GaoTieTwo\",\"economyClass\":2147483647,\"confortClass\":2147483647,\"averageSpeed\":200},{\"id\":\"2a65489e-3590-49f5-9c85-39cbaded7709\",\"name\":\"DongCheOne\",\"economyClass\":2147483647,\"confortClass\":2147483647,\"averageSpeed\":180}]}"
+            },
+            {
+              "key": "http.status_code",
+              "value": "200"
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470001",
+          "segmentId": "13fc634a646a47beb7848810505adfc4.121.17176411292610002",
+          "spanId": 1,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "ts-train-service",
+          "serviceInstanceName": "f6cf46a27665421688867f9496f5aef8@172.22.0.61",
+          "startTime": 1717641129264,
+          "endTime": 1717641129266,
+          "endpointName": "HikariCP/Connection/getConnection",
+          "type": "Local",
+          "peer": "",
+          "component": "HikariCP",
+          "isError": false,
+          "layer": "Unknown",
+          "tags": [],
+          "logs": []
+        },
+        {
+          "traceId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470001",
+          "segmentId": "13fc634a646a47beb7848810505adfc4.121.17176411292610002",
+          "spanId": 2,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "ts-train-service",
+          "serviceInstanceName": "f6cf46a27665421688867f9496f5aef8@172.22.0.61",
+          "startTime": 1717641129266,
+          "endTime": 1717641129267,
+          "endpointName": "Mysql/JDBC/PreparedStatement/executeQuery",
+          "type": "Exit",
+          "peer": "ts-train-mysql:3306",
+          "component": "mysql-connector-java",
+          "isError": false,
+          "layer": "Database",
+          "tags": [
+            {
+              "key": "db.type",
+              "value": "Mysql"
+            },
+            {
+              "key": "db.instance",
+              "value": "ts"
+            },
+            {
+              "key": "db.statement",
+              "value": "SELECT * from train_type where name in (?, ?, ?)"
+            },
+            {
+              "key": "db.sql.parameters",
+              "value": "[DongCheOne,GaoTieOne,GaoTieTwo]"
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470001",
+          "segmentId": "13fc634a646a47beb7848810505adfc4.121.17176411292610002",
+          "spanId": 3,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "ts-train-service",
+          "serviceInstanceName": "f6cf46a27665421688867f9496f5aef8@172.22.0.61",
+          "startTime": 1717641129270,
+          "endTime": 1717641129270,
+          "endpointName": "HikariCP/Connection/close",
+          "type": "Local",
+          "peer": "",
+          "component": "HikariCP",
+          "isError": false,
+          "layer": "Unknown",
+          "tags": [],
+          "logs": []
+        },
+        {
+          "traceId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470001",
+          "segmentId": "2bc0b4bc692d4c91bc14008c6b4494f3.119.17176411290900002",
+          "spanId": 3,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "ts-basic-service",
+          "serviceInstanceName": "692e4d3ae2ef49748cd1a7cf6b2e2f07@172.22.0.79",
+          "startTime": 1717641129274,
+          "endTime": 1717641129297,
+          "endpointName": "/api/v1/routeservice/routes/byIds/",
+          "type": "Exit",
+          "peer": "ts-route-service:80",
+          "component": "SpringRestTemplate",
+          "isError": false,
+          "layer": "Http",
+          "tags": [
+            {
+              "key": "url",
+              "value": "http://ts-route-service/api/v1/routeservice/routes/byIds/"
+            },
+            {
+              "key": "http.method",
+              "value": "POST"
+            },
+            {
+              "key": "http.status_code",
+              "value": "200"
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470001",
+          "segmentId": "40708d980dbc424e9140c7a40ec39dd7.112.17176411292800004",
+          "spanId": 0,
+          "parentSpanId": -1,
+          "refs": [
+            {
+              "traceId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470001",
+              "parentSegmentId": "2bc0b4bc692d4c91bc14008c6b4494f3.119.17176411290900002",
+              "parentSpanId": 3,
+              "type": "CROSS_PROCESS"
+            }
+          ],
+          "serviceCode": "ts-route-service",
+          "serviceInstanceName": "9471553c8aaa437e832e91ab9da997d3@172.22.0.58",
+          "startTime": 1717641129280,
+          "endTime": 1717641129295,
+          "endpointName": "POST:/api/v1/routeservice/routes/byIds",
+          "type": "Entry",
+          "peer": "",
+          "component": "SpringMVC",
+          "isError": false,
+          "layer": "Http",
+          "tags": [
+            {
+              "key": "url",
+              "value": "http://172.22.0.58:11178/api/v1/routeservice/routes/byIds/"
+            },
+            {
+              "key": "http.method",
+              "value": "POST"
+            },
+            {
+              "key": "http.param",
+              "value": "[\"92708982-77af-4318-be25-57ccb0ff69ad\",\"aefcef3f-3f42-46e8-afd7-6cb2a928bd3d\",\"a3f256c1-0e43-4f7d-9c21-121bf258101f\",\"084837bb-53c8-4438-87c8-0321a4d09917\",\"f3d4d4ef-693b-4456-8eed-59c0d717dd08\"]"
+            },
+            {
+              "key": "http.response",
+              "value": "{\"status\":1,\"msg\":\"Success\",\"data\":[{\"id\":\"92708982-77af-4318-be25-57ccb0ff69ad\",\"stations\":[\"nanjing\",\"zhenjiang\",\"wuxi\",\"suzhou\",\"shanghai\"],\"distances\":[0,100,150,200,250],\"startStation\":\"nanjing\",\"endStation\":\"shanghai\"},{\"id\":\"aefcef3f-3f42-46e8-afd7-6cb2a928bd3d\",\"stations\":[\"nanjing\",\"shanghai\"],\"distances\":[0,250],\"startStation\":\"nanjing\",\"endStation\":\"shanghai\"},{\"id\":\"a3f256c1-0e43-4f7d-9c21-121bf258101f\",\"stations\":[\"nanjing\",\"suzhou\",\"shanghai\"],\"distances\":[0,200,250],\"startStation\":\"nanjing\",\"endStation\":\"shanghai\"},{\"id\":\"084837bb-53c8-4438-87c8-0321a4d09917\",\"stations\":[\"suzhou\",\"shanghai\"],\"distances\":[0,50],\"startStation\":\"suzhou\",\"endStation\":\"shanghai\"},{\"id\":\"f3d4d4ef-693b-4456-8eed-59c0d717dd08\",\"stations\":[\"shanghai\",\"suzhou\"],\"distances\":[0,50],\"startStation\":\"shanghai\",\"endStation\":\"suzhou\"}]}"
+            },
+            {
+              "key": "http.status_code",
+              "value": "200"
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470001",
+          "segmentId": "40708d980dbc424e9140c7a40ec39dd7.112.17176411292800004",
+          "spanId": 1,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "ts-route-service",
+          "serviceInstanceName": "9471553c8aaa437e832e91ab9da997d3@172.22.0.58",
+          "startTime": 1717641129283,
+          "endTime": 1717641129283,
+          "endpointName": "HikariCP/Connection/getConnection",
+          "type": "Local",
+          "peer": "",
+          "component": "HikariCP",
+          "isError": false,
+          "layer": "Unknown",
+          "tags": [],
+          "logs": []
+        },
+        {
+          "traceId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470001",
+          "segmentId": "40708d980dbc424e9140c7a40ec39dd7.112.17176411292800004",
+          "spanId": 2,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "ts-route-service",
+          "serviceInstanceName": "9471553c8aaa437e832e91ab9da997d3@172.22.0.58",
+          "startTime": 1717641129284,
+          "endTime": 1717641129284,
+          "endpointName": "Mysql/JDBC/PreparedStatement/executeQuery",
+          "type": "Exit",
+          "peer": "ts-route-mysql:3306",
+          "component": "mysql-connector-java",
+          "isError": false,
+          "layer": "Database",
+          "tags": [
+            {
+              "key": "db.type",
+              "value": "Mysql"
+            },
+            {
+              "key": "db.instance",
+              "value": "ts"
+            },
+            {
+              "key": "db.statement",
+              "value": "SELECT * from route where id in (?, ?, ?, ?, ?)"
+            },
+            {
+              "key": "db.sql.parameters",
+              "value": "[92708982-77af-4318-be25-57ccb0ff69ad,aefcef3f-3f42-46e8-afd7-6cb2a928bd3d,a3f256c1-0e43-4f7d-9c21-121bf258101f,084837bb-53c8-4438-87c8-0321a4d09917,f3d4d4ef-693b-4456-8eed-59c0d717dd08]"
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470001",
+          "segmentId": "40708d980dbc424e9140c7a40ec39dd7.112.17176411292800004",
+          "spanId": 3,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "ts-route-service",
+          "serviceInstanceName": "9471553c8aaa437e832e91ab9da997d3@172.22.0.58",
+          "startTime": 1717641129285,
+          "endTime": 1717641129286,
+          "endpointName": "Mysql/JDBC/PreparedStatement/executeQuery",
+          "type": "Exit",
+          "peer": "ts-route-mysql:3306",
+          "component": "mysql-connector-java",
+          "isError": false,
+          "layer": "Database",
+          "tags": [
+            {
+              "key": "db.type",
+              "value": "Mysql"
+            },
+            {
+              "key": "db.instance",
+              "value": "ts"
+            },
+            {
+              "key": "db.statement",
+              "value": "select stations0_.route_id as route_id1_2_0_, stations0_.stations as stations2_2_0_, stations0_.stations_order as stations3_0_ from route_stations stations0_ where stations0_.route_id=?"
+            },
+            {
+              "key": "db.sql.parameters",
+              "value": "[92708982-77af-4318-be25-57ccb0ff69ad]"
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470001",
+          "segmentId": "40708d980dbc424e9140c7a40ec39dd7.112.17176411292800004",
+          "spanId": 4,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "ts-route-service",
+          "serviceInstanceName": "9471553c8aaa437e832e91ab9da997d3@172.22.0.58",
+          "startTime": 1717641129286,
+          "endTime": 1717641129287,
+          "endpointName": "Mysql/JDBC/PreparedStatement/executeQuery",
+          "type": "Exit",
+          "peer": "ts-route-mysql:3306",
+          "component": "mysql-connector-java",
+          "isError": false,
+          "layer": "Database",
+          "tags": [
+            {
+              "key": "db.type",
+              "value": "Mysql"
+            },
+            {
+              "key": "db.instance",
+              "value": "ts"
+            },
+            {
+              "key": "db.statement",
+              "value": "select distances0_.route_id as route_id1_1_0_, distances0_.distances as distance2_1_0_, distances0_.distances_order as distance3_0_ from route_distances distances0_ where distances0_.route_id=?"
+            },
+            {
+              "key": "db.sql.parameters",
+              "value": "[92708982-77af-4318-be25-57ccb0ff69ad]"
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470001",
+          "segmentId": "40708d980dbc424e9140c7a40ec39dd7.112.17176411292800004",
+          "spanId": 5,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "ts-route-service",
+          "serviceInstanceName": "9471553c8aaa437e832e91ab9da997d3@172.22.0.58",
+          "startTime": 1717641129287,
+          "endTime": 1717641129287,
+          "endpointName": "Mysql/JDBC/PreparedStatement/executeQuery",
+          "type": "Exit",
+          "peer": "ts-route-mysql:3306",
+          "component": "mysql-connector-java",
+          "isError": false,
+          "layer": "Database",
+          "tags": [
+            {
+              "key": "db.type",
+              "value": "Mysql"
+            },
+            {
+              "key": "db.instance",
+              "value": "ts"
+            },
+            {
+              "key": "db.statement",
+              "value": "select stations0_.route_id as route_id1_2_0_, stations0_.stations as stations2_2_0_, stations0_.stations_order as stations3_0_ from route_stations stations0_ where stations0_.route_id=?"
+            },
+            {
+              "key": "db.sql.parameters",
+              "value": "[aefcef3f-3f42-46e8-afd7-6cb2a928bd3d]"
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470001",
+          "segmentId": "40708d980dbc424e9140c7a40ec39dd7.112.17176411292800004",
+          "spanId": 6,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "ts-route-service",
+          "serviceInstanceName": "9471553c8aaa437e832e91ab9da997d3@172.22.0.58",
+          "startTime": 1717641129288,
+          "endTime": 1717641129288,
+          "endpointName": "Mysql/JDBC/PreparedStatement/executeQuery",
+          "type": "Exit",
+          "peer": "ts-route-mysql:3306",
+          "component": "mysql-connector-java",
+          "isError": false,
+          "layer": "Database",
+          "tags": [
+            {
+              "key": "db.type",
+              "value": "Mysql"
+            },
+            {
+              "key": "db.instance",
+              "value": "ts"
+            },
+            {
+              "key": "db.statement",
+              "value": "select distances0_.route_id as route_id1_1_0_, distances0_.distances as distance2_1_0_, distances0_.distances_order as distance3_0_ from route_distances distances0_ where distances0_.route_id=?"
+            },
+            {
+              "key": "db.sql.parameters",
+              "value": "[aefcef3f-3f42-46e8-afd7-6cb2a928bd3d]"
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470001",
+          "segmentId": "40708d980dbc424e9140c7a40ec39dd7.112.17176411292800004",
+          "spanId": 7,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "ts-route-service",
+          "serviceInstanceName": "9471553c8aaa437e832e91ab9da997d3@172.22.0.58",
+          "startTime": 1717641129289,
+          "endTime": 1717641129290,
+          "endpointName": "Mysql/JDBC/PreparedStatement/executeQuery",
+          "type": "Exit",
+          "peer": "ts-route-mysql:3306",
+          "component": "mysql-connector-java",
+          "isError": false,
+          "layer": "Database",
+          "tags": [
+            {
+              "key": "db.type",
+              "value": "Mysql"
+            },
+            {
+              "key": "db.instance",
+              "value": "ts"
+            },
+            {
+              "key": "db.statement",
+              "value": "select stations0_.route_id as route_id1_2_0_, stations0_.stations as stations2_2_0_, stations0_.stations_order as stations3_0_ from route_stations stations0_ where stations0_.route_id=?"
+            },
+            {
+              "key": "db.sql.parameters",
+              "value": "[a3f256c1-0e43-4f7d-9c21-121bf258101f]"
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470001",
+          "segmentId": "40708d980dbc424e9140c7a40ec39dd7.112.17176411292800004",
+          "spanId": 8,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "ts-route-service",
+          "serviceInstanceName": "9471553c8aaa437e832e91ab9da997d3@172.22.0.58",
+          "startTime": 1717641129290,
+          "endTime": 1717641129291,
+          "endpointName": "Mysql/JDBC/PreparedStatement/executeQuery",
+          "type": "Exit",
+          "peer": "ts-route-mysql:3306",
+          "component": "mysql-connector-java",
+          "isError": false,
+          "layer": "Database",
+          "tags": [
+            {
+              "key": "db.type",
+              "value": "Mysql"
+            },
+            {
+              "key": "db.instance",
+              "value": "ts"
+            },
+            {
+              "key": "db.statement",
+              "value": "select distances0_.route_id as route_id1_1_0_, distances0_.distances as distance2_1_0_, distances0_.distances_order as distance3_0_ from route_distances distances0_ where distances0_.route_id=?"
+            },
+            {
+              "key": "db.sql.parameters",
+              "value": "[a3f256c1-0e43-4f7d-9c21-121bf258101f]"
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470001",
+          "segmentId": "40708d980dbc424e9140c7a40ec39dd7.112.17176411292800004",
+          "spanId": 9,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "ts-route-service",
+          "serviceInstanceName": "9471553c8aaa437e832e91ab9da997d3@172.22.0.58",
+          "startTime": 1717641129291,
+          "endTime": 1717641129291,
+          "endpointName": "Mysql/JDBC/PreparedStatement/executeQuery",
+          "type": "Exit",
+          "peer": "ts-route-mysql:3306",
+          "component": "mysql-connector-java",
+          "isError": false,
+          "layer": "Database",
+          "tags": [
+            {
+              "key": "db.type",
+              "value": "Mysql"
+            },
+            {
+              "key": "db.instance",
+              "value": "ts"
+            },
+            {
+              "key": "db.statement",
+              "value": "select stations0_.route_id as route_id1_2_0_, stations0_.stations as stations2_2_0_, stations0_.stations_order as stations3_0_ from route_stations stations0_ where stations0_.route_id=?"
+            },
+            {
+              "key": "db.sql.parameters",
+              "value": "[084837bb-53c8-4438-87c8-0321a4d09917]"
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470001",
+          "segmentId": "40708d980dbc424e9140c7a40ec39dd7.112.17176411292800004",
+          "spanId": 10,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "ts-route-service",
+          "serviceInstanceName": "9471553c8aaa437e832e91ab9da997d3@172.22.0.58",
+          "startTime": 1717641129292,
+          "endTime": 1717641129292,
+          "endpointName": "Mysql/JDBC/PreparedStatement/executeQuery",
+          "type": "Exit",
+          "peer": "ts-route-mysql:3306",
+          "component": "mysql-connector-java",
+          "isError": false,
+          "layer": "Database",
+          "tags": [
+            {
+              "key": "db.type",
+              "value": "Mysql"
+            },
+            {
+              "key": "db.instance",
+              "value": "ts"
+            },
+            {
+              "key": "db.statement",
+              "value": "select distances0_.route_id as route_id1_1_0_, distances0_.distances as distance2_1_0_, distances0_.distances_order as distance3_0_ from route_distances distances0_ where distances0_.route_id=?"
+            },
+            {
+              "key": "db.sql.parameters",
+              "value": "[084837bb-53c8-4438-87c8-0321a4d09917]"
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470001",
+          "segmentId": "40708d980dbc424e9140c7a40ec39dd7.112.17176411292800004",
+          "spanId": 11,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "ts-route-service",
+          "serviceInstanceName": "9471553c8aaa437e832e91ab9da997d3@172.22.0.58",
+          "startTime": 1717641129293,
+          "endTime": 1717641129293,
+          "endpointName": "Mysql/JDBC/PreparedStatement/executeQuery",
+          "type": "Exit",
+          "peer": "ts-route-mysql:3306",
+          "component": "mysql-connector-java",
+          "isError": false,
+          "layer": "Database",
+          "tags": [
+            {
+              "key": "db.type",
+              "value": "Mysql"
+            },
+            {
+              "key": "db.instance",
+              "value": "ts"
+            },
+            {
+              "key": "db.statement",
+              "value": "select stations0_.route_id as route_id1_2_0_, stations0_.stations as stations2_2_0_, stations0_.stations_order as stations3_0_ from route_stations stations0_ where stations0_.route_id=?"
+            },
+            {
+              "key": "db.sql.parameters",
+              "value": "[f3d4d4ef-693b-4456-8eed-59c0d717dd08]"
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470001",
+          "segmentId": "40708d980dbc424e9140c7a40ec39dd7.112.17176411292800004",
+          "spanId": 12,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "ts-route-service",
+          "serviceInstanceName": "9471553c8aaa437e832e91ab9da997d3@172.22.0.58",
+          "startTime": 1717641129293,
+          "endTime": 1717641129294,
+          "endpointName": "Mysql/JDBC/PreparedStatement/executeQuery",
+          "type": "Exit",
+          "peer": "ts-route-mysql:3306",
+          "component": "mysql-connector-java",
+          "isError": false,
+          "layer": "Database",
+          "tags": [
+            {
+              "key": "db.type",
+              "value": "Mysql"
+            },
+            {
+              "key": "db.instance",
+              "value": "ts"
+            },
+            {
+              "key": "db.statement",
+              "value": "select distances0_.route_id as route_id1_1_0_, distances0_.distances as distance2_1_0_, distances0_.distances_order as distance3_0_ from route_distances distances0_ where distances0_.route_id=?"
+            },
+            {
+              "key": "db.sql.parameters",
+              "value": "[f3d4d4ef-693b-4456-8eed-59c0d717dd08]"
+            }
+          ],
+          "logs": []
+        },
+        {
+          "traceId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470001",
+          "segmentId": "40708d980dbc424e9140c7a40ec39dd7.112.17176411292800004",
+          "spanId": 13,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "ts-route-service",
+          "serviceInstanceName": "9471553c8aaa437e832e91ab9da997d3@172.22.0.58",
+          "startTime": 1717641129295,
+          "endTime": 1717641129295,
+          "endpointName": "HikariCP/Connection/close",
+          "type": "Local",
+          "peer": "",
+          "component": "HikariCP",
+          "isError": false,
+          "layer": "Unknown",
+          "tags": [],
+          "logs": []
+        },
+        {
+          "traceId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470001",
+          "segmentId": "2d96af7e291d430c9d0f838cdafae93d.113.17176411290470000",
+          "spanId": 5,
+          "parentSpanId": 0,
+          "refs": [],
+          "serviceCode": "ts-travel-service",
+          "serviceInstanceName": "afa58a9c7bb947c28ed2639c6036a74b@172.22.0.56",
+          "startTime": 1717641129304,
+          "endTime": 1717641129304,
+          "endpointName": "HikariCP/Connection/close",
+          "type": "Local",
+          "peer": "",
+          "component": "HikariCP",
+          "isError": false,
+          "layer": "Unknown",
+          "tags": [],
+          "logs": []
+        }
+      ]
+    }
+  }
+}

@@ -95,7 +95,25 @@ def backup_database(container_name, backup_dir, db_host=DB_HOST, db_user=DB_USER
     with open(log_file, "a") as log:
         log.write(f"[{datetime.datetime.now()}] 备份过程结束\n")
 
+def find_containers(search_string):
+    client = docker.from_env()
+
+    # 获取所有正在运行的容器
+    containers = client.containers.list()
+
+    # 过滤容器名包含指定字符串的容器
+    matching_containers = [container.name for container in containers if search_string in container.name]
+
+    return matching_containers
+
 if __name__ == "__main__":
-    container_name = "ts-order-other-mysql"
-    backup_database(container_name, "./replay_backup")
-    restore_database(container_name, "./replay_backup")
+    # 查找容器名中包含指定字符串的容器
+    containers = find_containers("mysql")
+
+    # 备份所有MySQL数据库
+    for container_name in containers:
+        backup_database(container_name, "./replay_backup")
+        
+    # container_name = "ts-order-other-mysql"
+    # backup_database(container_name, "./replay_backup")
+    # restore_database(container_name, "./replay_backup")

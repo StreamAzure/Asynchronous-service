@@ -1,0 +1,40 @@
+{
+  "data": {
+    "trace": {
+      "spans": [
+        {
+          "traceId": "c32c5d8887864e67ae78f09ac3b5b1a6.99.17176727176170037",
+          "segmentId": "c32c5d8887864e67ae78f09ac3b5b1a6.99.17176727176170036",
+          "spanId": 0,
+          "parentSpanId": -1,
+          "refs": [],
+          "serviceCode": "ts-gateway-service",
+          "serviceInstanceName": "77e0ac5e55fd4947a38406bc6635cebd@172.22.0.61",
+          "startTime": 1717672717617,
+          "endTime": 1717672717619,
+          "endpointName": "POST:/api/v1/users/login",
+          "type": "Entry",
+          "peer": "",
+          "component": "Tomcat",
+          "isError": false,
+          "layer": "Http",
+          "tags": [
+            {
+              "key": "url",
+              "value": "http://ts-gateway-service:18888/api/v1/users/login"
+            },
+            {
+              "key": "http.method",
+              "value": "POST"
+            },
+            {
+              "key": "http.status_code",
+              "value": "200"
+            }
+          ],
+          "logs": []
+        }
+      ]
+    }
+  }
+}

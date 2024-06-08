@@ -1,0 +1,40 @@
+{
+  "data": {
+    "trace": {
+      "spans": [
+        {
+          "traceId": "0158a267cbb442d2ab09f8cae65b4125.107.17178113769190011",
+          "segmentId": "0158a267cbb442d2ab09f8cae65b4125.107.17178113769190010",
+          "spanId": 0,
+          "parentSpanId": -1,
+          "refs": [],
+          "serviceCode": "ts-gateway-service",
+          "serviceInstanceName": "aa30c4dac0354c3286e5a26894a7d7ca@172.22.0.58",
+          "startTime": 1717811376919,
+          "endTime": 1717811376922,
+          "endpointName": "GET:/api/v1/assuranceservice/assurances/types",
+          "type": "Entry",
+          "peer": "",
+          "component": "Tomcat",
+          "isError": false,
+          "layer": "Http",
+          "tags": [
+            {
+              "key": "url",
+              "value": "http://ts-gateway-service:18888/api/v1/assuranceservice/assurances/types"
+            },
+            {
+              "key": "http.method",
+              "value": "GET"
+            },
+            {
+              "key": "http.status_code",
+              "value": "200"
+            }
+          ],
+          "logs": []
+        }
+      ]
+    }
+  }
+}

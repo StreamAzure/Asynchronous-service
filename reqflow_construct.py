@@ -118,7 +118,10 @@ def construct_flow(segments, segment_tree):
                 elif span.layer == 'Database':
                     if entrySpan_unique_id is None:
                         raise Exception(f"entrySpan_unique_id is None")
-                    req_data_map[entrySpan_unique_id].append(DataSpan(span))
+                    if "PreparedStatement" in span.endpointName:
+                        req_data_map[entrySpan_unique_id].append(DataSpan(span))
+                    else:
+                        print(f"skip data span {span.endpointName}")
 
     def _get_req_data_map(flow, req_data_map):
         """

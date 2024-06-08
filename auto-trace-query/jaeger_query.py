@@ -73,8 +73,8 @@ def query_trace_list(url):
 def main():
     services = query_services()
     services.remove("jaeger-all-in-one")
-    start = "2024-05-19 12:20:00"
-    end =  "2024-05-19 12:40:00"
+    start = "2024-06-08 07:30:00"
+    end =  "2024-06-08 07:33:00"
     print(services)
 
     trace_visited = []
@@ -89,8 +89,10 @@ def main():
         # pattern = re.compile(r'redis|mongo')
         # matched_items = [item for item in operations if pattern.search(item)]
 
-        url = get_query_url('/api/traces?', start, end, service)
+        url = get_query_url('api/traces?', start, end, service)
+        # print(url)
         trace_data = query_trace_list(url)
+        # print("trace_data: ", len(trace_data))
         for trace in trace_data:
             traceID = trace["traceID"]
             if traceID in trace_visited:

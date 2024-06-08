@@ -28,6 +28,26 @@ def print_flow_by_id(origin_flows, flow_id):
     print_green(flow)
     print_red(f"[DB info] {flow.db_infos}")
     print()
+
+def print_replay_pairs(replay_pairs, flows):
+    for index, pair in replay_pairs.items():
+        req1, req2 = pair[0], pair[1]
+        flow_id1, flow_id2 = req1['flow_id'], req2['flow_id']
+
+        origin1 = flows[flow_id1].get_original_requestSpan()
+        origin2 = flows[flow_id2].get_original_requestSpan()
+
+        print_blue(f"[FlowID: {flow_id1}] [FlowSpanID: {req1['flow_span_id']}] ")
+        print(f"[{req1['http_method']} {req1['http_url']}")
+        print_green(f"[origin user request] {origin1.span.tags['http.method']} {origin1.span.tags['url']}")
+        print_red(f"[DB Info] {flows[flow_id1].db_infos}")
+
+        print_blue(f"[FlowID: {flow_id2}] [FlowSpanID: {req2['flow_span_id']}] ")
+        print(f"[{req2['http_method']} {req2['http_url']}")
+        print_green(f"[origin user request] {origin2.span.tags['http.method']} {origin2.span.tags['url']}")
+        print_red(f"[DB Info] {flows[flow_id2].db_infos}")
+        
+        print()
     
 def print_candidate_pairs(candidate_pairs, flows):
     for reqPair, dataSpanPairs in candidate_pairs.items():
@@ -92,7 +112,7 @@ def create_http_req(reqSpan):
         "http_response": http_response
     }
 
-def origin_output(res:dict, output_dir):
+def origin_output(flows, res:dict, output_dir):
     try:
         os.makedirs(output_dir, exist_ok=True)
     except OSError as error:
@@ -103,6 +123,9 @@ def origin_output(res:dict, output_dir):
         res_json = {}
         for i, reqPair in enumerate(pair_list):
             res_json[i] = [
+                {
+                  "databases": list(set(flows[reqPair[0].flowID].db_infos + flows[reqPair[1].flowID].db_infos))
+                },
                 create_http_req(reqPair[0]),
                 create_http_req(reqPair[1])
             ]

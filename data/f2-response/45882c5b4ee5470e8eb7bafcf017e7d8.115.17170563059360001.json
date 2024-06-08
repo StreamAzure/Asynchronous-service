@@ -1,0 +1,40 @@
+{
+  "data": {
+    "trace": {
+      "spans": [
+        {
+          "traceId": "45882c5b4ee5470e8eb7bafcf017e7d8.115.17170563059360001",
+          "segmentId": "45882c5b4ee5470e8eb7bafcf017e7d8.115.17170563059360000",
+          "spanId": 0,
+          "parentSpanId": -1,
+          "refs": [],
+          "serviceCode": "ts-gateway-service",
+          "serviceInstanceName": "e307be7950444cccba7ae71153d648e5@172.24.0.56",
+          "startTime": 1717056305936,
+          "endTime": 1717056305939,
+          "endpointName": "POST:/api/v1/travelservice/trips/left",
+          "type": "Entry",
+          "peer": "",
+          "component": "Tomcat",
+          "isError": false,
+          "layer": "Http",
+          "tags": [
+            {
+              "key": "url",
+              "value": "http://ts-gateway-service:18888/api/v1/travelservice/trips/left"
+            },
+            {
+              "key": "http.method",
+              "value": "POST"
+            },
+            {
+              "key": "http.status_code",
+              "value": "200"
+            }
+          ],
+          "logs": []
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,32 @@
+[FlowID: 0] [Lenth: 1] [GET] http://172.22.0.74:15678/api/v1/verifycode/generate
+[DB info] []
+
+[FlowID: 1] [Lenth: 2] [POST] http://172.22.0.40:12340/api/v1/users/login -> [GET] http://ts-verification-code-service/api/v1/verifycode/verify/1234
+[DB info] ['ts-auth-mysql:3306:ts']
+
+[FlowID: 2] [Lenth: 1] [GET] http://172.22.0.48:18890/api/v1/assuranceservice/assurances/types
+[DB info] []
+
+[FlowID: 3] [Lenth: 5] [GET] http://172.22.0.65:18856/api/v1/foodservice/foods/2021-07-14/Shang%20Hai/Su%20Zhou/D1345 -> [GET] http://ts-train-food-service/api/v1/trainfoodservice/trainfoods/D1345 -> [GET] http://ts-travel-service/api/v1/travelservice/routes/D1345 -> [GET] http://ts-route-service/api/v1/routeservice/routes/f3d4d4ef-693b-4456-8eed-59c0d717dd08 -> [POST] http://ts-station-food-service/api/v1/stationfoodservice/stationfoodstores
+[DB info] ['ts-food-mysql:3306:ts', 'ts-travel-mysql:3306:ts', 'ts-train-food-mysql:3306:ts', 'ts-route-mysql:3306:ts']
+
+[FlowID: 4] [Lenth: 1] [GET] http://172.22.0.47:12347/api/v1/contactservice/contacts/account/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f
+[DB info] ['ts-contacts-mysql:3306:ts']
+
+[FlowID: 5] [Lenth: 5] [POST] http://172.22.0.56:12346/api/v1/travelservice/trips/left -> [POST] http://ts-basic-service/api/v1/basicservice/basic/travels -> [POST] http://ts-station-service/api/v1/stationservice/stations/idlist -> [POST] http://ts-train-service/api/v1/trainservice/trains/byNames -> [POST] http://ts-route-service/api/v1/routeservice/routes/byIds/
+[DB info] ['ts-station-mysql:3306:ts', 'ts-travel-mysql:3306:ts', 'ts-train-mysql:3306:ts', 'ts-route-mysql:3306:ts']
+
+[FlowID: 6] [Lenth: 29] [POST] http://172.22.0.77:14569/api/v1/preserveotherservice/preserveOther -> [GET] http://ts-security-service/api/v1/securityservice/securityConfigs/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f -> [GET] http://ts-order-service/api/v1/orderservice/order/security/Thu Jun 06 10:32:09 CST 2024/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f -> [GET] http://ts-order-other-service/api/v1/orderOtherService/orderOther/security/Thu Jun 06 10:32:09 CST 2024/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f -> [GET] http://ts-contacts-service/api/v1/contactservice/contacts/de680eeb-4ad0-4a70-9120-422c3195a232 -> [POST] http://ts-travel2-service/api/v1/travel2service/trip_detail -> [POST] http://ts-basic-service/api/v1/basicservice/basic/travel -> [GET] http://ts-station-service/api/v1/stationservice/stations/id/shanghai -> [GET] http://ts-station-service/api/v1/stationservice/stations/id/nanjing -> [GET] http://ts-train-service/api/v1/trainservice/trains/byName/ZhiDa -> [GET] http://ts-route-service/api/v1/routeservice/routes/0b23bd3e-876a-4af3-b920-c50a90c90b04 -> [GET] http://ts-price-service/api/v1/priceservice/prices/0b23bd3e-876a-4af3-b920-c50a90c90b04/ZhiDa -> [POST] http://ts-seat-service/api/v1/seatservice/seats/left_tickets -> [POST] http://ts-order-other-service/api/v1/orderOtherService/orderOther/tickets -> [GET] http://ts-config-service/api/v1/configservice/configs/DirectTicketAllocationProportion -> [POST] http://ts-seat-service/api/v1/seatservice/seats/left_tickets -> [POST] http://ts-order-other-service/api/v1/orderOtherService/orderOther/tickets -> [GET] http://ts-config-service/api/v1/configservice/configs/DirectTicketAllocationProportion -> [POST] http://ts-basic-service/api/v1/basicservice/basic/travel -> [GET] http://ts-station-service/api/v1/stationservice/stations/id/shanghai -> [GET] http://ts-station-service/api/v1/stationservice/stations/id/nanjing -> [GET] http://ts-train-service/api/v1/trainservice/trains/byName/ZhiDa -> [GET] http://ts-route-service/api/v1/routeservice/routes/0b23bd3e-876a-4af3-b920-c50a90c90b04 -> [GET] http://ts-price-service/api/v1/priceservice/prices/0b23bd3e-876a-4af3-b920-c50a90c90b04/ZhiDa -> [POST] http://ts-seat-service/api/v1/seatservice/seats -> [POST] http://ts-order-other-service/api/v1/orderOtherService/orderOther/tickets -> [POST] http://ts-order-other-service/api/v1/orderOtherService/orderOther -> [POST] http://ts-food-service/api/v1/foodservice/orders -> [GET] http://ts-user-service/api/v1/userservice/users/id/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f
+[DB info] ['ts-contacts-mysql:3306:ts', 'ts-order-other-mysql:3306:ts', 'ts-config-mysql:3306:ts', 'ts-order-mysql:3306:ts', 'ts-station-mysql:3306:ts', 'ts-travel2-mysql:3306:ts', 'ts-security-mysql:3306:ts', 'ts-route-mysql:3306:ts', 'ts-price-mysql:3306:ts', 'ts-user-mysql:3306:ts', 'ts-food-mysql:3306:ts', 'ts-train-mysql:3306:ts']
+
+[FlowID: 7] [Lenth: 1] [GET] http://172.22.0.81:12032/api/v1/orderOtherService/orderOther/e6aa5a4a-ff99-4cd0-9d30-82c25dab7b53
+[DB info] ['ts-order-other-mysql:3306:ts']
+
+[FlowID: 8] [Lenth: 1] [GET] http://172.22.0.76:12033/api/v1/orderOtherService2/orderOther/e6aa5a4a-ff99-4cd0-9d30-82c25dab7b53
+[DB info] ['ts-order-other-mysql-slave:3306:ts']
+
+[FlowID: 9] [Lenth: 5] [GET] http://172.22.0.46:18885/api/v1/cancelservice/cancel/e6aa5a4a-ff99-4cd0-9d30-82c25dab7b53/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f -> [GET] http://ts-order-service/api/v1/orderservice/order/e6aa5a4a-ff99-4cd0-9d30-82c25dab7b53 -> [GET] http://ts-order-other-service/api/v1/orderOtherService/orderOther/e6aa5a4a-ff99-4cd0-9d30-82c25dab7b53 -> [PUT] http://ts-order-other-service/api/v1/orderOtherService/orderOther -> [GET] http://ts-inside-payment-service/api/v1/inside_pay_service/inside_payment/drawback/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f/98.00
+[DB info] ['ts-order-mysql:3306:ts', 'ts-order-other-mysql:3306:ts', 'ts-inside-payment-mysql:3306:ts']
+
+[FlowID: 10] [Lenth: 4] [POST] http://172.22.0.64:18673/api/v1/inside_pay_service/inside_payment -> [GET] http://ts-order-other-service/api/v1/orderOtherService/orderOther/e6aa5a4a-ff99-4cd0-9d30-82c25dab7b53 -> [POST] http://ts-payment-service/api/v1/paymentservice/payment -> [GET] http://ts-order-other-service/api/v1/orderOtherService/orderOther/status/e6aa5a4a-ff99-4cd0-9d30-82c25dab7b53/1
+[DB info] ['ts-payment-mysql:3306:ts', 'ts-order-other-mysql:3306:ts', 'ts-inside-payment-mysql:3306:ts']
