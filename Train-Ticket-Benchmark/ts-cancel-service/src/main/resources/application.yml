@@ -1,0 +1,13 @@
+server:
+  port: 18885  # HTTP (Tomcat) port
+
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_ADDRS:nacos:8848}
+  application:
+    name: ts-cancel-service
+
+swagger:
+  controllerPackage: cancel.controller

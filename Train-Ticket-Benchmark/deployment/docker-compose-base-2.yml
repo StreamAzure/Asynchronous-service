@@ -1,0 +1,421 @@
+version: '3'
+services:
+
+  ts-auth-service:
+    image: microracer/ts-auth-service:base
+
+    ports:
+      - 12340:12340
+    networks:
+      - train-ticket
+
+  ts-user-service:
+    image: microracer/ts-user-service:base
+
+    ports:
+      - 12342:12342
+    networks:
+      - train-ticket
+
+  ts-verification-code-service:
+    image: microracer/ts-verification-code-service:base
+
+    ports:
+      - 15678:15678
+    networks:
+      - train-ticket
+
+
+#  ts-account-mongo:
+#    image: mongo
+#    networks:
+#      - train-ticket
+
+  ts-route-service:
+    image: microracer/ts-route-service:base
+
+    ports:
+         - 11178:11178
+    networks:
+      - train-ticket
+
+  ts-contacts-service:
+    image: microracer/ts-contacts-service:base
+
+    ports:
+      - 12347:12347
+    networks:
+      - train-ticket
+
+  ts-order-service:
+    image: microracer/ts-order-service:base
+
+    ports:
+      - 12031:12031
+    networks:
+      - train-ticket
+
+
+
+  ts-order-other-service:
+    image: microracer/ts-order-other-service:base
+
+    ports:
+      - 12032:12032
+    networks:
+      - train-ticket
+
+
+  ts-config-service:
+    image: microracer/ts-config-service:base
+
+    ports:
+      - 15679:15679
+    networks:
+      - train-ticket
+
+
+  ts-station-service:
+    image: microracer/ts-station-service:base
+
+    ports:
+      - 12345:12345
+    networks:
+      - train-ticket
+
+
+  ts-train-service:
+    image: microracer/ts-train-service:base
+
+    ports:
+      - 14567:14567
+    networks:
+      - train-ticket
+
+
+  ts-travel-service:
+    image: microracer/ts-travel-service:base
+
+    ports:
+      - 12346:12346
+    networks:
+      - train-ticket
+
+
+  ts-travel2-service:
+    image: microracer/ts-travel2-service:base
+
+    ports:
+      - 16346:16346
+    networks:
+      - train-ticket
+
+
+  ts-preserve-service:
+    image: microracer/ts-preserve-service:base
+
+    ports:
+      - 14568:14568
+    networks:
+      - train-ticket
+
+  ts-preserve-other-service:
+    image: microracer/ts-preserve-other-service:base
+
+    ports:
+      - 14569:14569
+    networks:
+      - train-ticket
+
+
+  ts-basic-service:
+    image: microracer/ts-basic-service:base
+    ports:
+      - 15680:15680
+    networks:
+        - train-ticket
+
+#  ts-ticketinfo-service:
+#        image: microracer/ts-ticketinfo-service:base
+#        
+#        ports:
+#          - 15681:15681
+#        networks:
+#          - train-ticket
+
+  ts-price-service:
+    image: microracer/ts-price-service:base
+
+    ports:
+      - 16579:16579
+    networks:
+      - train-ticket
+
+  ts-notification-service:
+    image: microracer/ts-notification-service:base
+
+    ports:
+      - 17853:17853
+    networks:
+      - train-ticket
+
+  ts-security-service:
+    image: microracer/ts-security-service:base
+
+    ports:
+      - 11188:11188
+    networks:
+      - train-ticket
+
+
+  ts-inside-payment-service:
+    image: microracer/ts-inside-payment-service:base
+
+    ports:
+      - 18673:18673
+    networks:
+      - train-ticket
+
+  ts-execute-service:
+    image: microracer/ts-execute-service:base
+
+    ports:
+      - 12386:12386
+    networks:
+      - train-ticket
+
+  ts-payment-service:
+    image: microracer/ts-payment-service:base
+
+    ports:
+      - 19001:19001
+    networks:
+      - train-ticket
+
+  ts-rebook-service:
+    image: microracer/ts-rebook-service:base
+
+    ports:
+      - 18886:18886
+    networks:
+      - train-ticket
+
+  ts-cancel-service:
+    image: microracer/ts-cancel-service:base
+
+    ports:
+      - 18885:18885
+    networks:
+      - train-ticket
+
+  ts-assurance-service:
+    image: microracer/ts-assurance-service:base
+
+    ports:
+      - 18890:18890
+    networks:
+      - train-ticket
+
+  ts-seat-service:
+    image: microracer/ts-seat-service:base
+
+    ports:
+      - 18898:18898
+    networks:
+      - train-ticket
+
+  ts-travel-plan-service:
+    image: microracer/ts-travel-plan-service:base
+
+    ports:
+      - 14322:14322
+    networks:
+      - train-ticket
+
+#  ts-ticket-office-service:
+#        image: microracer/ts-ticket-office-service:base
+#        
+#        ports:
+#          - 16108:16108
+#        networks:
+#          - train-ticket
+#
+#  ts-ticket-office-mongo:
+#          image: mongo
+#          networks:
+#            - train-ticket
+
+  ts-news-service:
+    image: microracer/ts-news-service:base
+
+    ports:
+      - 12862:12862
+    networks:
+      - train-ticket
+
+  ts-voucher-service:
+    image: microracer/ts-voucher-service:base
+    ports:
+      - 16101:16101
+    networks:
+      - train-ticket
+
+#  ts-food-map-service:
+#        image: microracer/ts-food-map-service:base
+#        
+#        ports:
+#          - 18855:18855
+#        networks:
+#          - train-ticket
+#
+#  ts-food-map-mongo:
+#          image: mongo
+#          networks:
+#            - train-ticket
+
+  ts-route-plan-service:
+    image: microracer/ts-route-plan-service:base
+
+    ports:
+      - 14578:14578
+    networks:
+      - train-ticket
+
+  ts-food-service:
+    image: microracer/ts-food-service:base
+
+    ports:
+      - 18856:18856
+    networks:
+      - train-ticket
+
+  ts-consign-service:
+    image: microracer/ts-consign-service:base
+
+    ports:
+      - 16111:16111
+    networks:
+      - train-ticket
+
+  ts-consign-price-service:
+    image: microracer/ts-consign-price-service:base
+
+    ports:
+      - 16110:16110
+    networks:
+      - train-ticket
+
+  ts-admin-basic-info-service:
+    image: microracer/ts-admin-basic-info-service:base
+
+    ports:
+      - 18767:18767
+    networks:
+      - train-ticket
+
+  ts-admin-order-service:
+    image: microracer/ts-admin-order-service:base
+
+    ports:
+      - 16112:16112
+    networks:
+      - train-ticket
+
+  ts-admin-route-service:
+    image: microracer/ts-admin-route-service:base
+
+    ports:
+      - 16113:16113
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    networks:
+      - train-ticket
+
+  ts-admin-travel-service:
+    image: microracer/ts-admin-travel-service:base
+
+    ports:
+      - 16114:16114
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    networks:
+      - train-ticket
+
+  ts-admin-user-service:
+    image: microracer/ts-admin-user-service:base
+
+    ports:
+      - 16115:16115
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    networks:
+      - train-ticket
+
+  ts-avatar-service:
+    image: microracer/ts-avatar-service:base
+
+    ports:
+      - 17001:17001
+    networks:
+      - train-ticket
+
+  ts-delivery-service:
+    image: microracer/ts-delivery-service:base
+
+    ports:
+      - 18807:18807
+    networks:
+      - train-ticket
+
+  ts-food-delivery-service:
+    image: microracer/ts-food-delivery-service:base
+
+    ports:
+      - 18957:18957
+    networks:
+      - train-ticket
+
+  ts-gateway-service:
+    image: microracer/ts-gateway-service:base
+
+    ports:
+      - 18888:18888
+    networks:
+      - train-ticket
+
+  ts-station-food-service:
+    image: microracer/ts-station-food-service:base
+
+    ports:
+      - 18855:18855
+    networks:
+      - train-ticket
+
+  ts-train-food-service:
+    image: microracer/ts-train-food-service:base
+
+    ports:
+      - 19999:19999
+    networks:
+      - train-ticket
+
+  ts-wait-order-service:
+    image: microracer/ts-wait-order-service:base
+
+    ports:
+      - 17525:17525
+    networks:
+      - train-ticket
+
+networks:
+    train-ticket:
+      # driver: overlay
+      driver: bridge
+
+

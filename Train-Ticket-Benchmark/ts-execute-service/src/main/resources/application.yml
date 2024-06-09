@@ -1,0 +1,12 @@
+server:
+  port: 12386
+
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_ADDRS:nacos:8848}
+  application:
+    name: ts-execute-service
+swagger:
+  controllerPackage: execute.controller

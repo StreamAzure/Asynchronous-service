@@ -1,0 +1,15 @@
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_ADDRS:nacos:8848}
+  application:
+    name: ts-route-plan-service
+
+# HTTP Server
+server:
+  port: 14578 # HTTP (Tomcat) port
+
+
+swagger:
+  controllerPackage: plan.controller

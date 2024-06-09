@@ -1,0 +1,13 @@
+version: '3'
+services:
+  ts-ui-dashboard:
+    image: microracer/ts-ui-dashboard:base
+    ports:
+      - 8080:8080
+    networks:
+      - train-ticket
+
+networks:
+    train-ticket:
+      # driver: overlay
+      driver: bridge
