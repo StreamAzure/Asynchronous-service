@@ -66,4 +66,4 @@ This repository provides the trace files collected from TrainTicket (in five ver
         The system will read from a JSON file containing the pairs of requests to be tested. It will send requests to the specified services, perform database backups and restorations in between, and log the responses and service logs for comparison.
 
 5. Output
-- The testing results, including logs and any detected inconsistencies, will be saved in the specified `backup_dir` and `response_log_path`.
+    - The testing results, including logs and any detected inconsistencies, will be saved in the specified `backup_dir` and `response_log_path`.
