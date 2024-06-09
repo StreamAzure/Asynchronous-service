@@ -45,7 +45,7 @@ This repository provides the trace files collected from TrainTicket (in five ver
     - Configure the paths and other variables in `interleaving_testing.py`:
 
         ```python
-        json_file_path = "candidatePairs文件路径"
+        json_file_path = "path_to_candidatePairs_file"
         backup_dir = "path_to_backup_directory"
         restore_dir = "path_to_restore_directory"
         ```
