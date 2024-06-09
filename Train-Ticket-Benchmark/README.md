@@ -25,6 +25,9 @@ The project is a train ticket booking system based on microservice architecture 
 
 ## Running
 ### Source Code Compilation & Image Building
+
+Run `. batch_copy_file.sh`
+
 Run the build script:
 
 ```shell
