@@ -3,61 +3,10 @@
         {
             "databases": [
                 "ts-inside-payment-mysql:3306:ts",
-                "ts-order-mysql:3306:ts",
+                "ts-order-other-mysql:3306:ts",
                 "ts-payment-mysql:3306:ts",
-                "ts-order-other-mysql:3306:ts"
+                "ts-order-mysql:3306:ts"
             ]
-        },
-        {
-            "flow_id": 10,
-            "flow_span_id": 3,
-            "sqls": [
-                "select order0_.id as id1_0_0_, order0_.account_id as account_2_0_0_, order0_.bought_date as bought_d3_0_0_, order0_.coach_number as coach_nu4_0_0_, order0_.contacts_document_number as contacts5_0_0_, order0_.contacts_name as contacts6_0_0_, order0_.document_type as document7_0_0_, order0_.from_station as from_sta8_0_0_, order0_.price as price9_0_0_, order0_.seat_class as seat_cl10_0_0_, order0_.seat_number as seat_nu11_0_0_, order0_.status as status12_0_0_, order0_.to_station as to_stat13_0_0_, order0_.train_number as train_n14_0_0_, order0_.travel_date as travel_15_0_0_, order0_.travel_time as travel_16_0_0_ from orders_other order0_ where order0_.id=a7e15b90-2481-401e-ab59-baf13a9dfd56",
-                "update orders_other set account_id=4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f, bought_date=2024-05-29 09:40:36, coach_number=5, contacts_document_number=DocumentNumber_One, contacts_name=Contacts_One, document_type=1, from_station=shanghai, price=122.49999999999999, seat_class=3, seat_number=1716003704, status=4, to_station=nanjing, train_number=Z1234, travel_date=2024-05-29, travel_time=2013-05-04 09:51:52 where id=a7e15b90-2481-401e-ab59-baf13a9dfd56"
-            ],
-            "http_method": "PUT",
-            "http_url": "http://ts-order-other-service:12032/api/v1/orderOtherService/orderOther",
-            "http_body": {
-                "id": "a7e15b90-2481-401e-ab59-baf13a9dfd56",
-                "boughtDate": "2024-05-29 09:40:36",
-                "travelDate": "2024-05-29",
-                "travelTime": "2013-05-04 09:51:52",
-                "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
-                "contactsName": "Contacts_One",
-                "documentType": 1,
-                "contactsDocumentNumber": "DocumentNumber_One",
-                "trainNumber": "Z1234",
-                "coachNumber": 5,
-                "seatClass": 3,
-                "seatNumber": "1716003704",
-                "from": "shanghai",
-                "to": "nanjing",
-                "status": 4,
-                "price": "122.49999999999999"
-            },
-            "http_status_code": "200",
-            "http_response": {
-                "status": 1,
-                "msg": "Success",
-                "data": {
-                    "id": "a7e15b90-2481-401e-ab59-baf13a9dfd56",
-                    "boughtDate": "2024-05-29 09:40:36",
-                    "travelDate": "2024-05-29",
-                    "travelTime": "2013-05-04 09:51:52",
-                    "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
-                    "contactsName": "Contacts_One",
-                    "documentType": 1,
-                    "contactsDocumentNumber": "DocumentNumber_One",
-                    "trainNumber": "Z1234",
-                    "coachNumber": 5,
-                    "seatClass": 3,
-                    "seatNumber": "1716003704",
-                    "from": "shanghai",
-                    "to": "nanjing",
-                    "status": 4,
-                    "price": "122.49999999999999"
-                }
-            }
         },
         {
             "flow_id": 7,
@@ -91,23 +40,13 @@
                     "price": "122.49999999999999"
                 }
             }
-        }
-    ],
-    "1": [
-        {
-            "databases": [
-                "ts-inside-payment-mysql:3306:ts",
-                "ts-order-mysql:3306:ts",
-                "ts-payment-mysql:3306:ts",
-                "ts-order-other-mysql:3306:ts"
-            ]
         },
         {
-            "flow_id": 10,
-            "flow_span_id": 3,
+            "flow_id": 9,
+            "flow_span_id": 4,
             "sqls": [
                 "select order0_.id as id1_0_0_, order0_.account_id as account_2_0_0_, order0_.bought_date as bought_d3_0_0_, order0_.coach_number as coach_nu4_0_0_, order0_.contacts_document_number as contacts5_0_0_, order0_.contacts_name as contacts6_0_0_, order0_.document_type as document7_0_0_, order0_.from_station as from_sta8_0_0_, order0_.price as price9_0_0_, order0_.seat_class as seat_cl10_0_0_, order0_.seat_number as seat_nu11_0_0_, order0_.status as status12_0_0_, order0_.to_station as to_stat13_0_0_, order0_.train_number as train_n14_0_0_, order0_.travel_date as travel_15_0_0_, order0_.travel_time as travel_16_0_0_ from orders_other order0_ where order0_.id=a7e15b90-2481-401e-ab59-baf13a9dfd56",
-                "update orders_other set account_id=4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f, bought_date=2024-05-29 09:40:36, coach_number=5, contacts_document_number=DocumentNumber_One, contacts_name=Contacts_One, document_type=1, from_station=shanghai, price=122.49999999999999, seat_class=3, seat_number=1716003704, status=4, to_station=nanjing, train_number=Z1234, travel_date=2024-05-29, travel_time=2013-05-04 09:51:52 where id=a7e15b90-2481-401e-ab59-baf13a9dfd56"
+                "update orders_other set account_id=4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f, bought_date=2024-05-29 09:40:36, coach_number=5, contacts_document_number=DocumentNumber_One, contacts_name=Contacts_One, document_type=1, from_station=shanghai, price=122.49999999999999, seat_class=3, seat_number=1716003704, status=7, to_station=nanjing, train_number=Z1234, travel_date=2024-05-29, travel_time=2013-05-04 09:51:52 where id=a7e15b90-2481-401e-ab59-baf13a9dfd56"
             ],
             "http_method": "PUT",
             "http_url": "http://ts-order-other-service:12032/api/v1/orderOtherService/orderOther",
@@ -126,9 +65,52 @@
                 "seatNumber": "1716003704",
                 "from": "shanghai",
                 "to": "nanjing",
-                "status": 4,
+                "status": 7,
                 "price": "122.49999999999999"
             },
+            "http_status_code": "200",
+            "http_response": {
+                "status": 1,
+                "msg": "Success",
+                "data": {
+                    "id": "a7e15b90-2481-401e-ab59-baf13a9dfd56",
+                    "boughtDate": "2024-05-29 09:40:36",
+                    "travelDate": "2024-05-29",
+                    "travelTime": "2013-05-04 09:51:52",
+                    "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+                    "contactsName": "Contacts_One",
+                    "documentType": 1,
+                    "contactsDocumentNumber": "DocumentNumber_One",
+                    "trainNumber": "Z1234",
+                    "coachNumber": 5,
+                    "seatClass": 3,
+                    "seatNumber": "1716003704",
+                    "from": "shanghai",
+                    "to": "nanjing",
+                    "status": 7,
+                    "price": "122.49999999999999"
+                }
+            }
+        }
+    ],
+    "1": [
+        {
+            "databases": [
+                "ts-inside-payment-mysql:3306:ts",
+                "ts-order-other-mysql:3306:ts",
+                "ts-payment-mysql:3306:ts",
+                "ts-order-mysql:3306:ts"
+            ]
+        },
+        {
+            "flow_id": 9,
+            "flow_span_id": 3,
+            "sqls": [
+                "select order0_.id as id1_0_0_, order0_.account_id as account_2_0_0_, order0_.bought_date as bought_d3_0_0_, order0_.coach_number as coach_nu4_0_0_, order0_.contacts_document_number as contacts5_0_0_, order0_.contacts_name as contacts6_0_0_, order0_.document_type as document7_0_0_, order0_.from_station as from_sta8_0_0_, order0_.price as price9_0_0_, order0_.seat_class as seat_cl10_0_0_, order0_.seat_number as seat_nu11_0_0_, order0_.status as status12_0_0_, order0_.to_station as to_stat13_0_0_, order0_.train_number as train_n14_0_0_, order0_.travel_date as travel_15_0_0_, order0_.travel_time as travel_16_0_0_ from orders_other order0_ where order0_.id=a7e15b90-2481-401e-ab59-baf13a9dfd56"
+            ],
+            "http_method": "GET",
+            "http_url": "http://ts-order-other-service:12032/api/v1/orderOtherService/orderOther/a7e15b90-2481-401e-ab59-baf13a9dfd56",
+            "http_body": "",
             "http_status_code": "200",
             "http_response": {
                 "status": 1,
@@ -192,19 +174,38 @@
         {
             "databases": [
                 "ts-inside-payment-mysql:3306:ts",
-                "ts-order-mysql:3306:ts",
-                "ts-order-other-mysql:3306:ts"
+                "ts-order-other-mysql:3306:ts",
+                "ts-payment-mysql:3306:ts",
+                "ts-order-mysql:3306:ts"
             ]
         },
         {
-            "flow_id": 9,
+            "flow_id": 10,
             "flow_span_id": 3,
             "sqls": [
-                "select order0_.id as id1_0_0_, order0_.account_id as account_2_0_0_, order0_.bought_date as bought_d3_0_0_, order0_.coach_number as coach_nu4_0_0_, order0_.contacts_document_number as contacts5_0_0_, order0_.contacts_name as contacts6_0_0_, order0_.document_type as document7_0_0_, order0_.from_station as from_sta8_0_0_, order0_.price as price9_0_0_, order0_.seat_class as seat_cl10_0_0_, order0_.seat_number as seat_nu11_0_0_, order0_.status as status12_0_0_, order0_.to_station as to_stat13_0_0_, order0_.train_number as train_n14_0_0_, order0_.travel_date as travel_15_0_0_, order0_.travel_time as travel_16_0_0_ from orders_other order0_ where order0_.id=a7e15b90-2481-401e-ab59-baf13a9dfd56"
+                "select order0_.id as id1_0_0_, order0_.account_id as account_2_0_0_, order0_.bought_date as bought_d3_0_0_, order0_.coach_number as coach_nu4_0_0_, order0_.contacts_document_number as contacts5_0_0_, order0_.contacts_name as contacts6_0_0_, order0_.document_type as document7_0_0_, order0_.from_station as from_sta8_0_0_, order0_.price as price9_0_0_, order0_.seat_class as seat_cl10_0_0_, order0_.seat_number as seat_nu11_0_0_, order0_.status as status12_0_0_, order0_.to_station as to_stat13_0_0_, order0_.train_number as train_n14_0_0_, order0_.travel_date as travel_15_0_0_, order0_.travel_time as travel_16_0_0_ from orders_other order0_ where order0_.id=a7e15b90-2481-401e-ab59-baf13a9dfd56",
+                "update orders_other set account_id=4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f, bought_date=2024-05-29 09:40:36, coach_number=5, contacts_document_number=DocumentNumber_One, contacts_name=Contacts_One, document_type=1, from_station=shanghai, price=122.49999999999999, seat_class=3, seat_number=1716003704, status=4, to_station=nanjing, train_number=Z1234, travel_date=2024-05-29, travel_time=2013-05-04 09:51:52 where id=a7e15b90-2481-401e-ab59-baf13a9dfd56"
             ],
-            "http_method": "GET",
-            "http_url": "http://ts-order-other-service:12032/api/v1/orderOtherService/orderOther/a7e15b90-2481-401e-ab59-baf13a9dfd56",
-            "http_body": "",
+            "http_method": "PUT",
+            "http_url": "http://ts-order-other-service:12032/api/v1/orderOtherService/orderOther",
+            "http_body": {
+                "id": "a7e15b90-2481-401e-ab59-baf13a9dfd56",
+                "boughtDate": "2024-05-29 09:40:36",
+                "travelDate": "2024-05-29",
+                "travelTime": "2013-05-04 09:51:52",
+                "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+                "contactsName": "Contacts_One",
+                "documentType": 1,
+                "contactsDocumentNumber": "DocumentNumber_One",
+                "trainNumber": "Z1234",
+                "coachNumber": 5,
+                "seatClass": 3,
+                "seatNumber": "1716003704",
+                "from": "shanghai",
+                "to": "nanjing",
+                "status": 4,
+                "price": "122.49999999999999"
+            },
             "http_status_code": "200",
             "http_response": {
                 "status": 1,
@@ -225,6 +226,83 @@
                     "from": "shanghai",
                     "to": "nanjing",
                     "status": 4,
+                    "price": "122.49999999999999"
+                }
+            }
+        },
+        {
+            "flow_id": 7,
+            "flow_span_id": 3,
+            "sqls": [
+                "select order0_.id as id1_0_0_, order0_.account_id as account_2_0_0_, order0_.bought_date as bought_d3_0_0_, order0_.coach_number as coach_nu4_0_0_, order0_.contacts_document_number as contacts5_0_0_, order0_.contacts_name as contacts6_0_0_, order0_.document_type as document7_0_0_, order0_.from_station as from_sta8_0_0_, order0_.price as price9_0_0_, order0_.seat_class as seat_cl10_0_0_, order0_.seat_number as seat_nu11_0_0_, order0_.status as status12_0_0_, order0_.to_station as to_stat13_0_0_, order0_.train_number as train_n14_0_0_, order0_.travel_date as travel_15_0_0_, order0_.travel_time as travel_16_0_0_ from orders_other order0_ where order0_.id=a7e15b90-2481-401e-ab59-baf13a9dfd56",
+                "update orders_other set account_id=4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f, bought_date=2024-05-29 09:40:36, coach_number=5, contacts_document_number=DocumentNumber_One, contacts_name=Contacts_One, document_type=1, from_station=shanghai, price=122.49999999999999, seat_class=3, seat_number=1716003704, status=1, to_station=nanjing, train_number=Z1234, travel_date=2024-05-29, travel_time=2013-05-04 09:51:52 where id=a7e15b90-2481-401e-ab59-baf13a9dfd56"
+            ],
+            "http_method": "GET",
+            "http_url": "http://ts-order-other-service/api/v1/orderOtherService/orderOther/status/a7e15b90-2481-401e-ab59-baf13a9dfd56/1",
+            "http_body": "a7e15b90-2481-401e-ab59-baf13a9dfd56",
+            "http_status_code": "200",
+            "http_response": {
+                "status": 1,
+                "msg": "Success",
+                "data": {
+                    "id": "a7e15b90-2481-401e-ab59-baf13a9dfd56",
+                    "boughtDate": "2024-05-29 09:40:36",
+                    "travelDate": "2024-05-29",
+                    "travelTime": "2013-05-04 09:51:52",
+                    "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+                    "contactsName": "Contacts_One",
+                    "documentType": 1,
+                    "contactsDocumentNumber": "DocumentNumber_One",
+                    "trainNumber": "Z1234",
+                    "coachNumber": 5,
+                    "seatClass": 3,
+                    "seatNumber": "1716003704",
+                    "from": "shanghai",
+                    "to": "nanjing",
+                    "status": 1,
+                    "price": "122.49999999999999"
+                }
+            }
+        }
+    ],
+    "3": [
+        {
+            "databases": [
+                "ts-inside-payment-mysql:3306:ts",
+                "ts-order-other-mysql:3306:ts",
+                "ts-payment-mysql:3306:ts",
+                "ts-order-mysql:3306:ts"
+            ]
+        },
+        {
+            "flow_id": 7,
+            "flow_span_id": 1,
+            "sqls": [
+                "select order0_.id as id1_0_0_, order0_.account_id as account_2_0_0_, order0_.bought_date as bought_d3_0_0_, order0_.coach_number as coach_nu4_0_0_, order0_.contacts_document_number as contacts5_0_0_, order0_.contacts_name as contacts6_0_0_, order0_.document_type as document7_0_0_, order0_.from_station as from_sta8_0_0_, order0_.price as price9_0_0_, order0_.seat_class as seat_cl10_0_0_, order0_.seat_number as seat_nu11_0_0_, order0_.status as status12_0_0_, order0_.to_station as to_stat13_0_0_, order0_.train_number as train_n14_0_0_, order0_.travel_date as travel_15_0_0_, order0_.travel_time as travel_16_0_0_ from orders_other order0_ where order0_.id=a7e15b90-2481-401e-ab59-baf13a9dfd56"
+            ],
+            "http_method": "GET",
+            "http_url": "http://ts-order-other-service/api/v1/orderOtherService/orderOther/a7e15b90-2481-401e-ab59-baf13a9dfd56",
+            "http_body": "a7e15b90-2481-401e-ab59-baf13a9dfd56",
+            "http_status_code": "200",
+            "http_response": {
+                "status": 1,
+                "msg": "Success",
+                "data": {
+                    "id": "a7e15b90-2481-401e-ab59-baf13a9dfd56",
+                    "boughtDate": "2024-05-29 09:40:36",
+                    "travelDate": "2024-05-29",
+                    "travelTime": "2013-05-04 09:51:52",
+                    "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+                    "contactsName": "Contacts_One",
+                    "documentType": 1,
+                    "contactsDocumentNumber": "DocumentNumber_One",
+                    "trainNumber": "Z1234",
+                    "coachNumber": 5,
+                    "seatClass": 3,
+                    "seatNumber": "1716003704",
+                    "from": "shanghai",
+                    "to": "nanjing",
+                    "status": 0,
                     "price": "122.49999999999999"
                 }
             }
@@ -281,101 +359,41 @@
             }
         }
     ],
-    "3": [
-        {
-            "databases": [
-                "ts-inside-payment-mysql:3306:ts",
-                "ts-order-mysql:3306:ts",
-                "ts-payment-mysql:3306:ts",
-                "ts-order-other-mysql:3306:ts"
-            ]
-        },
-        {
-            "flow_id": 7,
-            "flow_span_id": 3,
-            "sqls": [
-                "select order0_.id as id1_0_0_, order0_.account_id as account_2_0_0_, order0_.bought_date as bought_d3_0_0_, order0_.coach_number as coach_nu4_0_0_, order0_.contacts_document_number as contacts5_0_0_, order0_.contacts_name as contacts6_0_0_, order0_.document_type as document7_0_0_, order0_.from_station as from_sta8_0_0_, order0_.price as price9_0_0_, order0_.seat_class as seat_cl10_0_0_, order0_.seat_number as seat_nu11_0_0_, order0_.status as status12_0_0_, order0_.to_station as to_stat13_0_0_, order0_.train_number as train_n14_0_0_, order0_.travel_date as travel_15_0_0_, order0_.travel_time as travel_16_0_0_ from orders_other order0_ where order0_.id=a7e15b90-2481-401e-ab59-baf13a9dfd56",
-                "update orders_other set account_id=4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f, bought_date=2024-05-29 09:40:36, coach_number=5, contacts_document_number=DocumentNumber_One, contacts_name=Contacts_One, document_type=1, from_station=shanghai, price=122.49999999999999, seat_class=3, seat_number=1716003704, status=1, to_station=nanjing, train_number=Z1234, travel_date=2024-05-29, travel_time=2013-05-04 09:51:52 where id=a7e15b90-2481-401e-ab59-baf13a9dfd56"
-            ],
-            "http_method": "GET",
-            "http_url": "http://ts-order-other-service/api/v1/orderOtherService/orderOther/status/a7e15b90-2481-401e-ab59-baf13a9dfd56/1",
-            "http_body": "a7e15b90-2481-401e-ab59-baf13a9dfd56",
-            "http_status_code": "200",
-            "http_response": {
-                "status": 1,
-                "msg": "Success",
-                "data": {
-                    "id": "a7e15b90-2481-401e-ab59-baf13a9dfd56",
-                    "boughtDate": "2024-05-29 09:40:36",
-                    "travelDate": "2024-05-29",
-                    "travelTime": "2013-05-04 09:51:52",
-                    "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
-                    "contactsName": "Contacts_One",
-                    "documentType": 1,
-                    "contactsDocumentNumber": "DocumentNumber_One",
-                    "trainNumber": "Z1234",
-                    "coachNumber": 5,
-                    "seatClass": 3,
-                    "seatNumber": "1716003704",
-                    "from": "shanghai",
-                    "to": "nanjing",
-                    "status": 1,
-                    "price": "122.49999999999999"
-                }
-            }
-        },
-        {
-            "flow_id": 9,
-            "flow_span_id": 2,
-            "sqls": [
-                "select order0_.id as id1_0_0_, order0_.account_id as account_2_0_0_, order0_.bought_date as bought_d3_0_0_, order0_.coach_number as coach_nu4_0_0_, order0_.contacts_document_number as contacts5_0_0_, order0_.contacts_name as contacts6_0_0_, order0_.document_type as document7_0_0_, order0_.from_station as from_sta8_0_0_, order0_.price as price9_0_0_, order0_.seat_class as seat_cl10_0_0_, order0_.seat_number as seat_nu11_0_0_, order0_.status as status12_0_0_, order0_.to_station as to_stat13_0_0_, order0_.train_number as train_n14_0_0_, order0_.travel_date as travel_15_0_0_, order0_.travel_time as travel_16_0_0_ from orders_other order0_ where order0_.id=a7e15b90-2481-401e-ab59-baf13a9dfd56"
-            ],
-            "http_method": "GET",
-            "http_url": "http://ts-order-other-service/api/v1/orderOtherService/orderOther/a7e15b90-2481-401e-ab59-baf13a9dfd56",
-            "http_body": "",
-            "http_status_code": "200",
-            "http_response": {
-                "status": 1,
-                "msg": "Success",
-                "data": {
-                    "id": "a7e15b90-2481-401e-ab59-baf13a9dfd56",
-                    "boughtDate": "2024-05-29 09:40:36",
-                    "travelDate": "2024-05-29",
-                    "travelTime": "2013-05-04 09:51:52",
-                    "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
-                    "contactsName": "Contacts_One",
-                    "documentType": 1,
-                    "contactsDocumentNumber": "DocumentNumber_One",
-                    "trainNumber": "Z1234",
-                    "coachNumber": 5,
-                    "seatClass": 3,
-                    "seatNumber": "1716003704",
-                    "from": "shanghai",
-                    "to": "nanjing",
-                    "status": 1,
-                    "price": "122.49999999999999"
-                }
-            }
-        }
-    ],
     "4": [
         {
             "databases": [
                 "ts-inside-payment-mysql:3306:ts",
-                "ts-order-mysql:3306:ts",
-                "ts-payment-mysql:3306:ts",
-                "ts-order-other-mysql:3306:ts"
+                "ts-order-other-mysql:3306:ts",
+                "ts-order-mysql:3306:ts"
             ]
         },
         {
-            "flow_id": 7,
-            "flow_span_id": 1,
+            "flow_id": 10,
+            "flow_span_id": 3,
             "sqls": [
-                "select order0_.id as id1_0_0_, order0_.account_id as account_2_0_0_, order0_.bought_date as bought_d3_0_0_, order0_.coach_number as coach_nu4_0_0_, order0_.contacts_document_number as contacts5_0_0_, order0_.contacts_name as contacts6_0_0_, order0_.document_type as document7_0_0_, order0_.from_station as from_sta8_0_0_, order0_.price as price9_0_0_, order0_.seat_class as seat_cl10_0_0_, order0_.seat_number as seat_nu11_0_0_, order0_.status as status12_0_0_, order0_.to_station as to_stat13_0_0_, order0_.train_number as train_n14_0_0_, order0_.travel_date as travel_15_0_0_, order0_.travel_time as travel_16_0_0_ from orders_other order0_ where order0_.id=a7e15b90-2481-401e-ab59-baf13a9dfd56"
+                "select order0_.id as id1_0_0_, order0_.account_id as account_2_0_0_, order0_.bought_date as bought_d3_0_0_, order0_.coach_number as coach_nu4_0_0_, order0_.contacts_document_number as contacts5_0_0_, order0_.contacts_name as contacts6_0_0_, order0_.document_type as document7_0_0_, order0_.from_station as from_sta8_0_0_, order0_.price as price9_0_0_, order0_.seat_class as seat_cl10_0_0_, order0_.seat_number as seat_nu11_0_0_, order0_.status as status12_0_0_, order0_.to_station as to_stat13_0_0_, order0_.train_number as train_n14_0_0_, order0_.travel_date as travel_15_0_0_, order0_.travel_time as travel_16_0_0_ from orders_other order0_ where order0_.id=a7e15b90-2481-401e-ab59-baf13a9dfd56",
+                "update orders_other set account_id=4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f, bought_date=2024-05-29 09:40:36, coach_number=5, contacts_document_number=DocumentNumber_One, contacts_name=Contacts_One, document_type=1, from_station=shanghai, price=122.49999999999999, seat_class=3, seat_number=1716003704, status=4, to_station=nanjing, train_number=Z1234, travel_date=2024-05-29, travel_time=2013-05-04 09:51:52 where id=a7e15b90-2481-401e-ab59-baf13a9dfd56"
             ],
-            "http_method": "GET",
-            "http_url": "http://ts-order-other-service/api/v1/orderOtherService/orderOther/a7e15b90-2481-401e-ab59-baf13a9dfd56",
-            "http_body": "a7e15b90-2481-401e-ab59-baf13a9dfd56",
+            "http_method": "PUT",
+            "http_url": "http://ts-order-other-service:12032/api/v1/orderOtherService/orderOther",
+            "http_body": {
+                "id": "a7e15b90-2481-401e-ab59-baf13a9dfd56",
+                "boughtDate": "2024-05-29 09:40:36",
+                "travelDate": "2024-05-29",
+                "travelTime": "2013-05-04 09:51:52",
+                "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+                "contactsName": "Contacts_One",
+                "documentType": 1,
+                "contactsDocumentNumber": "DocumentNumber_One",
+                "trainNumber": "Z1234",
+                "coachNumber": 5,
+                "seatClass": 3,
+                "seatNumber": "1716003704",
+                "from": "shanghai",
+                "to": "nanjing",
+                "status": 4,
+                "price": "122.49999999999999"
+            },
             "http_status_code": "200",
             "http_response": {
                 "status": 1,
@@ -395,7 +413,7 @@
                     "seatNumber": "1716003704",
                     "from": "shanghai",
                     "to": "nanjing",
-                    "status": 0,
+                    "status": 4,
                     "price": "122.49999999999999"
                 }
             }
@@ -456,9 +474,214 @@
         {
             "databases": [
                 "ts-inside-payment-mysql:3306:ts",
-                "ts-order-mysql:3306:ts",
-                "ts-order-other-mysql:3306:ts"
+                "ts-order-other-mysql:3306:ts",
+                "ts-payment-mysql:3306:ts",
+                "ts-order-mysql:3306:ts"
             ]
+        },
+        {
+            "flow_id": 9,
+            "flow_span_id": 4,
+            "sqls": [
+                "select order0_.id as id1_0_0_, order0_.account_id as account_2_0_0_, order0_.bought_date as bought_d3_0_0_, order0_.coach_number as coach_nu4_0_0_, order0_.contacts_document_number as contacts5_0_0_, order0_.contacts_name as contacts6_0_0_, order0_.document_type as document7_0_0_, order0_.from_station as from_sta8_0_0_, order0_.price as price9_0_0_, order0_.seat_class as seat_cl10_0_0_, order0_.seat_number as seat_nu11_0_0_, order0_.status as status12_0_0_, order0_.to_station as to_stat13_0_0_, order0_.train_number as train_n14_0_0_, order0_.travel_date as travel_15_0_0_, order0_.travel_time as travel_16_0_0_ from orders_other order0_ where order0_.id=a7e15b90-2481-401e-ab59-baf13a9dfd56",
+                "update orders_other set account_id=4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f, bought_date=2024-05-29 09:40:36, coach_number=5, contacts_document_number=DocumentNumber_One, contacts_name=Contacts_One, document_type=1, from_station=shanghai, price=122.49999999999999, seat_class=3, seat_number=1716003704, status=7, to_station=nanjing, train_number=Z1234, travel_date=2024-05-29, travel_time=2013-05-04 09:51:52 where id=a7e15b90-2481-401e-ab59-baf13a9dfd56"
+            ],
+            "http_method": "PUT",
+            "http_url": "http://ts-order-other-service:12032/api/v1/orderOtherService/orderOther",
+            "http_body": {
+                "id": "a7e15b90-2481-401e-ab59-baf13a9dfd56",
+                "boughtDate": "2024-05-29 09:40:36",
+                "travelDate": "2024-05-29",
+                "travelTime": "2013-05-04 09:51:52",
+                "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+                "contactsName": "Contacts_One",
+                "documentType": 1,
+                "contactsDocumentNumber": "DocumentNumber_One",
+                "trainNumber": "Z1234",
+                "coachNumber": 5,
+                "seatClass": 3,
+                "seatNumber": "1716003704",
+                "from": "shanghai",
+                "to": "nanjing",
+                "status": 7,
+                "price": "122.49999999999999"
+            },
+            "http_status_code": "200",
+            "http_response": {
+                "status": 1,
+                "msg": "Success",
+                "data": {
+                    "id": "a7e15b90-2481-401e-ab59-baf13a9dfd56",
+                    "boughtDate": "2024-05-29 09:40:36",
+                    "travelDate": "2024-05-29",
+                    "travelTime": "2013-05-04 09:51:52",
+                    "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+                    "contactsName": "Contacts_One",
+                    "documentType": 1,
+                    "contactsDocumentNumber": "DocumentNumber_One",
+                    "trainNumber": "Z1234",
+                    "coachNumber": 5,
+                    "seatClass": 3,
+                    "seatNumber": "1716003704",
+                    "from": "shanghai",
+                    "to": "nanjing",
+                    "status": 7,
+                    "price": "122.49999999999999"
+                }
+            }
+        },
+        {
+            "flow_id": 7,
+            "flow_span_id": 3,
+            "sqls": [
+                "select order0_.id as id1_0_0_, order0_.account_id as account_2_0_0_, order0_.bought_date as bought_d3_0_0_, order0_.coach_number as coach_nu4_0_0_, order0_.contacts_document_number as contacts5_0_0_, order0_.contacts_name as contacts6_0_0_, order0_.document_type as document7_0_0_, order0_.from_station as from_sta8_0_0_, order0_.price as price9_0_0_, order0_.seat_class as seat_cl10_0_0_, order0_.seat_number as seat_nu11_0_0_, order0_.status as status12_0_0_, order0_.to_station as to_stat13_0_0_, order0_.train_number as train_n14_0_0_, order0_.travel_date as travel_15_0_0_, order0_.travel_time as travel_16_0_0_ from orders_other order0_ where order0_.id=a7e15b90-2481-401e-ab59-baf13a9dfd56",
+                "update orders_other set account_id=4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f, bought_date=2024-05-29 09:40:36, coach_number=5, contacts_document_number=DocumentNumber_One, contacts_name=Contacts_One, document_type=1, from_station=shanghai, price=122.49999999999999, seat_class=3, seat_number=1716003704, status=1, to_station=nanjing, train_number=Z1234, travel_date=2024-05-29, travel_time=2013-05-04 09:51:52 where id=a7e15b90-2481-401e-ab59-baf13a9dfd56"
+            ],
+            "http_method": "GET",
+            "http_url": "http://ts-order-other-service/api/v1/orderOtherService/orderOther/status/a7e15b90-2481-401e-ab59-baf13a9dfd56/1",
+            "http_body": "a7e15b90-2481-401e-ab59-baf13a9dfd56",
+            "http_status_code": "200",
+            "http_response": {
+                "status": 1,
+                "msg": "Success",
+                "data": {
+                    "id": "a7e15b90-2481-401e-ab59-baf13a9dfd56",
+                    "boughtDate": "2024-05-29 09:40:36",
+                    "travelDate": "2024-05-29",
+                    "travelTime": "2013-05-04 09:51:52",
+                    "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+                    "contactsName": "Contacts_One",
+                    "documentType": 1,
+                    "contactsDocumentNumber": "DocumentNumber_One",
+                    "trainNumber": "Z1234",
+                    "coachNumber": 5,
+                    "seatClass": 3,
+                    "seatNumber": "1716003704",
+                    "from": "shanghai",
+                    "to": "nanjing",
+                    "status": 1,
+                    "price": "122.49999999999999"
+                }
+            }
+        }
+    ],
+    "6": [
+        {
+            "databases": [
+                "ts-inside-payment-mysql:3306:ts",
+                "ts-order-other-mysql:3306:ts",
+                "ts-payment-mysql:3306:ts",
+                "ts-order-mysql:3306:ts"
+            ]
+        },
+        {
+            "flow_id": 8,
+            "flow_span_id": 2,
+            "sqls": [
+                "select order0_.id as id1_0_0_, order0_.account_id as account_2_0_0_, order0_.bought_date as bought_d3_0_0_, order0_.coach_number as coach_nu4_0_0_, order0_.contacts_document_number as contacts5_0_0_, order0_.contacts_name as contacts6_0_0_, order0_.document_type as document7_0_0_, order0_.from_station as from_sta8_0_0_, order0_.price as price9_0_0_, order0_.seat_class as seat_cl10_0_0_, order0_.seat_number as seat_nu11_0_0_, order0_.status as status12_0_0_, order0_.to_station as to_stat13_0_0_, order0_.train_number as train_n14_0_0_, order0_.travel_date as travel_15_0_0_, order0_.travel_time as travel_16_0_0_ from orders_other order0_ where order0_.id=a7e15b90-2481-401e-ab59-baf13a9dfd56"
+            ],
+            "http_method": "GET",
+            "http_url": "http://ts-order-other-service/api/v1/orderOtherService/orderOther/a7e15b90-2481-401e-ab59-baf13a9dfd56",
+            "http_body": "",
+            "http_status_code": "200",
+            "http_response": {
+                "status": 1,
+                "msg": "Success",
+                "data": {
+                    "id": "a7e15b90-2481-401e-ab59-baf13a9dfd56",
+                    "boughtDate": "2024-05-29 09:40:36",
+                    "travelDate": "2024-05-29",
+                    "travelTime": "2013-05-04 09:51:52",
+                    "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+                    "contactsName": "Contacts_One",
+                    "documentType": 1,
+                    "contactsDocumentNumber": "DocumentNumber_One",
+                    "trainNumber": "Z1234",
+                    "coachNumber": 5,
+                    "seatClass": 3,
+                    "seatNumber": "1716003704",
+                    "from": "shanghai",
+                    "to": "nanjing",
+                    "status": 1,
+                    "price": "122.49999999999999"
+                }
+            }
+        },
+        {
+            "flow_id": 7,
+            "flow_span_id": 3,
+            "sqls": [
+                "select order0_.id as id1_0_0_, order0_.account_id as account_2_0_0_, order0_.bought_date as bought_d3_0_0_, order0_.coach_number as coach_nu4_0_0_, order0_.contacts_document_number as contacts5_0_0_, order0_.contacts_name as contacts6_0_0_, order0_.document_type as document7_0_0_, order0_.from_station as from_sta8_0_0_, order0_.price as price9_0_0_, order0_.seat_class as seat_cl10_0_0_, order0_.seat_number as seat_nu11_0_0_, order0_.status as status12_0_0_, order0_.to_station as to_stat13_0_0_, order0_.train_number as train_n14_0_0_, order0_.travel_date as travel_15_0_0_, order0_.travel_time as travel_16_0_0_ from orders_other order0_ where order0_.id=a7e15b90-2481-401e-ab59-baf13a9dfd56",
+                "update orders_other set account_id=4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f, bought_date=2024-05-29 09:40:36, coach_number=5, contacts_document_number=DocumentNumber_One, contacts_name=Contacts_One, document_type=1, from_station=shanghai, price=122.49999999999999, seat_class=3, seat_number=1716003704, status=1, to_station=nanjing, train_number=Z1234, travel_date=2024-05-29, travel_time=2013-05-04 09:51:52 where id=a7e15b90-2481-401e-ab59-baf13a9dfd56"
+            ],
+            "http_method": "GET",
+            "http_url": "http://ts-order-other-service/api/v1/orderOtherService/orderOther/status/a7e15b90-2481-401e-ab59-baf13a9dfd56/1",
+            "http_body": "a7e15b90-2481-401e-ab59-baf13a9dfd56",
+            "http_status_code": "200",
+            "http_response": {
+                "status": 1,
+                "msg": "Success",
+                "data": {
+                    "id": "a7e15b90-2481-401e-ab59-baf13a9dfd56",
+                    "boughtDate": "2024-05-29 09:40:36",
+                    "travelDate": "2024-05-29",
+                    "travelTime": "2013-05-04 09:51:52",
+                    "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+                    "contactsName": "Contacts_One",
+                    "documentType": 1,
+                    "contactsDocumentNumber": "DocumentNumber_One",
+                    "trainNumber": "Z1234",
+                    "coachNumber": 5,
+                    "seatClass": 3,
+                    "seatNumber": "1716003704",
+                    "from": "shanghai",
+                    "to": "nanjing",
+                    "status": 1,
+                    "price": "122.49999999999999"
+                }
+            }
+        }
+    ],
+    "7": [
+        {
+            "databases": [
+                "ts-inside-payment-mysql:3306:ts",
+                "ts-order-other-mysql:3306:ts",
+                "ts-order-mysql:3306:ts"
+            ]
+        },
+        {
+            "flow_id": 9,
+            "flow_span_id": 3,
+            "sqls": [
+                "select order0_.id as id1_0_0_, order0_.account_id as account_2_0_0_, order0_.bought_date as bought_d3_0_0_, order0_.coach_number as coach_nu4_0_0_, order0_.contacts_document_number as contacts5_0_0_, order0_.contacts_name as contacts6_0_0_, order0_.document_type as document7_0_0_, order0_.from_station as from_sta8_0_0_, order0_.price as price9_0_0_, order0_.seat_class as seat_cl10_0_0_, order0_.seat_number as seat_nu11_0_0_, order0_.status as status12_0_0_, order0_.to_station as to_stat13_0_0_, order0_.train_number as train_n14_0_0_, order0_.travel_date as travel_15_0_0_, order0_.travel_time as travel_16_0_0_ from orders_other order0_ where order0_.id=a7e15b90-2481-401e-ab59-baf13a9dfd56"
+            ],
+            "http_method": "GET",
+            "http_url": "http://ts-order-other-service:12032/api/v1/orderOtherService/orderOther/a7e15b90-2481-401e-ab59-baf13a9dfd56",
+            "http_body": "",
+            "http_status_code": "200",
+            "http_response": {
+                "status": 1,
+                "msg": "Success",
+                "data": {
+                    "id": "a7e15b90-2481-401e-ab59-baf13a9dfd56",
+                    "boughtDate": "2024-05-29 09:40:36",
+                    "travelDate": "2024-05-29",
+                    "travelTime": "2013-05-04 09:51:52",
+                    "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
+                    "contactsName": "Contacts_One",
+                    "documentType": 1,
+                    "contactsDocumentNumber": "DocumentNumber_One",
+                    "trainNumber": "Z1234",
+                    "coachNumber": 5,
+                    "seatClass": 3,
+                    "seatNumber": "1716003704",
+                    "from": "shanghai",
+                    "to": "nanjing",
+                    "status": 4,
+                    "price": "122.49999999999999"
+                }
+            }
         },
         {
             "flow_id": 10,
@@ -507,229 +730,6 @@
                     "from": "shanghai",
                     "to": "nanjing",
                     "status": 4,
-                    "price": "122.49999999999999"
-                }
-            }
-        },
-        {
-            "flow_id": 9,
-            "flow_span_id": 4,
-            "sqls": [
-                "select order0_.id as id1_0_0_, order0_.account_id as account_2_0_0_, order0_.bought_date as bought_d3_0_0_, order0_.coach_number as coach_nu4_0_0_, order0_.contacts_document_number as contacts5_0_0_, order0_.contacts_name as contacts6_0_0_, order0_.document_type as document7_0_0_, order0_.from_station as from_sta8_0_0_, order0_.price as price9_0_0_, order0_.seat_class as seat_cl10_0_0_, order0_.seat_number as seat_nu11_0_0_, order0_.status as status12_0_0_, order0_.to_station as to_stat13_0_0_, order0_.train_number as train_n14_0_0_, order0_.travel_date as travel_15_0_0_, order0_.travel_time as travel_16_0_0_ from orders_other order0_ where order0_.id=a7e15b90-2481-401e-ab59-baf13a9dfd56",
-                "update orders_other set account_id=4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f, bought_date=2024-05-29 09:40:36, coach_number=5, contacts_document_number=DocumentNumber_One, contacts_name=Contacts_One, document_type=1, from_station=shanghai, price=122.49999999999999, seat_class=3, seat_number=1716003704, status=7, to_station=nanjing, train_number=Z1234, travel_date=2024-05-29, travel_time=2013-05-04 09:51:52 where id=a7e15b90-2481-401e-ab59-baf13a9dfd56"
-            ],
-            "http_method": "PUT",
-            "http_url": "http://ts-order-other-service:12032/api/v1/orderOtherService/orderOther",
-            "http_body": {
-                "id": "a7e15b90-2481-401e-ab59-baf13a9dfd56",
-                "boughtDate": "2024-05-29 09:40:36",
-                "travelDate": "2024-05-29",
-                "travelTime": "2013-05-04 09:51:52",
-                "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
-                "contactsName": "Contacts_One",
-                "documentType": 1,
-                "contactsDocumentNumber": "DocumentNumber_One",
-                "trainNumber": "Z1234",
-                "coachNumber": 5,
-                "seatClass": 3,
-                "seatNumber": "1716003704",
-                "from": "shanghai",
-                "to": "nanjing",
-                "status": 7,
-                "price": "122.49999999999999"
-            },
-            "http_status_code": "200",
-            "http_response": {
-                "status": 1,
-                "msg": "Success",
-                "data": {
-                    "id": "a7e15b90-2481-401e-ab59-baf13a9dfd56",
-                    "boughtDate": "2024-05-29 09:40:36",
-                    "travelDate": "2024-05-29",
-                    "travelTime": "2013-05-04 09:51:52",
-                    "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
-                    "contactsName": "Contacts_One",
-                    "documentType": 1,
-                    "contactsDocumentNumber": "DocumentNumber_One",
-                    "trainNumber": "Z1234",
-                    "coachNumber": 5,
-                    "seatClass": 3,
-                    "seatNumber": "1716003704",
-                    "from": "shanghai",
-                    "to": "nanjing",
-                    "status": 7,
-                    "price": "122.49999999999999"
-                }
-            }
-        }
-    ],
-    "6": [
-        {
-            "databases": [
-                "ts-inside-payment-mysql:3306:ts",
-                "ts-order-mysql:3306:ts",
-                "ts-payment-mysql:3306:ts",
-                "ts-order-other-mysql:3306:ts"
-            ]
-        },
-        {
-            "flow_id": 9,
-            "flow_span_id": 3,
-            "sqls": [
-                "select order0_.id as id1_0_0_, order0_.account_id as account_2_0_0_, order0_.bought_date as bought_d3_0_0_, order0_.coach_number as coach_nu4_0_0_, order0_.contacts_document_number as contacts5_0_0_, order0_.contacts_name as contacts6_0_0_, order0_.document_type as document7_0_0_, order0_.from_station as from_sta8_0_0_, order0_.price as price9_0_0_, order0_.seat_class as seat_cl10_0_0_, order0_.seat_number as seat_nu11_0_0_, order0_.status as status12_0_0_, order0_.to_station as to_stat13_0_0_, order0_.train_number as train_n14_0_0_, order0_.travel_date as travel_15_0_0_, order0_.travel_time as travel_16_0_0_ from orders_other order0_ where order0_.id=a7e15b90-2481-401e-ab59-baf13a9dfd56"
-            ],
-            "http_method": "GET",
-            "http_url": "http://ts-order-other-service:12032/api/v1/orderOtherService/orderOther/a7e15b90-2481-401e-ab59-baf13a9dfd56",
-            "http_body": "",
-            "http_status_code": "200",
-            "http_response": {
-                "status": 1,
-                "msg": "Success",
-                "data": {
-                    "id": "a7e15b90-2481-401e-ab59-baf13a9dfd56",
-                    "boughtDate": "2024-05-29 09:40:36",
-                    "travelDate": "2024-05-29",
-                    "travelTime": "2013-05-04 09:51:52",
-                    "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
-                    "contactsName": "Contacts_One",
-                    "documentType": 1,
-                    "contactsDocumentNumber": "DocumentNumber_One",
-                    "trainNumber": "Z1234",
-                    "coachNumber": 5,
-                    "seatClass": 3,
-                    "seatNumber": "1716003704",
-                    "from": "shanghai",
-                    "to": "nanjing",
-                    "status": 4,
-                    "price": "122.49999999999999"
-                }
-            }
-        },
-        {
-            "flow_id": 7,
-            "flow_span_id": 3,
-            "sqls": [
-                "select order0_.id as id1_0_0_, order0_.account_id as account_2_0_0_, order0_.bought_date as bought_d3_0_0_, order0_.coach_number as coach_nu4_0_0_, order0_.contacts_document_number as contacts5_0_0_, order0_.contacts_name as contacts6_0_0_, order0_.document_type as document7_0_0_, order0_.from_station as from_sta8_0_0_, order0_.price as price9_0_0_, order0_.seat_class as seat_cl10_0_0_, order0_.seat_number as seat_nu11_0_0_, order0_.status as status12_0_0_, order0_.to_station as to_stat13_0_0_, order0_.train_number as train_n14_0_0_, order0_.travel_date as travel_15_0_0_, order0_.travel_time as travel_16_0_0_ from orders_other order0_ where order0_.id=a7e15b90-2481-401e-ab59-baf13a9dfd56",
-                "update orders_other set account_id=4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f, bought_date=2024-05-29 09:40:36, coach_number=5, contacts_document_number=DocumentNumber_One, contacts_name=Contacts_One, document_type=1, from_station=shanghai, price=122.49999999999999, seat_class=3, seat_number=1716003704, status=1, to_station=nanjing, train_number=Z1234, travel_date=2024-05-29, travel_time=2013-05-04 09:51:52 where id=a7e15b90-2481-401e-ab59-baf13a9dfd56"
-            ],
-            "http_method": "GET",
-            "http_url": "http://ts-order-other-service/api/v1/orderOtherService/orderOther/status/a7e15b90-2481-401e-ab59-baf13a9dfd56/1",
-            "http_body": "a7e15b90-2481-401e-ab59-baf13a9dfd56",
-            "http_status_code": "200",
-            "http_response": {
-                "status": 1,
-                "msg": "Success",
-                "data": {
-                    "id": "a7e15b90-2481-401e-ab59-baf13a9dfd56",
-                    "boughtDate": "2024-05-29 09:40:36",
-                    "travelDate": "2024-05-29",
-                    "travelTime": "2013-05-04 09:51:52",
-                    "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
-                    "contactsName": "Contacts_One",
-                    "documentType": 1,
-                    "contactsDocumentNumber": "DocumentNumber_One",
-                    "trainNumber": "Z1234",
-                    "coachNumber": 5,
-                    "seatClass": 3,
-                    "seatNumber": "1716003704",
-                    "from": "shanghai",
-                    "to": "nanjing",
-                    "status": 1,
-                    "price": "122.49999999999999"
-                }
-            }
-        }
-    ],
-    "7": [
-        {
-            "databases": [
-                "ts-inside-payment-mysql:3306:ts",
-                "ts-order-mysql:3306:ts",
-                "ts-payment-mysql:3306:ts",
-                "ts-order-other-mysql:3306:ts"
-            ]
-        },
-        {
-            "flow_id": 7,
-            "flow_span_id": 3,
-            "sqls": [
-                "select order0_.id as id1_0_0_, order0_.account_id as account_2_0_0_, order0_.bought_date as bought_d3_0_0_, order0_.coach_number as coach_nu4_0_0_, order0_.contacts_document_number as contacts5_0_0_, order0_.contacts_name as contacts6_0_0_, order0_.document_type as document7_0_0_, order0_.from_station as from_sta8_0_0_, order0_.price as price9_0_0_, order0_.seat_class as seat_cl10_0_0_, order0_.seat_number as seat_nu11_0_0_, order0_.status as status12_0_0_, order0_.to_station as to_stat13_0_0_, order0_.train_number as train_n14_0_0_, order0_.travel_date as travel_15_0_0_, order0_.travel_time as travel_16_0_0_ from orders_other order0_ where order0_.id=a7e15b90-2481-401e-ab59-baf13a9dfd56",
-                "update orders_other set account_id=4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f, bought_date=2024-05-29 09:40:36, coach_number=5, contacts_document_number=DocumentNumber_One, contacts_name=Contacts_One, document_type=1, from_station=shanghai, price=122.49999999999999, seat_class=3, seat_number=1716003704, status=1, to_station=nanjing, train_number=Z1234, travel_date=2024-05-29, travel_time=2013-05-04 09:51:52 where id=a7e15b90-2481-401e-ab59-baf13a9dfd56"
-            ],
-            "http_method": "GET",
-            "http_url": "http://ts-order-other-service/api/v1/orderOtherService/orderOther/status/a7e15b90-2481-401e-ab59-baf13a9dfd56/1",
-            "http_body": "a7e15b90-2481-401e-ab59-baf13a9dfd56",
-            "http_status_code": "200",
-            "http_response": {
-                "status": 1,
-                "msg": "Success",
-                "data": {
-                    "id": "a7e15b90-2481-401e-ab59-baf13a9dfd56",
-                    "boughtDate": "2024-05-29 09:40:36",
-                    "travelDate": "2024-05-29",
-                    "travelTime": "2013-05-04 09:51:52",
-                    "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
-                    "contactsName": "Contacts_One",
-                    "documentType": 1,
-                    "contactsDocumentNumber": "DocumentNumber_One",
-                    "trainNumber": "Z1234",
-                    "coachNumber": 5,
-                    "seatClass": 3,
-                    "seatNumber": "1716003704",
-                    "from": "shanghai",
-                    "to": "nanjing",
-                    "status": 1,
-                    "price": "122.49999999999999"
-                }
-            }
-        },
-        {
-            "flow_id": 9,
-            "flow_span_id": 4,
-            "sqls": [
-                "select order0_.id as id1_0_0_, order0_.account_id as account_2_0_0_, order0_.bought_date as bought_d3_0_0_, order0_.coach_number as coach_nu4_0_0_, order0_.contacts_document_number as contacts5_0_0_, order0_.contacts_name as contacts6_0_0_, order0_.document_type as document7_0_0_, order0_.from_station as from_sta8_0_0_, order0_.price as price9_0_0_, order0_.seat_class as seat_cl10_0_0_, order0_.seat_number as seat_nu11_0_0_, order0_.status as status12_0_0_, order0_.to_station as to_stat13_0_0_, order0_.train_number as train_n14_0_0_, order0_.travel_date as travel_15_0_0_, order0_.travel_time as travel_16_0_0_ from orders_other order0_ where order0_.id=a7e15b90-2481-401e-ab59-baf13a9dfd56",
-                "update orders_other set account_id=4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f, bought_date=2024-05-29 09:40:36, coach_number=5, contacts_document_number=DocumentNumber_One, contacts_name=Contacts_One, document_type=1, from_station=shanghai, price=122.49999999999999, seat_class=3, seat_number=1716003704, status=7, to_station=nanjing, train_number=Z1234, travel_date=2024-05-29, travel_time=2013-05-04 09:51:52 where id=a7e15b90-2481-401e-ab59-baf13a9dfd56"
-            ],
-            "http_method": "PUT",
-            "http_url": "http://ts-order-other-service:12032/api/v1/orderOtherService/orderOther",
-            "http_body": {
-                "id": "a7e15b90-2481-401e-ab59-baf13a9dfd56",
-                "boughtDate": "2024-05-29 09:40:36",
-                "travelDate": "2024-05-29",
-                "travelTime": "2013-05-04 09:51:52",
-                "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
-                "contactsName": "Contacts_One",
-                "documentType": 1,
-                "contactsDocumentNumber": "DocumentNumber_One",
-                "trainNumber": "Z1234",
-                "coachNumber": 5,
-                "seatClass": 3,
-                "seatNumber": "1716003704",
-                "from": "shanghai",
-                "to": "nanjing",
-                "status": 7,
-                "price": "122.49999999999999"
-            },
-            "http_status_code": "200",
-            "http_response": {
-                "status": 1,
-                "msg": "Success",
-                "data": {
-                    "id": "a7e15b90-2481-401e-ab59-baf13a9dfd56",
-                    "boughtDate": "2024-05-29 09:40:36",
-                    "travelDate": "2024-05-29",
-                    "travelTime": "2013-05-04 09:51:52",
-                    "accountId": "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f",
-                    "contactsName": "Contacts_One",
-                    "documentType": 1,
-                    "contactsDocumentNumber": "DocumentNumber_One",
-                    "trainNumber": "Z1234",
-                    "coachNumber": 5,
-                    "seatClass": 3,
-                    "seatNumber": "1716003704",
-                    "from": "shanghai",
-                    "to": "nanjing",
-                    "status": 7,
                     "price": "122.49999999999999"
                 }
             }

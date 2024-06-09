@@ -16,8 +16,8 @@ def output_all_sql_statements(req_data_map):
 
 def collect_insert_statements(req_data_map):
     """
-    收集所有 insert 语句
-    由于db name都是ts，不记了，只记是哪个MySQL
+    Collect all insert statements
+    Since the db names are all 'ts', only remember which MySQL it is
     """
     insert_sqls = {}
     for dataSpans in req_data_map.values():
@@ -32,20 +32,20 @@ def collect_insert_statements(req_data_map):
 
 def cnt(flows, req_data_map):
     """
-    实验数据统计
+    Experimental data statistics
     """
-    # 总请求数
+    # Total number of requests
     total_reqs = len(req_data_map.keys())
-    print_red(f"总请求数：{total_reqs}\n")
+    print_red(f"Total requests: {total_reqs}\n")
     
-    # 请求流数
-    print_red(f"独立请求流总数：{len(flows)}\n")
+    # Number of request flows
+    print_red(f"Total independent request flows: {len(flows)}\n")
 
-    # 数据库访问次数
+    # Number of database accesses
     data_span_cnt = 0
     for dataSpans in req_data_map.values():
         data_span_cnt += len(dataSpans)
-    print_red(f"数据库访问总数：{data_span_cnt}\n")
+    print_red(f"Total database accesses: {data_span_cnt}\n")
         
     
 def main(trace_dir, output_dir):
@@ -56,7 +56,7 @@ def main(trace_dir, output_dir):
     segments, segment_tree = pre_process(trace_dir)
     # segments, segment_tree = pre_process_single_trace('data/f1-response/d6dcf0452c2f44f0b903443fb6470601.120.17169468514030001.json')
 
-    # flows: 独立请求流的集合; origin_flows: 含子流的请求流集合（用于 flow_prune）, req_data_map: reqSpan与dataSpan的映射
+    # flows: Collection of independent request flows; origin_flows: Collection of request flows including sub-flows (for flow pruning); req_data_map: Mapping of reqSpan to dataSpan
     flows, origin_flows, req_data_map = construct_flow(segments, segment_tree)
 
     cnt(flows, req_data_map)
@@ -76,14 +76,14 @@ def main(trace_dir, output_dir):
 
     res = classify_by_ids(candidate_pairs)
 
-    # 打印结果
+    # Print results
     print_candidate_pairs(candidate_pairs, origin_flows)
 
-    # 打印所有独立请求流
+    # Print all independent request flows
     for flow_id, flow in flows.items():
         print_flow_by_id(origin_flows, flow_id)
 
-    # 收集所有insert语句，以json格式写入文件
+    # Collect all insert statements and write to a file in JSON format
     insert_sqls = collect_insert_statements(req_data_map)
     with open(output_dir + '/insert_sqls.json', 'w') as f:
         json_data = json.dumps(insert_sqls, indent=2)
@@ -97,5 +97,3 @@ if __name__ == "__main__":
     trace_dir = './data/case1'
     output_dir = './output/case1'
     main(trace_dir, output_dir)
-    
-    

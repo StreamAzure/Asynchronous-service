@@ -1,11 +1,11 @@
 =====
-GET http://172.22.0.64:18885/api/v1/cancelservice/cancel/a7e15b90-2481-401e-ab59-baf13a9dfd56/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f
-"a7e15b90-2481-401e-ab59-baf13a9dfd56"
 POST http://172.22.0.70:14569/api/v1/preserveotherservice/preserveOther
 {"accountId":"4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f","contactsId":"52da357f-9e94-4df0-ae40-75bb32991e7f","tripId":"Z1234","seatType":0,"date":"2024-05-29","from":"Shang Hai","to":"Nan Jing","assurance":0,"foodType":2,"stationName":"Su Zhou","storeName":"Roman Holiday","foodName":"Soup","foodPrice":3.7,"consigneeWeight":0.0,"isWithin":false}
-	select ['a7e15b90-2481-401e-ab59-baf13a9dfd56']
+GET http://172.22.0.64:18885/api/v1/cancelservice/cancel/a7e15b90-2481-401e-ab59-baf13a9dfd56/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f
+"a7e15b90-2481-401e-ab59-baf13a9dfd56"
 	insert ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'a7e15b90-2481-401e-ab59-baf13a9dfd56']
-	该 dataSpanPair 有问题!
+	select ['a7e15b90-2481-401e-ab59-baf13a9dfd56']
+	This dataSpanPair has an issue!
 
 =====
 POST http://172.22.0.70:14569/api/v1/preserveotherservice/preserveOther
@@ -14,11 +14,7 @@ GET http://172.22.0.64:18885/api/v1/cancelservice/cancel/a7e15b90-2481-401e-ab59
 "a7e15b90-2481-401e-ab59-baf13a9dfd56"
 	insert ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'a7e15b90-2481-401e-ab59-baf13a9dfd56']
 	select ['a7e15b90-2481-401e-ab59-baf13a9dfd56']
-	该 dataSpanPair 有问题!
-
-	insert ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'a7e15b90-2481-401e-ab59-baf13a9dfd56']
-	update ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'a7e15b90-2481-401e-ab59-baf13a9dfd56']
-	该 dataSpanPair 有问题!
+	This dataSpanPair has an issue!
 
 =====
 POST http://172.22.0.70:14569/api/v1/preserveotherservice/preserveOther
@@ -27,11 +23,7 @@ POST http://172.22.0.60:18673/api/v1/inside_pay_service/inside_payment
 {"orderId":"a7e15b90-2481-401e-ab59-baf13a9dfd56","tripId":"Z1234"}
 	insert ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'a7e15b90-2481-401e-ab59-baf13a9dfd56']
 	select ['a7e15b90-2481-401e-ab59-baf13a9dfd56']
-	该 dataSpanPair 有问题!
-
-	insert ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'a7e15b90-2481-401e-ab59-baf13a9dfd56']
-	update ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'a7e15b90-2481-401e-ab59-baf13a9dfd56']
-	该 dataSpanPair 有问题!
+	This dataSpanPair has an issue!
 
 =====
 POST http://172.22.0.70:14569/api/v1/preserveotherservice/preserveOther
@@ -40,7 +32,24 @@ GET http://172.22.0.64:18885/api/v1/cancelservice/cancel/a7e15b90-2481-401e-ab59
 "a7e15b90-2481-401e-ab59-baf13a9dfd56"
 	insert ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'a7e15b90-2481-401e-ab59-baf13a9dfd56']
 	select ['a7e15b90-2481-401e-ab59-baf13a9dfd56']
-	该 dataSpanPair 有问题!
+	This dataSpanPair has an issue!
+
+	insert ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'a7e15b90-2481-401e-ab59-baf13a9dfd56']
+	update ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'a7e15b90-2481-401e-ab59-baf13a9dfd56']
+	This dataSpanPair has an issue!
+
+=====
+POST http://172.22.0.70:14569/api/v1/preserveotherservice/preserveOther
+{"accountId":"4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f","contactsId":"52da357f-9e94-4df0-ae40-75bb32991e7f","tripId":"Z1234","seatType":0,"date":"2024-05-29","from":"Shang Hai","to":"Nan Jing","assurance":0,"foodType":2,"stationName":"Su Zhou","storeName":"Roman Holiday","foodName":"Soup","foodPrice":3.7,"consigneeWeight":0.0,"isWithin":false}
+GET http://172.22.0.64:18885/api/v1/cancelservice/cancel/a7e15b90-2481-401e-ab59-baf13a9dfd56/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f
+"a7e15b90-2481-401e-ab59-baf13a9dfd56"
+	insert ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'a7e15b90-2481-401e-ab59-baf13a9dfd56']
+	select ['a7e15b90-2481-401e-ab59-baf13a9dfd56']
+	This dataSpanPair has an issue!
+
+	insert ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'a7e15b90-2481-401e-ab59-baf13a9dfd56']
+	update ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'a7e15b90-2481-401e-ab59-baf13a9dfd56']
+	This dataSpanPair has an issue!
 
 =====
 POST http://172.22.0.70:14569/api/v1/preserveotherservice/preserveOther
@@ -49,18 +58,9 @@ POST http://172.22.0.60:18673/api/v1/inside_pay_service/inside_payment
 {"orderId":"a7e15b90-2481-401e-ab59-baf13a9dfd56","tripId":"Z1234"}
 	insert ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'a7e15b90-2481-401e-ab59-baf13a9dfd56']
 	select ['a7e15b90-2481-401e-ab59-baf13a9dfd56']
-	该 dataSpanPair 有问题!
-
-=====
-POST http://172.22.0.70:14569/api/v1/preserveotherservice/preserveOther
-{"accountId":"4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f","contactsId":"52da357f-9e94-4df0-ae40-75bb32991e7f","tripId":"Z1234","seatType":0,"date":"2024-05-29","from":"Shang Hai","to":"Nan Jing","assurance":0,"foodType":2,"stationName":"Su Zhou","storeName":"Roman Holiday","foodName":"Soup","foodPrice":3.7,"consigneeWeight":0.0,"isWithin":false}
-GET http://172.22.0.64:18885/api/v1/cancelservice/cancel/a7e15b90-2481-401e-ab59-baf13a9dfd56/4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f
-"a7e15b90-2481-401e-ab59-baf13a9dfd56"
-	insert ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'a7e15b90-2481-401e-ab59-baf13a9dfd56']
-	select ['a7e15b90-2481-401e-ab59-baf13a9dfd56']
-	该 dataSpanPair 有问题!
+	This dataSpanPair has an issue!
 
 	insert ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'a7e15b90-2481-401e-ab59-baf13a9dfd56']
 	update ['4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f', 'a7e15b90-2481-401e-ab59-baf13a9dfd56']
-	该 dataSpanPair 有问题!
+	This dataSpanPair has an issue!
 
