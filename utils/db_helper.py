@@ -3,117 +3,176 @@ import subprocess
 import datetime
 import docker
 
-LOG_FILE='backup_log.txt'
-DB_HOST='localhost'
-DB_USER='root'
-DB_PASS='root'
-DB_NAME='ts'
+LOG_FILE = 'backup_log.txt'
+DB_HOST = 'localhost'
+DB_USER = 'root'
+DB_PASS = 'root'
+DB_NAME = 'ts'
+
 
 def _get_container_id_by_name_pattern(db_instance):
-        client = docker.from_env()
-        containers = client.containers.list()
-        for container in containers:
-            if db_instance in container.name:
-                return container.id
-        raise Exception(f"未找到容器名包含{db_instance}的容器")
+    client = docker.from_env()
+    containers = client.containers.list()
+    for container in containers:
+        if db_instance in container.name:
+            return container.id
+    # raise Exception(f"No container found with name containing {db_instance}")
+    return
+
 
 def restore_database(container_name, backup_dir, db_host=DB_HOST, db_user=DB_USER, db_pass=DB_PASS, db_name=DB_NAME):
     log_file = os.path.join(backup_dir, LOG_FILE)
     backup_file = None
 
-    # 查找包含指定名称的备份文件
+    # Search for a backup file containing the specified name
     for file in os.listdir(backup_dir):
         if container_name in file:
             backup_file = os.path.join(backup_dir, file)
             break
-            
+
     container_id = _get_container_id_by_name_pattern(container_name)
 
-    # 记录开始时间
+    # Record the start time
     with open(log_file, "a") as log:
-        log.write(f"[{datetime.datetime.now()}] 开始恢复数据库 {container_name} {db_host} {db_name}\n")
+        log.write(f"[{datetime.datetime.now()}] Starting database restoration for {container_name} {db_host} {db_name}\n")
 
-    # 在Docker容器中恢复数据库
+    # Restore the database within the Docker container
     command = (
         f"docker exec -i {container_id} mysql -u {db_user} -p{db_pass} {db_name} < {backup_file}"
     )
     result = subprocess.run(command, shell=True, executable="/bin/bash")
 
-    # 检查恢复是否成功
+    # Check if the restoration was successful
     if result.returncode == 0:
         with open(log_file, "a") as log:
-            log.write(f"[{datetime.datetime.now()}] 数据库恢复成功: {backup_file}\n")
+            log.write(f"[{datetime.datetime.now()}] Database restoration successful: {backup_file}\n")
     else:
         with open(log_file, "a") as log:
-            log.write(f"[{datetime.datetime.now()}] 数据库恢复失败\n")
-        print("恢复失败")
+            log.write(f"[{datetime.datetime.now()}] Database restoration failed\n")
+        print("Restoration failed")
         exit(1)
 
-    # 记录结束时间
+    # Record the end time
     with open(log_file, "a") as log:
-        log.write(f"[{datetime.datetime.now()}] 恢复过程结束\n")
+        log.write(f"[{datetime.datetime.now()}] Restoration process completed\n")
 
 
 def backup_database(container_name, backup_dir, db_host=DB_HOST, db_user=DB_USER, db_pass=DB_PASS, db_name=DB_NAME):
     """
-    备份容器名为container_name的MySQL数据库
-    备份文件保存在当前目录下
+    Backup the MySQL database of the container with the name container_name.
+    The backup file is saved in the current directory.
     """
-    
+
     container_id = _get_container_id_by_name_pattern(container_name)
 
-    # 检查目录是否存在，无则创建
+    # Check if the directory exists, create if not
     if not os.path.exists(backup_dir):
         os.makedirs(backup_dir)
 
-    # 获取当前日期时间戳
+    # Get the current date and time stamp
     date = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
     backup_file = os.path.join(backup_dir, f"{container_name}_{db_name}_{date}.sql")
     log_file = os.path.join(backup_dir, LOG_FILE)
 
-    # 记录开始时间
+    # Record the start time
     with open(log_file, "a") as log:
-        log.write(f"[{datetime.datetime.now()}] 开始备份数据库 {container_name} {db_host} {db_name}\n")
+        log.write(f"[{datetime.datetime.now()}] Starting database backup for {container_name} {db_host} {db_name}\n")
 
-    # 在Docker容器中备份数据库
+    # Backup the database within the Docker container
     command = (
         f"docker exec {container_id} mysqldump -u {db_user} -p{db_pass} {db_name} > {backup_file}"
     )
     result = subprocess.run(command, shell=True, executable="/bin/bash")
 
-    # 检查备份是否成功
+    # Check if the backup was successful
     if result.returncode == 0:
         with open(log_file, "a") as log:
-            log.write(f"[{datetime.datetime.now()}] 数据库备份成功: {backup_file}\n")
+            log.write(f"[{datetime.datetime.now()}] Database backup successful: {backup_file}\n")
     else:
         with open(log_file, "a") as log:
-            log.write(f"[{datetime.datetime.now()}] 数据库备份失败\n")
-        print("备份失败")
+            log.write(f"[{datetime.datetime.now()}] Database backup failed\n")
+        print("Backup failed")
         exit(1)
 
-    # 记录结束时间
+    # Record the end time
     with open(log_file, "a") as log:
-        log.write(f"[{datetime.datetime.now()}] 备份过程结束\n")
+        log.write(f"[{datetime.datetime.now()}] Backup process completed\n")
+
 
 def find_containers(search_string):
     client = docker.from_env()
-
-    # 获取所有正在运行的容器
+    # Get all running containers
     containers = client.containers.list()
-
-    # 过滤容器名包含指定字符串的容器
+    # Filter containers with names that contain the specified string
     matching_containers = [container.name for container in containers if search_string in container.name]
-
     return matching_containers
 
+
+def backup_databases(databases, backup_dir):
+    for database in databases:
+        container_name_part = database.split(":")[0]
+        containers = find_containers(container_name_part)
+        for container in containers:
+            backup_database(container, backup_dir)
+
+
+def restore_databases(databases, backup_dir):
+    for database in databases:
+        container_name_part = database.split(":")[0]
+        containers = find_containers(container_name_part)
+        for container in containers:
+            restore_database(container, backup_dir)
+
+
+def get_docker_logs(container_name_pattern, start_time, end_time, service_log_path):
+    container_id = _get_container_id_by_name_pattern(container_name_pattern)
+    if not container_id:
+        return
+    # Construct the docker logs command
+    command = [
+        "docker", "logs",
+        "--timestamps",  # Display timestamps
+        container_id,
+        "--since", start_time,
+        "--until", end_time
+    ]
+    # Execute the command and capture the output
+    try:
+        result = subprocess.run(command, capture_output=True, text=True)
+        # print(result.stdout)
+        with open(service_log_path, "w") as log:
+            log.write(result.stdout)
+    except subprocess.CalledProcessError as e:
+        print(f"An error occurred when saving service log: {e.stderr}")
+
+
 if __name__ == "__main__":
-    # 查找容器名中包含指定字符串的容器
+    # Find containers with names that contain the specified string
     containers = find_containers("mysql")
 
-    # 备份所有MySQL数据库
+    # Backup all MySQL databases
     for container_name in containers:
-        backup_database(container_name, "./replay_backup")
-        
+        backup_database(container_name, "./f3-re/replay_backup_origin")
+        # restore_database(container_name, "replay_backup")
+    #     # print(container_name)
+
     # container_name = "ts-order-other-mysql"
     # backup_database(container_name, "./replay_backup")
     # restore_database(container_name, "./replay_backup")
+
+    # test get_docker_logs()
+    # print(datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'))
+    # container_name = "ts-order-other-service"
+    # start_time = "2024-06-01T07:23:00Z"
+    # end_time = "2024-06-01T07:29:00Z"
+    # #
+    # # print(datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'))
+    # print(datetime.datetime.now(datetime.timezone.utc).isoformat()[:-6] + 'Z')
+    #
+    #
+    # get_docker_logs(container_name, start_time, end_time, "./temp.txt")
+    # print(datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'))
+
+    # client = docker.from_env()
+    # containers = client.containers.list()
+    # print(containers[0].ip)

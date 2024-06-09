@@ -48,9 +48,7 @@ def cnt(flows, req_data_map):
     print_red(f"数据库访问总数：{data_span_cnt}\n")
         
     
-def main():
-    trace_dir = './data/f4-response'
-    output_dir = './output/f4'
+def main(trace_dir, output_dir):
 
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
@@ -96,6 +94,8 @@ def main():
     save_request_flows(origin_flows, output_dir)
 
 if __name__ == "__main__":
-    main()
+    trace_dir = './data/case1'
+    output_dir = './output/case1'
+    main(trace_dir, output_dir)
     
     
